@@ -1,0 +1,127 @@
+<!--
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this
+file, You can obtain one at http://mozilla.org/MPL/2.0/.
+Copyright (c) 2023-present Kaleidos INC
+-->
+
+<ng-container *ngIf="model$ | async as vm">
+  <ng-container *transloco="let t">
+    <tg-title
+      [title]="
+        t('project_settings.roles_permissions.page_title', {
+          projectName: vm.project.name
+        })
+      ">
+    </tg-title>
+    <div class="settings-permissions-wrapper">
+      <h3
+        mainFocus
+        id="main-area-title"
+        class="settings-title">
+        {{ t('project_settings.roles_and_permissions') }}
+      </h3>
+    </div>
+    <section
+      *ngIf="vm.memberRoles"
+      class="member-permissions-settings"
+      data-test="member-permissions-settings">
+      <h3
+        #fragment
+        tabindex="-1"
+        data-test="member-permissions-settings-title"
+        class="settings-subtitle"
+        data-fragment="member-permissions-settings">
+        {{ t('project_settings.member_permissions') }}
+      </h3>
+      <div
+        *ngIf="vm.admin"
+        class="project-admin">
+        <div class="project-admin-title">
+          <span class="project-admin-text">{{
+            t('project_settings.roles_permissions.project_administrators')
+          }}</span>
+          <button
+            class="small project-admin-button"
+            data-test="settings-permissions-admin-num-members"
+            [class.empty]="!vm.admin.numMembers"
+            tuiLink>
+            {{
+              t('project_settings.roles_permissions.number_admins', {
+                admins: vm.admin.numMembers
+              })
+            }}
+          </button>
+        </div>
+        <p class="project-admin-paragraph">
+          {{
+            t(
+              'project_settings.roles_permissions.project_administrators_explanation'
+            )
+          }}
+        </p>
+      </div>
+      <form [formGroup]="form">
+        <ng-container *ngFor="let role of vm.memberRoles; trackBy: trackBySlug">
+          <tg-role-permission-row
+            *ngIf="getRoleForm(role)"
+            [formGroup]="getRoleForm(role)"
+            [name]="role.name"
+            [numMembers]="role.numMembers"
+            data-test="role-permission-row">
+          </tg-role-permission-row>
+        </ng-container>
+      </form>
+    </section>
+
+    <section
+      *ngIf="vm.publicPermissions"
+      data-test="public-permissions-settings"
+      class="public-permissions-settings">
+      <h3
+        #fragment
+        tabindex="-1"
+        class="settings-subtitle"
+        data-fragment="public-permissions-settings">
+        {{ t('project_settings.public_permissions') }}
+      </h3>
+      <form [formGroup]="publicForm">
+        <tg-role-permission-row
+          class="hidden-row-name"
+          *ngIf="getPublicPermissionsForm()"
+          [formGroup]="getPublicPermissionsForm()"
+          [hasMembers]="false"
+          [numMembers]="0"
+          [name]="t('project_settings.public_permissions')"
+          data-test="role-permission-row">
+        </tg-role-permission-row>
+        <tg-ui-context-notification
+          *ngIf="vm.conflicts.length"
+          alertLevel="polite"
+          status="info"
+          data-test="conflicts-notification">
+          <span>{{ t('project_settings.external_members') }}</span>
+          <button
+            class="link"
+            tuiLink
+            (click)="handleModal()"
+            data-test="open-conflicts-modal">
+            {{ t('project_settings.see_more') }}
+          </button>
+        </tg-ui-context-notification>
+      </form>
+    </section>
+
+    <tg-ui-modal
+      [open]="isModalOpen"
+      (requestClose)="handleModal()">
+      <ng-container>
+        <tg-modal-permission-comparison
+          *ngIf="vm.conflicts"
+          [conflictPermissions]="vm.conflicts"
+          (closeModal)="handleModal()">
+        </tg-modal-permission-comparison>
+      </ng-container>
+    </tg-ui-modal>
+  </ng-container>
+</ng-container>

@@ -1,0 +1,36 @@
+<!--
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this
+file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+Copyright (c) 2023-present Kaleidos INC
+-->
+
+<ng-container *transloco="let t">
+  <ng-container *ngIf="model$ | async as vm">
+    <div
+      #resizeSidepanel
+      [class.drag-on]="dragging"
+      [style.min-inline-size]="minInlineSize"
+      [style.max-inline-size]="maxInlineSize"
+      [style.inline-size.px]="sidepanelWidth"
+      class="side-panel">
+      <tg-story-detail
+        cdkTrapFocus
+        *ngIf="!vm.loadingStory"
+        [sidebarOpen]="sidebarOpen"
+        (toggleSidebar)="onToggleSidebar()"></tg-story-detail>
+      <tg-story-detail-skeleton
+        [isCollapsed]="!sidebarOpen"
+        *ngIf="vm.loadingStory"></tg-story-detail-skeleton>
+      <div
+        #dragHandle
+        *ngIf="showDragbar()"
+        class="dragbar"
+        tgStoryWrapperSideViewResize
+        (tgResizeStart)="isDragging($event, true)"
+        (tgResizeEnd)="isDragging($event, false)"
+        (tgResizeMove)="dragMove(dragHandle, $event)"></div>
+    </div>
+  </ng-container>
+</ng-container>

@@ -1,0 +1,95 @@
+<!--
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this
+file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+Copyright (c) 2023-present Kaleidos INC
+-->
+
+<ng-container *transloco="let t">
+  <div
+    data-test="conflicts-permission-modal"
+    role="dialog"
+    aria-modal="true"
+    aria-describedby="permission-table"
+    aria-labelledby="permissions-comparison"
+    class="modal-wrapper">
+    <h2
+      id="permissions-comparison"
+      class="modal-title"
+      tabindex="0">
+      {{
+        t('project_settings.modal_permissions.potential_permission_conflicts')
+      }}
+    </h2>
+    <div
+      id="permission-table"
+      class="permission-table">
+      <p
+        class="explanation"
+        [innerHtml]="
+          t(
+            'project_settings.modal_permissions.potential_permission_conflicts_explanation'
+          )
+        "></p>
+      <ng-container
+        *ngFor="let module of conflictPermissions; trackBy: trackByIndex">
+        <h3 class="table-title">
+          {{
+            t('project_settings.modal_permissions.role', {
+              name: module.name
+            })
+          }}
+        </h3>
+        <table
+          data-test="comparisson-table"
+          class="comparisson-table"
+          [ngClass]="{ last: last }"
+          *ngFor="
+            let conflict of module.conflicts;
+            let last = last;
+            index as i;
+            trackBy: trackByIndex
+          ">
+          <thead *ngIf="i === 0">
+            <tr>
+              <th aria-hidden="true"></th>
+              <th
+                scope="col"
+                class="title">
+                {{ module.name }}
+              </th>
+              <th
+                scope="col"
+                class="title">
+                {{ t('project_settings.modal_permissions.public') }}
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="
+                let text of conflict.texts.member.text;
+                index as idx;
+                trackBy: trackByIndex
+              "
+              tg-modal-permission-entity-row
+              [conflict]="conflict"
+              [memberText]="text"
+              [publicText]="conflict.texts.public.text[idx]"
+              [showHeader]="idx === 0"></tr>
+          </tbody>
+        </table>
+      </ng-container>
+      <div class="btn-wrapper">
+        <button
+          data-test="close-conflicts-modal"
+          tuiButton
+          (click)="close()"
+          appearance="primary">
+          {{ t('project_settings.modal_permissions.close') }}
+        </button>
+      </div>
+    </div>
+  </div>
+</ng-container>

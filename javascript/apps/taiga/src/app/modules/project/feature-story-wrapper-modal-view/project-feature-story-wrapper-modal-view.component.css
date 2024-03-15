@@ -1,0 +1,30 @@
+/*
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this
+file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+Copyright (c) 2023-present Kaleidos INC
+*/
+
+:host {
+  block-size: 100vh;
+  display: block;
+  max-block-size: calc((var(--modal-block-margin) * -1) + 100vh);
+
+  &::ng-deep .modal-scrollbar {
+    max-block-size: 100%;
+
+    & .t-thumb {
+      border: 0.15rem solid transparent;
+      /* stylelint-disable-next-line declaration-no-important */
+      inline-size: 0.25rem !important;
+    }
+
+    & .t-bar_vertical {
+      inline-size: var(--spacing-8);
+      margin-block-end: var(--spacing-4);
+      margin-block-start: var(--spacing-4);
+      margin-inline-end: 2px;
+    }
+  }
+}

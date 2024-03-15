@@ -1,0 +1,51 @@
+<!--
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this
+file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+Copyright (c) 2023-present Kaleidos INC
+-->
+
+<ng-container *transloco="let t">
+  <ng-container *ngIf="model$ | async as vm">
+    <div class="header">
+      <h3 class="title">
+        {{ t('navigation.notifications.title') }}
+      </h3>
+
+      <label class="switch-notificaction-unread">
+        <span class="label-text">{{
+          t('navigation.notifications.only_unread')
+        }}</span>
+        <tui-toggle
+          [(ngModel)]="showUnread"
+          [ngModelOptions]="{ standalone: true }"></tui-toggle>
+      </label>
+    </div>
+
+    <ng-container *ngIf="!vm.notifications.length">
+      <div class="empty">
+        {{ t('navigation.notifications.empty') }}
+      </div>
+    </ng-container>
+
+    <div
+      *ngIf="
+        vm.notifications.length &&
+        vm.showUnread &&
+        !vm.filterNotifications.length
+      "
+      class="empty">
+      {{ t('navigation.notifications.all_read') }}
+    </div>
+
+    <div class="notifications">
+      <ng-container
+        *ngFor="let notification of vm.filterNotifications; trackBy: trackById">
+        <tg-notification
+          [notification]="notification"
+          (userNavigated)="userNavigated.emit()"></tg-notification>
+      </ng-container>
+    </div>
+  </ng-container>
+</ng-container>

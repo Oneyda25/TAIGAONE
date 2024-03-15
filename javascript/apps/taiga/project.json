@@ -1,0 +1,126 @@
+{
+  "name": "taiga",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "apps/taiga/src",
+  "prefix": "tg",
+  "targets": {
+    "build": {
+      "executor": "@nx/angular:webpack-browser",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "allowedCommonJsDependencies": [
+          "angular2-text-mask",
+          "copy-to-clipboard",
+          "diacritic",
+          "check-password-strength",
+          "text-mask-core",
+          "dompurify",
+          "@messageformat/core",
+          "flat",
+          "seedrandom",
+          "apps/taiga/src/assets/editor/prism.js"
+        ],
+        "customWebpackConfig": {
+          "path": "./extra-webpack.config.ts"
+        },
+        "outputPath": "dist/taiga/browser",
+        "index": "apps/taiga/src/index.html",
+        "main": "apps/taiga/src/main.ts",
+        "polyfills": "apps/taiga/src/polyfills.ts",
+        "tsConfig": "apps/taiga/tsconfig.app.json",
+        "assets": [
+          "apps/taiga/src/favicon.ico",
+          "apps/taiga/src/assets",
+          {
+            "glob": "**/*",
+            "input": "node_modules/tinymce",
+            "output": "/tinymce/"
+          }
+        ],
+        "styles": [
+          "node_modules/@taiga-ui/core/styles/taiga-ui-theme.less",
+          "node_modules/@taiga-ui/core/styles/taiga-ui-fonts.less",
+          "node_modules/@taiga-ui/styles/taiga-ui-global.less",
+          "apps/taiga/src/styles.css"
+        ],
+        "scripts": []
+      },
+      "configurations": {
+        "production": {
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "2mb",
+              "maximumError": "5mb"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "6kb",
+              "maximumError": "15kb"
+            }
+          ],
+          "fileReplacements": [
+            {
+              "replace": "apps/taiga/src/environments/environment.ts",
+              "with": "apps/taiga/src/environments/environment.prod.ts"
+            }
+          ],
+          "outputHashing": "all",
+          "sourceMap": {
+            "scripts": true,
+            "styles": false,
+            "hidden": false,
+            "vendor": false
+          }
+        },
+        "development": {
+          "buildOptimizer": false,
+          "optimization": false,
+          "vendorChunk": true,
+          "extractLicenses": false,
+          "sourceMap": true,
+          "namedChunks": true
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "serve": {
+      "executor": "@nx/angular:webpack-dev-server",
+      "configurations": {
+        "production": {
+          "browserTarget": "taiga:build:production"
+        },
+        "development": {
+          "browserTarget": "taiga:build:development"
+        }
+      },
+      "defaultConfiguration": "development"
+    },
+    "extract-i18n": {
+      "executor": "@angular-devkit/build-angular:extract-i18n",
+      "options": {
+        "browserTarget": "taiga:build"
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "options": {
+        "lintFilePatterns": [
+          "apps/taiga/src/**/*.ts",
+          "apps/taiga/src/**/*.html"
+        ]
+      },
+      "outputs": ["{options.outputFile}"]
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/apps/taiga"],
+      "options": {
+        "jestConfig": "apps/taiga/jest.config.ts",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": ["scope:taiga"]
+}

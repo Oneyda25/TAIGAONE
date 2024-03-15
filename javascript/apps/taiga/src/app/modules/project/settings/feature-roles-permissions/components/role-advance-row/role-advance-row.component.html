@@ -1,0 +1,115 @@
+<!--
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this
+file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+Copyright (c) 2023-present Kaleidos INC
+-->
+
+<ng-container *transloco="let t">
+  <div
+    [formGroup]="formGroup"
+    class="permission-row-sub">
+    <div class="permission-row-title">
+      <span
+        aria-hidden="true"
+        [class.customizing]="customizer"
+        class="permission-row-name">
+        {{ t(entity.value) }}
+      </span>
+    </div>
+    <div class="permission-row-customization">
+      <div class="permission-row-inner">
+        <div class="permission-row-select">
+          <tg-ui-select
+            labelVisuallyHidden
+            [label]="t(entity.value)">
+            <tui-select
+              tuiTextfieldSize="l"
+              data-test="module-permission-select"
+              [valueContent]="selectLabel"
+              [ngModel]="permissionRowModel"
+              [ngModelOptions]="{ standalone: true }"
+              (ngModelChange)="permissionChange($event)">
+              <tui-data-list *tuiDataList>
+                <button
+                  *ngFor="
+                    let item of basicPermissionList | keyvalue: insertionOrder;
+                    trackBy: trackByValue
+                  "
+                  tuiOption
+                  data-test="module-permission-option"
+                  [value]="item">
+                  {{ t(item.value) }}
+                </button>
+              </tui-data-list>
+            </tui-select>
+          </tg-ui-select>
+          <ng-template
+            #selectLabel
+            let-item>
+            <ng-container [ngSwitch]="permissionRowModel.key">
+              <ng-container *ngSwitchCase="'custom'">
+                {{ t('project_settings.roles_permissions.custom') }}
+              </ng-container>
+              <ng-container *ngSwitchCase="'restricted'">
+                <div
+                  [innerHTML]="
+                    t('project_settings.roles_permissions.restricted')
+                  "></div>
+              </ng-container>
+              <ng-container *ngSwitchDefault>
+                {{ t(item.value) }}
+              </ng-container>
+            </ng-container>
+          </ng-template>
+          <div
+            [attr.aria-level]="2"
+            role="heading"
+            class="permission-row-button">
+            <button
+              appearance="tertiary"
+              data-test="display-custom-permissions"
+              [class.customizing]="customizer"
+              [class.show-customization-disabled]="!showCustomization()"
+              [attr.aria-label]="
+                t('project_settings.roles_permissions.show_more')
+              "
+              [attr.aria-expanded]="customizer"
+              [attr.aria-controls]="rolePermissionContainerId"
+              (click)="toggleCustomizer()"
+              tuiIconButton
+              [icon]="customizer ? 'close' : 'sliders-vertical'"
+              [tgUiTooltip]="tooltip"
+              tgUiTooltipPosition="top-right"
+              type="button"></button>
+          </div>
+        </div>
+        <tg-role-customize
+          *ngIf="customizer"
+          [attr.id]="rolePermissionContainerId"
+          data-test="module-custom-permissions-section"
+          [formGroup]="formGroup"
+          [toggleCustomize]="customizer">
+        </tg-role-customize>
+      </div>
+    </div>
+    <div
+      class="permision-row-comment"
+      [class.permision-row-comment-disabled]="!showComment()">
+      <label class="permission-row-switch-title">
+        <span class="label-text">{{
+          t('project_settings.roles_permissions.can_comment')
+        }}</span>
+        <tui-toggle
+          class="permission-can-comment-switch"
+          data-test="permission-can-comment-switch"
+          formControlName="comment">
+        </tui-toggle>
+      </label>
+    </div>
+  </div>
+  <ng-template #tooltip>
+    <p>{{ t('project_settings.customize') }}</p>
+  </ng-template>
+</ng-container>

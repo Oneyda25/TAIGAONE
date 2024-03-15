@@ -1,0 +1,44 @@
+<!--
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this
+file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+Copyright (c) 2023-present Kaleidos INC
+-->
+
+<ng-container *transloco="let t">
+  <div class="breadcrumb-wrapper">
+    <tui-svg
+      [tgUiTooltip]="t('kanban.workflow')"
+      tgUiTooltipPosition="bottom"
+      class="crumb-icon collapsed"
+      role="image"
+      [attr.aria-label]="t('kanban.workflow')"
+      [src]="icon"></tui-svg>
+    <ng-container
+      *ngFor="
+        let crumb of crumbs;
+        trackBy: trackByIndex;
+        last as isLast;
+        index as i
+      ">
+      <div
+        *ngIf="hideLastCrumb && !isLast"
+        class="crumb">
+        {{ crumb }}
+      </div>
+      <div
+        *ngIf="!hideLastCrumb"
+        class="crumb"
+        [class.expanded]="!isLast"
+        [class.accent]="isLast && accent">
+        {{ crumb }}
+      </div>
+      <tui-svg
+        class="crumb-divider expanded"
+        *ngIf="!(hideLastCrumb && i === crumbs.length - 2) && !isLast"
+        src="chevron-right"></tui-svg>
+    </ng-container>
+    <ng-content select="[data-slot=workflow-action]"></ng-content>
+  </div>
+</ng-container>

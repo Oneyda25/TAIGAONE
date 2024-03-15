@@ -1,0 +1,20 @@
+{
+  "$schema": "../../node_modules/@angular-devkit/schematics/collection-schema.json",
+  "schematics": {
+    "create-component": {
+      "description": "Create component",
+      "factory": "./create-component/index#createComponent",
+      "schema": "./create-component/schema.json"
+    },
+    "create-feature": {
+      "description": "Create feature",
+      "factory": "./create-feature/index#createFeature",
+      "schema": "./create-feature/schema.json"
+    },
+    "create-module": {
+      "description": "Create module",
+      "factory": "./create-module/index",
+      "schema": "./create-module/schema.json"
+    }
+  }
+}

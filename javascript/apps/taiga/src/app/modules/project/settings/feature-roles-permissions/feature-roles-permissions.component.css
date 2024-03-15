@@ -1,0 +1,52 @@
+/*
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this
+file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+Copyright (c) 2023-present Kaleidos INC
+*/
+@import url("tools/typography.css");
+
+:host {
+  --setting-size: 1024px;
+}
+
+.member-permissions-settings,
+.public-permissions-settings,
+.workspace-permissions-settings {
+  margin-block-start: var(--spacing-32);
+}
+
+.settings-subtitle {
+  margin: 0;
+  margin-block-end: var(--spacing-24);
+}
+
+.project-admin {
+  margin-block-end: var(--spacing-16);
+
+  & .project-admin-title {
+    color: var(--color-gray90);
+    display: flex;
+    margin-block-end: var(--spacing-8);
+
+    & .project-admin-text {
+      font-weight: var(--font-weight-medium);
+      margin-inline-end: var(--spacing-8);
+    }
+
+    & .project-admin-button {
+      flex-shrink: 0;
+    }
+  }
+
+  & .project-admin-paragraph {
+    @mixin font-paragraph;
+
+    color: var(--color-gray70);
+  }
+}
+
+.link {
+  margin-inline-start: var(--spacing-4);
+}

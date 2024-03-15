@@ -1,0 +1,197 @@
+<!--
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this
+file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+Copyright (c) 2023-present Kaleidos INC
+-->
+
+<ng-container *transloco="let t">
+  <ng-container *ngIf="model$ | async as vm">
+    <div class="field">
+      <span
+        class="field-label"
+        [class.readonly]="!vm.canEdit"
+        >{{ t('common_story.assigned_to') }}</span
+      >
+      <div
+        *hasPermission="
+          ['modify'];
+          entity: 'story';
+          else: noAssignPermissionsTpl
+        "
+        class="field-content"
+        (resized)="calculateDropdownWidth($event)">
+        <div
+          class="dropdown-container"
+          [tuiDropdown]="assignUser"
+          [tuiDropdownMinHeight]="272"
+          [tuiDropdownMaxHeight]="466"
+          [tuiDropdownManual]="vm.showAssignUser"
+          [tuiDropdownDirection]="'bottom'"
+          [tuiDropdownAlign]="'right'"
+          (tuiActiveZoneChange)="onAssignUserActiveZoneChange($event)"></div>
+        <ng-container *ngIf="story?.assignees">
+          <ng-template
+            *ngIf="
+              vm.assignees.length;
+              then displayUsersTpl;
+              else assignBtnTpl
+            ">
+          </ng-template>
+        </ng-container>
+      </div>
+    </div>
+
+    <!-- Assigned users temaplate -->
+
+    <ng-template #displayUsersTpl>
+      <tui-scrollbar class="assign-user">
+        <ul
+          #assignedMemberList
+          tabindex="-1"
+          class="assigned-users-list"
+          [attr.aria-label]="t('common_story.assigned_members')">
+          <li
+            class="assigned-user"
+            *ngFor="
+              let assignedUser of vm.assignees;
+              trackBy: trackByIndex;
+              index as i
+            ">
+            <div
+              class="assigned-user-tooltip-wrapper"
+              [tgUiTooltip]="'@' + assignedUser.username"
+              tgUiTooltipPosition="bottom">
+              <tg-user-avatar
+                size="m"
+                class="assigned-user-avatar"
+                [color]="assignedUser.color"
+                [user]="assignedUser"
+                type="light"
+                [rounded]="true"
+                aria-hidden="true"></tg-user-avatar>
+              <label
+                class="assigned-name"
+                [innerHtml]="
+                  vm.currentUser.username === assignedUser.username
+                    ? t('commons.your_user', { name: assignedUser.fullName })
+                    : assignedUser.fullName || assignedUser.username
+                ">
+              </label>
+            </div>
+            <button
+              #assigned
+              *hasPermission="['modify']; entity: 'story'"
+              (keydown.enter)="unassignFromList($event, assignedUser)"
+              (click)="unassignFromList($event, assignedUser)"
+              [attr.aria-label]="
+                t('project.assign_user.unassign-aria', {
+                  name: assignedUser.fullName,
+                  username: assignedUser.username
+                })
+              "
+              [tgUiTooltip]="t('project.assign_user.remove-assignee')"
+              appearance="tertiary"
+              tuiIconButton
+              icon="close"
+              type="button"></button>
+          </li>
+        </ul>
+      </tui-scrollbar>
+      <div
+        class="add-assignee"
+        *hasPermission="['modify']; entity: 'story'">
+        <button
+          tuiButton
+          appearance="tertiary"
+          icon="user-plus"
+          type="button"
+          (click)="toggleAssignUser($event)"
+          [tgUiTooltip]="!vm.assignees.length ? unassignedTooltip : null"
+          tgUiTooltipPosition="bottom-right"
+          [ngClass]="{
+            'unassigned-button-perm': !vm.assignees.length,
+            'assigned-button-perm': vm.assignees.length
+          }">
+          {{ t('common_story.add_assignee') }}
+        </button>
+      </div>
+    </ng-template>
+
+    <!-- Assign button template - user with permissions -->
+
+    <ng-template #assignBtnTpl>
+      <div class="not-assigned">
+        <span> {{ t('common_story.not_assigned') }} </span>
+        <button
+          #addAssignee
+          tuiButton
+          appearance="tertiary"
+          id="add-assignee"
+          icon="user-plus"
+          type="button"
+          (click)="toggleAssignUser($event)"
+          [tgUiTooltip]="!story.assignees.length ? unassignedTooltip : null"
+          tgUiTooltipPosition="bottom-right"
+          [attr.aria-label]="t('common_story.story_not_assigned_enter')"
+          [ngClass]="{
+            'unassigned-button-perm': !story.assignees.length,
+            'assigned-button-perm': story.assignees.length
+          }">
+          {{ t('common_story.assign') }}
+        </button>
+      </div>
+    </ng-template>
+
+    <!-- Assign button template - user with permissions -->
+
+    <ng-template #assignUser>
+      <tg-assign-user
+        [storyDropdown]="true"
+        [width]="dropdownWidth"
+        [assigned]="vm.assignees"
+        (assign)="assign($event)"
+        (unassign)="unassign($event)"
+        (requestClose)="closeAssignDropdown()"></tg-assign-user>
+    </ng-template>
+
+    <!-- Assign elements - no permissions -->
+
+    <ng-template #noAssignPermissionsTpl>
+      <div
+        *ngIf="!story.assignees.length"
+        [tgUiTooltip]="unassignedTooltip"
+        tgUiTooltipPosition="bottom-right"
+        class="unassigned-button-noperm"
+        aria-labelledby="unassigned-tooltip">
+        {{ t('common_story.unassigned') }}
+      </div>
+      <div
+        *ngIf="story.assignees.length"
+        class="assigned-button-noperm">
+        <ng-container *ngTemplateOutlet="displayUsersTpl"></ng-container>
+      </div>
+    </ng-template>
+
+    <ng-template #unassignedTooltip>
+      <p
+        id="unassigned-tooltip"
+        aria-hidden="true">
+        {{ t('common_story.story_not_assigned') }}
+      </p>
+    </ng-template>
+
+    <ng-template #moreAssignedTooltip>
+      <p
+        id="more-assigned-tooltip"
+        aria-hidden="true">
+        {{
+          t('common_story.more_assigned', {
+            assigneesNum: story.assignees.length - 3
+          })
+        }}
+      </p>
+    </ng-template>
+  </ng-container>
+</ng-container>

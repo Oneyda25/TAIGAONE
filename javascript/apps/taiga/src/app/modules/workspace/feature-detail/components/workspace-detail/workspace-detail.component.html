@@ -1,0 +1,188 @@
+<!--
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this
+file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+Copyright (c) 2023-present Kaleidos INC
+-->
+
+<ng-container *ngIf="model$ | async as vm">
+  <ng-container *transloco="let t">
+    <div class="workspace-detail-wrapper">
+      <tg-workspace-detail-skeleton *ngIf="!vm.workspace">
+      </tg-workspace-detail-skeleton>
+      <ng-container *ngIf="vm.workspace">
+        <tg-title [title]="vm.workspace.name"></tg-title>
+        <div class="workspace-detail-top">
+          <div class="workspace-detail-avatar">
+            <tg-ui-avatar
+              class="workspace-avatar"
+              type="dark"
+              [color]="vm.workspace.color"
+              size="xl"
+              [name]="vm.workspace.name">
+            </tg-ui-avatar>
+          </div>
+          <div class="workspace-detail-name-wrapper">
+            <div class="workspace-detail-name-route">
+              {{ t('commons.workspace') }}/
+            </div>
+            <div class="workspace-detail-name-container">
+              <h1
+                [attr.aria-label]="
+                  t('workspace.a11y.workspace_title', {
+                    workspace: vm.workspace.name,
+                    role: t('commons.roles.' + vm.workspace.userRole)
+                  })
+                "
+                data-test="workspace-detail-name"
+                class="workspace-detail-name">
+                {{ vm.workspace.name }}
+              </h1>
+              <tg-ui-badge
+                *ngIf="vm.workspace.userRole"
+                [label]="
+                  t('commons.roles.' + vm.workspace.userRole) | capitalize
+                "
+                size="s"
+                [color]="vm.workspace.userRole === 'guest' ? 'gray' : 'info'">
+              </tg-ui-badge>
+              <tui-hosted-dropdown
+                *ngIf="vm.workspace.userRole === 'member'"
+                [tuiDropdownAlign]="'left'"
+                [content]="workspaceOptions"
+                [(open)]="displayWorkspaceOptions">
+                <button
+                  class="display-workspace-options"
+                  role="menu"
+                  aria-haspopup="true"
+                  [attr.aria-expanded]="displayWorkspaceOptions"
+                  tabindex="0"
+                  [attr.aria-label]="t('workspace.workspace_actions')"
+                  icon="more-vertical"
+                  data-test="workspace-options"
+                  appearance="tertiary"
+                  tuiIconButton
+                  type="button"
+                  [tgUiTooltip]="t('workspace.workspace_actions')"
+                  (click)="(displayWorkspaceOptionsModal)"></button>
+              </tui-hosted-dropdown>
+            </div>
+          </div>
+          <div class="workspace-detail-back">
+            <a
+              tuiButton
+              type="button"
+              appearance="tertiary"
+              [routerLink]="['/']"
+              iconRight="arrow-right">
+              {{ t('workspace.back_to_projects') }}
+            </a>
+          </div>
+        </div>
+        <ng-template #workspaceOptions>
+          <tui-data-list
+            class="workspace-options-list"
+            data-test="workspace-options-list"
+            [attr.aria-label]="t('workspace.workspace_actions')">
+            <button
+              role="menuitem"
+              data-test="edit-ws-button"
+              class="option-btn"
+              tuiOption
+              type="button"
+              (click)="editWorkspaceModal()">
+              <div class="option-container">
+                <tui-svg
+                  aria-hidden="true"
+                  class="option-icon"
+                  src="pen"></tui-svg>
+                <span class="option-name">{{
+                  t('workspace.edit_workspace_name')
+                }}</span>
+              </div>
+            </button>
+            <hr class="separator" />
+            <button
+              class="option-btn option-delete"
+              role="menuitem"
+              data-test="delete-ws-button"
+              tuiOption
+              type="button"
+              (click)="handleDeleteWorkspace()">
+              <div class="option-container">
+                <tui-svg
+                  class="option-icon"
+                  aria-hidden="true"
+                  src="trash"></tui-svg>
+                <span class="option-name option-delete">{{
+                  t('workspace.delete.delete_workspace')
+                }}</span>
+              </div>
+            </button>
+          </tui-data-list>
+        </ng-template>
+        <div class="workspace-detail">
+          <div class="wks-detail-nav">
+            <nav>
+              <h2 class="wks-detail-title">{{ t('commons.workspace') }}</h2>
+              <ul class="wks-detail-menu">
+                <li class="wks-detail-menu-item">
+                  <a
+                    class="wks-detail-menu-anchor"
+                    data-test="wks-detail-projects-anchor"
+                    [class.active]="menuItemActive === 'projects'"
+                    [routerLink]="[
+                      '/workspace',
+                      vm.workspace.id,
+                      vm.workspace.slug,
+                      'projects'
+                    ]"
+                    [state]="{ ignoreScrollToFocus: true }"
+                    (click)="menuItemActive = 'projects'">
+                    {{ t('commons.projects') }}
+                  </a>
+                </li>
+                <li class="wks-detail-menu-item">
+                  <a
+                    class="wks-detail-menu-anchor"
+                    data-test="wks-detail-people-anchor"
+                    [class.active]="menuItemActive === 'people'"
+                    [routerLink]="[
+                      '/workspace',
+                      vm.workspace.id,
+                      vm.workspace.slug,
+                      'people'
+                    ]"
+                    [state]="{ ignoreScrollToFocus: true }"
+                    (click)="menuItemActive = 'people'">
+                    {{ t('commons.people') }}
+                  </a>
+                </li>
+              </ul>
+            </nav>
+          </div>
+          <main
+            id="main-area-focus"
+            class="wks-detail-main">
+            <router-outlet></router-outlet>
+          </main>
+        </div>
+
+        <tg-workspace-detail-edit-modal
+          *ngIf="vm.editingWorkspace"
+          [workspace]="vm.workspace"
+          [open]="vm.editingWorkspace"
+          (update)="updateWorkspace($event)"
+          (cancelEdit)="closeEditWorkspaceModal()">
+        </tg-workspace-detail-edit-modal>
+
+        <tg-delete-workspace
+          *ngIf="showDeleteWorkspaceModal"
+          [show]="showDeleteWorkspaceModal"
+          (closeModal)="showDeleteWorkspaceModal = false"
+          [projects]="vm.workspace.totalProjects"></tg-delete-workspace>
+      </ng-container>
+    </div>
+  </ng-container>
+</ng-container>

@@ -1,0 +1,59 @@
+/*
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this
+file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+Copyright (c) 2023-present Kaleidos INC
+*/
+
+@import url("tools/typography.css");
+
+:host {
+  display: block;
+}
+
+.title {
+  @mixin font-inline;
+
+  font-weight: var(--font-weight-medium);
+  margin: 0;
+
+  & .total-comments {
+    color: var(--color-gray70);
+  }
+}
+
+.header {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  padding-block-end: var(--spacing-12);
+  padding-block-start: var(--spacing-12);
+  padding-inline-start: var(--spacing-8);
+}
+
+.sort {
+  align-items: center;
+  display: flex;
+  gap: var(--spacing-4);
+
+  & p {
+    color: var(--color-gray70);
+    font-size: var(--font-size-small);
+    margin: 0;
+  }
+}
+
+tg-comment-user-input {
+  &.bottom {
+    margin-block-start: var(--spacing-20);
+  }
+}
+
+.no-comments {
+  background-color: var(--color-gray10);
+  color: var(--color-gray70);
+  font-style: italic;
+  padding-block: var(--spacing-8);
+  text-align: center;
+}

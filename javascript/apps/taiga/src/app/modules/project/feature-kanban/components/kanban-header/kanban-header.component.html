@@ -1,0 +1,102 @@
+<!--
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this
+file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+Copyright (c) 2023-present Kaleidos INC
+-->
+
+<ng-container *transloco="let t">
+  <h1
+    id="main-area-title"
+    class="kanban-title"
+    *ngIf="workflows.length === 1"
+    [attr.aria-label]="
+      t('kanban.workflow_title', { projectName: project.name })
+    "
+    data-test="kanban-title">
+    {{ t('kanban.title') }}
+  </h1>
+
+  <tg-ui-breadcrumb
+    *ngIf="workflows.length > 1"
+    [hideLastCrumb]="editStatusFormOpened"
+    [crumbs]="[t('commons.kanban'), t('kanban.workflows'), workflow.name]"
+    [accent]="true"
+    class="kanban-header-breadcrumbs">
+  </tg-ui-breadcrumb>
+
+  <tui-hosted-dropdown
+    *ngIf="!editStatusFormOpened"
+    class="status-options-menu"
+    tuiDropdownAlign="left"
+    [content]="workflowOptionsDropdown"
+    [(open)]="openWorkflowOptions">
+    <button
+      #statusOptions
+      *ngIf="project.userIsAdmin && project.workflows.length > 1"
+      [attr.aria-label]="t('kanban.status_options')"
+      role="menu"
+      aria-haspopup="true"
+      [attr.aria-expanded]="openWorkflowOptions"
+      [tgUiTooltip]="
+        t('kanban.status_options_tooltip', { name: workflow.name })
+      "
+      icon="more-vertical"
+      data-test="workflow-options"
+      class="status-options-menu-button"
+      appearance="action-button-2"
+      tuiIconButton
+      type="button"></button>
+  </tui-hosted-dropdown>
+
+  <ng-template #workflowOptionsDropdown>
+    <tui-data-list class="view-options-list">
+      <button
+        class="option-btn"
+        data-test="edit-workflow-btn"
+        tuiOption
+        type="button"
+        (click)="toggleEditWorkflowForm()">
+        <div class="option-container">
+          <tui-svg
+            aria-hidden="true"
+            class="option-icon"
+            src="pen"></tui-svg>
+          <span class="option-name">{{ t('kanban.edit_workflow_name') }}</span>
+        </div>
+      </button>
+      <hr class="separator" />
+      <button
+        (click)="openDeleteWorkflowModal()"
+        class="option-btn option-delete"
+        data-test="delete-workflow-btn"
+        tuiOption
+        type="button">
+        <div class="option-container">
+          <tui-svg
+            aria-hidden="true"
+            class="option-icon"
+            src="trash"></tui-svg>
+          <span class="option-name">{{ t('kanban.delete_workflow') }}</span>
+        </div>
+      </button>
+    </tui-data-list>
+  </ng-template>
+
+  <tg-new-workflow-form
+    *ngIf="editStatusFormOpened && project.userIsAdmin"
+    class="workflow-form"
+    [workflow]="workflow"
+    (createWorkflow)="editWorkflowName($event)"
+    (cancelCreateWorkflow)="toggleEditWorkflowForm()"></tg-new-workflow-form>
+
+  <tg-delete-workflow
+    *ngIf="deleteWorkflowModal"
+    [show]="deleteWorkflowModal"
+    (submitDelete)="submitDeleteWorkflow($event)"
+    (closeModal)="deleteWorkflowModal = false"
+    [currentWorkflow]="workflow"
+    [workflows]="workflows">
+  </tg-delete-workflow>
+</ng-container>

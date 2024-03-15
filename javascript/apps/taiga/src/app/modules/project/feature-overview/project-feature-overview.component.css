@@ -1,0 +1,149 @@
+/*
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this
+file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+Copyright (c) 2023-present Kaleidos INC
+*/
+/* stylelint-disable declaration-no-important */
+
+@import url("tools/typography.css");
+@import url("shared/option-list.css");
+
+:host {
+  background-color: var(--color-gray10);
+  block-size: 100%;
+  display: block;
+}
+
+.project-title {
+  align-items: center;
+  display: flex;
+  gap: var(--spacing-16);
+  max-inline-size: 1400px;
+  padding-inline-end: var(--spacing-8);
+}
+
+.edit-project-info {
+  margin-inline-start: auto;
+}
+
+.project-name {
+  @mixin font-heading-4;
+
+  margin: 0;
+}
+
+.project-content {
+  display: flex;
+  flex-direction: column;
+  min-block-size: 100%;
+  padding: var(--spacing-16);
+}
+
+.project-content-inner {
+  display: grid;
+  flex-grow: 1;
+  gap: var(--spacing-16);
+  grid-template: minmax(0, auto) 1fr 1fr / 1fr 1fr minmax(392px, 528px);
+  max-inline-size: 1400px;
+  padding-block-start: var(--spacing-16);
+
+  @media only screen and (width <= 1279px) {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    gap: var(--spacing-16);
+    max-inline-size: 100%;
+    padding-block-start: var(--spacing-16);
+  }
+
+  & :is(.project-main, .project-description, .project-members) {
+    background: var(--color-white);
+    padding: var(--spacing-16);
+  }
+
+  & > .project-main {
+    align-self: flex-start;
+    grid-column: 1 / 3;
+    grid-row: 1 / -1;
+
+    /* fake height */
+    min-block-size: 500px;
+
+    @media only screen and (width <= 1279px) {
+      inline-size: 100%;
+    }
+  }
+
+  & > .project-members {
+    align-self: flex-start;
+
+    @media only screen and (width <= 1279px) {
+      inline-size: 100%;
+    }
+  }
+}
+
+.project-description {
+  overflow: hidden;
+}
+
+.project-about {
+  @mixin font-inline;
+
+  color: var(--color-gray100);
+  line-height: 21px;
+  margin: 0;
+  margin-block-end: var(--spacing-8);
+}
+
+/* stylelint-disable */
+.description {
+  color: var(--color-gray80);
+  display: -webkit-box;
+  font-weight: var(--font-weight-regular);
+  max-block-size: 87px;
+  line-height: 21px;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+
+  &.hide {
+    max-block-size: none;
+    overflow: auto;
+    -webkit-line-clamp: unset;
+  }
+}
+/* stylelint-enable */
+
+.actions {
+  display: flex;
+  margin-block-start: var(--spacing-8);
+
+  & .link {
+    display: block;
+    inline-size: 100%;
+    text-align: end;
+  }
+}
+
+.empty-description {
+  color: var(--color-gray70);
+  font-style: italic;
+}
+
+.description-edit-project-action {
+  display: inline;
+  font-style: italic;
+  font-weight: var(--font-weight-regular);
+  text-decoration: underline;
+}
+
+.separator {
+  @mixin separator;
+}
+
+.view-options-list {
+  @mixin option-list;
+}

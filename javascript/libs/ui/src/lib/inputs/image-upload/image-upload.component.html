@@ -1,0 +1,72 @@
+<!--
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this
+file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+Copyright (c) 2023-present Kaleidos INC
+-->
+<ng-container *transloco="let t">
+  <div class="uploader">
+    <label
+      class="input-label"
+      [attr.for]="id">
+      {{ label }}
+    </label>
+    <div class="uploader-inner">
+      <div class="preview-wrapper">
+        <tg-ui-avatar
+          size="xxl"
+          data-test="upload-image-preview"
+          type="light"
+          [avatarUrl]="safeImageUrl"
+          [color]="color"
+          [name]="title">
+        </tg-ui-avatar>
+        <button
+          class="remove-image-button"
+          (click)="hasImage() ? removeImage() : displayImageUploader()"
+          tuiIconButton
+          [icon]="hasImage() ? 'close' : 'plus'"
+          [attr.title]="
+            hasImage()
+              ? t('image_upload.remove_image')
+              : t('image_upload.choose_image')
+          "
+          type="button"
+          appearance="tertiary"></button>
+      </div>
+      <div class="uploader-actions">
+        <div class="uploader-explanation">
+          {{ tip }}
+        </div>
+        <button
+          [attr.id]="'action-upload' + id"
+          class="uploader-button"
+          (click)="displayImageUploader()"
+          tuiButton
+          type="button"
+          appearance="tertiary">
+          <ng-container *ngIf="!hasImage()">
+            {{ t('image_upload.choose_image') }}
+          </ng-container>
+          <ng-container *ngIf="hasImage()">
+            {{ t('image_upload.change_image') }}
+          </ng-container>
+        </button>
+        <input
+          class="input-upload"
+          #imageUpload
+          [attr.accept]="accept"
+          (change)="onImageSelected($event)"
+          (cancel)="$event.stopPropagation()"
+          type="file"
+          name="upload"
+          [attr.id]="id" />
+
+        <tg-ui-error error="type">
+          {{ formatError }}
+        </tg-ui-error>
+      </div>
+    </div>
+  </div>
+</ng-container>

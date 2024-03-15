@@ -1,0 +1,34 @@
+/**
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ *
+ * Copyright (c) 2023-present Kaleidos INC
+ */
+
+import { on, createFeature } from '@ngrx/store';
+import { createImmerReducer } from '~/app/shared/utils/store';
+import * as <%= classify(stateFilesName) %>Actions from '../actions/<%= dasherize(stateFilesName) %>.actions';
+
+export const <%= camelize(name) %>Key = '<%= camelize(name) %>';
+
+export interface <%= classify(name) %>State {
+
+}
+
+export const initialState: <%= classify(name) %>State = {
+
+};
+
+const reducer = createImmerReducer(
+  initialState,
+  on(<%= classify(stateFilesName) %>Actions.example, (state): <%= classify(name) %>State => {
+
+    return state;
+  }),
+);
+
+export const <%= camelize(name) %> = createFeature({
+  name: '<%= name %>',
+  reducer: reducer,
+});

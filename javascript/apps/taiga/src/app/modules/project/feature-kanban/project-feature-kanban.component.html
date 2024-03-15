@@ -1,0 +1,81 @@
+<!--
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this
+file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+Copyright (c) 2023-present Kaleidos INC
+-->
+<ng-container *transloco="let t">
+  <ng-container *ngIf="model$ | async as vm">
+    <ng-container *ngIf="project$ | async as project">
+      <tg-title
+        [title]="
+          t('kanban.page_title', { projectName: vm.project.name })
+        "></tg-title>
+    </ng-container>
+    <ng-container *ngIf="vm.storyView">
+      <div
+        (resized)="onResized($event)"
+        class="kanban-wrapper kanban-cdk-area">
+        <div
+          class="kanban"
+          [class.lock]="lockKanban">
+          <tg-kanban-header
+            *ngIf="vm.workflow"
+            [project]="vm.project"
+            [workflows]="vm.workflows"
+            [workflow]="vm.workflow"
+            [stories]="vm.stories"></tg-kanban-header>
+          <div class="kanban-wrapper">
+            <ng-container *ngIf="vm.workflow">
+              <tg-kanban-workflow
+                role="grid"
+                [userIsAdmin]="vm.project.userIsAdmin"
+                [workflow]="vm.workflow"
+                [columns]="vm.columns"></tg-kanban-workflow>
+            </ng-container>
+          </div>
+          <div
+            class="lock-kanban modal-bg"
+            *ngIf="
+              lockKanban && vm.showStoryDetail && vm.storyView === 'side-view'
+            "></div>
+        </div>
+        <ng-container
+          *ngIf="vm.showStoryDetail && vm.storyView === 'side-view'">
+          <tg-project-feature-story-wrapper-side-view
+            [kanbanWidth]="
+              kanbanWidth
+            "></tg-project-feature-story-wrapper-side-view>
+        </ng-container>
+      </div>
+      <ng-container *ngIf="vm.showStoryDetail && vm.storyView === 'modal-view'">
+        <tg-ui-modal
+          [big]="true"
+          [noPadding]="true"
+          [closeButton]="false"
+          [open]="vm.showStoryDetail"
+          [closeClickOutside]="true"
+          (requestClose)="closeViewModal()">
+          <ng-container *ngIf="project$ | async as project">
+            <tg-project-feature-story-wrapper-modal-view
+              (closeModal)="
+                closeViewModal()
+              "></tg-project-feature-story-wrapper-modal-view>
+          </ng-container>
+        </tg-ui-modal>
+      </ng-container>
+
+      <tg-ui-modal
+        [open]="vm.invitePeopleModal"
+        (requestClose)="closeModal()">
+        <ng-container *ngIf="project$ | async as project">
+          <tg-invite-user-modal
+            *ngIf="vm.invitePeopleModal && project.userIsAdmin"
+            (closeModal)="closeModal()"
+            [isProjectInvitation]="true"></tg-invite-user-modal>
+        </ng-container>
+      </tg-ui-modal>
+    </ng-container>
+  </ng-container>
+</ng-container>

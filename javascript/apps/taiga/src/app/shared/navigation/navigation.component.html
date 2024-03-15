@@ -1,0 +1,158 @@
+<!--
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this
+file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+Copyright (c) 2023-present Kaleidos INC
+-->
+<ng-container *transloco="let t">
+  <ng-container *ngIf="(logged$ | async) === false">
+    <div class="left">
+      <a
+        appearance="home-button"
+        [attr.aria-label]="t('navigation.go_home')"
+        [routerLink]="['/']"
+        class="home-button"
+        tuiIconButton
+        icon="taiga-logo">
+      </a>
+    </div>
+    <div class="accesibility-help">
+      <button
+        tuiButton
+        (click)="scrollToMainArea()">
+        {{ t('skip_to_content') }}
+      </button>
+    </div>
+    <div class="right">
+      <div class="actions">
+        <a
+          [routerLink]="['/login']"
+          data-test="navigation-login-button"
+          appearance="secondary"
+          tuiButton
+          type="submit">
+          {{ t('navigation.log_in') }}
+        </a>
+        <a
+          [routerLink]="['/signup']"
+          data-test="navigation-create-account-button"
+          appearance="primary"
+          tuiButton
+          type="submit">
+          {{ t('navigation.create_account') }}
+        </a>
+      </div>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="user$ | async as user">
+    <div class="left">
+      <a
+        appearance="home-button"
+        [attr.aria-label]="t('navigation.go_home')"
+        [routerLink]="['/']"
+        class="home-button"
+        tuiIconButton
+        icon="taiga-logo">
+      </a>
+      <div class="accesibility-help">
+        <button
+          tuiButton
+          (click)="scrollToMainArea()">
+          {{ t('navigation.skip_to_content') }}
+        </button>
+      </div>
+      <tui-hosted-dropdown
+        [tuiDropdownMaxHeight]="800"
+        [content]="projectsDropdown"
+        [(open)]="openProjectsDropdown">
+        <button
+          aria-controls="navigation-projects"
+          aria-haspopup="menu"
+          [attr.aria-expanded]="openProjectsDropdown"
+          [attr.aria-label]="t('navigation.a11y.projects_navigate')"
+          tabindex="0"
+          appearance="main-nav"
+          tuiButton
+          icon="folder"
+          type="button"
+          data-test="projects-dropdown">
+          {{ 'commons.projects' | transloco }}
+        </button>
+      </tui-hosted-dropdown>
+    </div>
+    <div class="right">
+      <div class="header-actions">
+        <tui-hosted-dropdown
+          [content]="notificationsDropdown"
+          [(open)]="openNotificationsDropdown">
+          <div class="count-notifications-wrapper">
+            <button
+              class="notifications-action"
+              type="button"
+              tuiIconButton
+              appearance="navigation-action"
+              [attr.aria-expanded]="openNotificationsDropdown"
+              aria-haspopup="true"
+              icon="bell"
+              data-test="notifications-button"
+              [attr.aria-label]="t('navigation.notifications.title')">
+              <span
+                *ngIf="notificationsCount() > 0"
+                class="count-notifications"
+                [class.count-overflow]="notificationsCount() > 99">
+                <ng-container *ngIf="notificationsCount() > 99"
+                  >+99</ng-container
+                >
+                <ng-container *ngIf="notificationsCount() <= 99">{{
+                  notificationsCount()
+                }}</ng-container>
+              </span>
+            </button>
+          </div>
+        </tui-hosted-dropdown>
+      </div>
+      <div class="separator"></div>
+      <div class="avatar-holder">
+        <tui-hosted-dropdown
+          [content]="userDropdown"
+          [(open)]="openUserDropdown">
+          <button
+            aria-controls="profile-options-list"
+            aria-haspopup="menu"
+            [attr.aria-expanded]="openUserDropdown"
+            tabindex="0"
+            class="avatar-dropdown-button"
+            [attr.aria-label]="
+              t('navigation.a11y.user_menu_navigate', {
+                userName: user.fullName
+              })
+            "
+            type="button"
+            data-test="user-settings">
+            <tg-user-avatar
+              aria-hidden="true"
+              [color]="user.color"
+              [rounded]="true"
+              [attr.title]="user.fullName"></tg-user-avatar>
+          </button>
+        </tui-hosted-dropdown>
+      </div>
+    </div>
+
+    <ng-template #notificationsDropdown>
+      <tg-notifications
+        (userNavigated)="openNotificationsDropdown = false"></tg-notifications>
+    </ng-template>
+
+    <ng-template #userDropdown>
+      <tg-navigation-user-dropdown
+        [user]="user"
+        (requestClose)="openUserDropdown = false"></tg-navigation-user-dropdown>
+    </ng-template>
+
+    <ng-template #projectsDropdown>
+      <tg-navigation-projects></tg-navigation-projects>
+    </ng-template>
+  </ng-container>
+</ng-container>

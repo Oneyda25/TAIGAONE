@@ -1,0 +1,33 @@
+<!--
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this
+file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+Copyright (c) 2023-present Kaleidos INC
+-->
+
+<ng-container *transloco="let t">
+  <div class="create-status header">
+    <ng-container *ngIf="showAddForm; else addStatusTpl">
+      <tg-edit-status
+        action="creation"
+        (setStatus)="generateStatus($event)"
+        (cancel)="cancelForm()"
+        (leave)="leaveForm($event)"></tg-edit-status>
+    </ng-container>
+    <ng-template #addStatusTpl>
+      <button
+        tgRestoreFocusTarget="show-create-status-form"
+        class="open-create-status-form"
+        data-test="open-create-status-form"
+        appearance="tertiary"
+        tuiButton
+        icon="plus"
+        type="button"
+        (click)="showForm()"
+        iconAlign="left">
+        {{ t('kanban.add_status') }}
+      </button>
+    </ng-template>
+  </div>
+</ng-container>

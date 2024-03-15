@@ -1,0 +1,132 @@
+/*
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this
+file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+Copyright (c) 2023-present Kaleidos INC
+*/
+@import url("tools/typography.css");
+@import url("taiga-ui/mixins/wrapper.css");
+
+:host {
+  align-items: center;
+  background: var(--color-gray30);
+  display: flex;
+  justify-content: space-between;
+  min-block-size: var(--header-height);
+  padding-block: 0;
+  padding-inline: var(--spacing-16);
+  position: relative;
+  z-index: var(--fourth-layer);
+}
+
+.accesibility-help {
+  & button {
+    @mixin font-heading-4;
+
+    block-size: 44px;
+    color: var(--color-secondary);
+    display: flex;
+    inset-block-start: 0.5rem;
+    inset-inline-start: 0.5rem;
+    opacity: 0;
+    pointer-events: none;
+    position: absolute;
+    white-space: nowrap;
+    z-index: var(--fourth-layer);
+
+    &::ng-deep [tuiWrapper] {
+      outline: solid 1px var(--color-secondary);
+      /* stylelint-disable-next-line declaration-no-important */
+      padding-inline: var(--spacing-16) !important;
+    }
+
+    &:focus {
+      opacity: 1;
+      outline: 0;
+      pointer-events: auto;
+    }
+  }
+}
+
+.home-button {
+  margin-inline-end: 1.5rem;
+}
+
+.actions {
+  display: flex;
+}
+
+.left {
+  align-items: center;
+  display: flex;
+}
+
+.right {
+  align-items: center;
+  display: flex;
+
+  & .actions button,
+  & .actions a {
+    margin-inline-end: var(--spacing-16);
+
+    &:last-child {
+      margin-inline-end: 0;
+    }
+  }
+}
+
+:host::ng-deep .nav-badged-button .content {
+  pointer-events: none;
+}
+
+.separator {
+  background: var(--color-gray40);
+  block-size: 28px;
+  inline-size: 2px;
+}
+
+.avatar-holder {
+  padding-inline-start: var(--spacing-16);
+}
+
+.avatar-dropdown-button {
+  all: unset;
+  cursor: pointer;
+
+  &:focus tg-user-avatar,
+  &:hover tg-user-avatar {
+    --color-border: var(--color-secondary);
+  }
+}
+
+.header-actions {
+  display: flex;
+  gap: var(--spacing-16);
+  padding-inline-end: var(--spacing-16);
+}
+
+.count-notifications-wrapper {
+  position: relative;
+}
+
+.count-notifications {
+  align-items: center;
+  aspect-ratio: 1 / 1;
+  background: var(--color-red);
+  block-size: 16px;
+  border-radius: 50%;
+  color: var(--color-white);
+  display: flex;
+  font-size: 0.688rem;
+  font-weight: var(--font-weight-medium);
+  inset-block-start: 0;
+  inset-inline-end: 0;
+  justify-content: center;
+  position: absolute;
+  z-index: var(--first-layer);
+}
+
+.count-overflow {
+  font-size: 0.5rem;
+}

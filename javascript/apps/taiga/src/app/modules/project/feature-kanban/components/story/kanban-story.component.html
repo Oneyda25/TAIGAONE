@@ -1,0 +1,202 @@
+<!--
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this
+file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+Copyright (c) 2023-present Kaleidos INC
+-->
+<ng-container *transloco="let t">
+  <ng-container *ngIf="model$ | async as vm">
+    <div
+      class="story-kanban-ref-focus"
+      [class.has-focus]="cardHasFocus">
+      <a
+        class="story-title"
+        [routerLink]="[
+          '/project',
+          vm.project.id,
+          vm.project.slug,
+          'stories',
+          story.ref
+        ]"
+        [state]="{ fromCard: true }"
+        (focus)="handleCardFocus(true)"
+        (blur)="handleCardFocus(false)">
+        <div class="draggable-icon">
+          <tui-svg src="draggable"></tui-svg>
+        </div>
+        <div
+          class="ref"
+          data-test="story-ref">
+          {{ story.ref }}
+        </div>
+        <div class="text">
+          {{ story.title }}
+          <ng-container *hasPermission="['modify']; entity: 'story'">
+            <span
+              class="visually-hidden"
+              *ngIf="!vm.isA11yDragInProgress"
+              >{{
+                t('kanban.story_title_a11y', {
+                  position: index + 1,
+                  total: total
+                })
+              }}
+            </span>
+          </ng-container>
+        </div>
+      </a>
+      <div class="story-body">
+        <ng-container
+          *hasPermission="
+            ['modify'];
+            entity: 'story';
+            else: noAssignPermissionsTpl
+          ">
+          <div
+            class="assign-user"
+            [style.max-height]="'530px'"
+            [tuiDropdown]="assignUser"
+            [tuiDropdownMinHeight]="272"
+            [tuiDropdownMaxHeight]="502"
+            [tuiDropdownOffset]="-30"
+            [tuiDropdownManual]="vm.showAssignUser">
+            <button
+              data-test="assign-btn"
+              (click)="toggleAssignUser($event)"
+              [tgUiTooltip]="unassignedTooltip"
+              [tgUiTooltipDisabled]="!!vm.assignees.length"
+              tgUiTooltipPosition="bottom-right"
+              [ngClass]="{
+                'unassigned-button-perm': !vm.assignees.length,
+                'assigned-button-perm': vm.assignees.length
+              }">
+              <ng-container
+                [ngTemplateOutlet]="
+                  vm.assignees.length ? displayUsersTpl : assignBtnTpl
+                "
+                [ngTemplateOutletContext]="{
+                  $implicit: 'assignPermissions'
+                }"></ng-container>
+            </button>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+
+    <!-- Assigned users temaplate -->
+
+    <ng-template
+      #displayUsersTpl
+      let-permissions>
+      <div
+        class="assigned-users-list"
+        [attr.aria-label]="
+          permissions === 'assignPermissions'
+            ? t('common_story.assigned_list_perm', {
+                users: assignedListA11y
+              })
+            : t('common_story.assigned_list', {
+                users: assignedListA11y
+              })
+        ">
+        <tg-user-avatar
+          *ngFor="
+            let assigned of reversedAssignees | slice: -3;
+            trackBy: trackByIndex
+          "
+          size="m"
+          class="assigned-user-avatar"
+          [color]="assigned.color"
+          [user]="assigned"
+          type="light"
+          [rounded]="true"
+          aria-hidden="true"
+          [tgUiTooltip]="assigned.fullName"
+          tgUiTooltipPosition="bottom-right"></tg-user-avatar>
+      </div>
+      <div
+        class="assigned-user-avatar-extra"
+        aria-hidden="true"
+        *ngIf="vm.assignees.length > 3"
+        [tgUiTooltip]="moreAssignedTooltip"
+        tgUiTooltipPosition="bottom-right">
+        {{ restAssigneesLenght }}
+      </div>
+    </ng-template>
+
+    <!-- Assign button template - user with permissions -->
+
+    <ng-template #assignBtnTpl>
+      <div [attr.aria-label]="t('common_story.unassigned_action')">
+        {{ t('common_story.assign') }}
+      </div>
+    </ng-template>
+
+    <!-- Assign button template - user with permissions -->
+
+    <ng-template #assignUser>
+      <tg-assign-user
+        (tgOutsideClick)="closeAssignDropdown()"
+        [assigned]="vm.assignees"
+        [viewOnly]="!vm.canEdit"
+        [ref]="story.ref"
+        (assign)="assign($event)"
+        (unassign)="unassign($event)"
+        (requestClose)="closeAssignDropdown()"></tg-assign-user>
+    </ng-template>
+
+    <!-- Assign elements - no permissions -->
+
+    <ng-template #noAssignPermissionsTpl>
+      <div
+        *ngIf="!vm.assignees.length"
+        [tgUiTooltip]="unassignedTooltip"
+        tgUiTooltipPosition="bottom-right"
+        class="unassigned-button-noperm"
+        aria-labelledby="unassigned-tooltip">
+        {{ t('common_story.unassigned') }}
+      </div>
+      <div
+        *ngIf="vm.assignees.length"
+        [tuiDropdown]="assignUser"
+        [tuiDropdownMinHeight]="272"
+        [tuiDropdownMaxHeight]="502"
+        [tuiDropdownOffset]="-30"
+        [tuiDropdownManual]="vm.showAssignUser"
+        class="assigned-button-noperm">
+        <button
+          (click)="toggleAssignUser($event)"
+          [ngClass]="{
+            'assigned-button-perm': vm.assignees.length
+          }">
+          <ng-container
+            [ngTemplateOutlet]="displayUsersTpl"
+            [ngTemplateOutletContext]="{
+              $implicit: 'noAssignPermissions'
+            }"></ng-container>
+        </button>
+      </div>
+    </ng-template>
+
+    <ng-template #unassignedTooltip>
+      <p
+        id="unassigned-tooltip"
+        aria-hidden="true">
+        {{ t('common_story.story_not_assigned') }}
+      </p>
+    </ng-template>
+
+    <ng-template #moreAssignedTooltip>
+      <p
+        id="more-assigned-tooltip"
+        aria-hidden="true">
+        {{
+          t('common_story.more_assigned', {
+            assigneesNum: vm.assignees.length - 3
+          })
+        }}
+      </p>
+    </ng-template>
+  </ng-container>
+</ng-container>

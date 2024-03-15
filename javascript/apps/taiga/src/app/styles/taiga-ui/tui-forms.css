@@ -1,0 +1,27 @@
+/*
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this
+file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+Copyright (c) 2023-present Kaleidos INC
+*/
+
+[tuiwrapper][data-appearance="textfield"] {
+  --tui-base-03: var(--color-gray40);
+  --tui-primary: var(--color-secondary);
+
+  /* stylelint-disable-next-line declaration-no-important */
+  box-shadow: none !important;
+
+  &::after {
+    border-radius: 3px;
+    /* stylelint-disable-next-line declaration-no-important */
+    border-width: 2px !important;
+    /* stylelint-disable-next-line declaration-no-important */
+    transition: none !important;
+  }
+}
+
+button:is([type="button"], [type="reset"], [type="submit"]):focus-visible {
+  outline: 0;
+}

@@ -1,0 +1,38 @@
+/*
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this
+file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+Copyright (c) 2023-present Kaleidos INC
+*/
+
+@import url("tools/typography.css");
+
+/* UNCOLLAPSED MENU */
+
+:host {
+  --menu-size: 200px;
+
+  align-self: flex-start;
+  inline-size: var(--menu-size);
+  inset-block-start: 0;
+  position: sticky;
+  z-index: var(--first-layer);
+}
+
+.main-nav-container {
+  block-size: 100%;
+  inline-size: 100%;
+  overflow: hidden;
+}
+
+.main-nav-container-inner {
+  block-size: 100%;
+  display: flex;
+  inline-size: calc(100% + var(--menu-size));
+}
+
+tg-project-navigation-settings {
+  flex-shrink: 0;
+  inline-size: var(--menu-size);
+}

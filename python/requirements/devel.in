@@ -1,0 +1,15 @@
+# pre-commit
+pre-commit
+mypy
+
+# requirements tooling
+pip-tools
+
+# Typing stubs
+django-stubs  # django
+types-babel  # babel
+types-python-slugify  # python-slugify
+types-redis  # redis
+types-redis  # redis
+types-requests # requests
+types-Pillow # Pillow/PIL

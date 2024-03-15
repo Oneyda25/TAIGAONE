@@ -1,0 +1,115 @@
+/*
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this
+file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+Copyright (c) 2023-present Kaleidos INC
+*/
+
+@import url("tools/typography.css");
+
+:host {
+  background: var(--color-gray10);
+  display: block;
+  min-block-size: 100%;
+  padding: var(--spacing-16);
+  position: relative;
+}
+
+.create-wrapper {
+  position: relative;
+}
+
+.skeleton-container {
+  background: var(--color-gray10);
+  inline-size: 100%;
+  position: absolute;
+}
+
+.workspace-create {
+  inline-size: 100%;
+  position: absolute;
+  z-index: var(--first-layer);
+}
+
+.workspace-wrapper {
+  margin-block: 0;
+  margin-inline: auto;
+  max-inline-size: 1440px;
+}
+
+.workspace-title-container {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin-block-end: var(--spacing-16);
+
+  & .workspace-title {
+    font-weight: var(--font-weight-medium);
+    margin: 0;
+  }
+
+  & .workspace-title-actions {
+    align-items: center;
+    display: flex;
+
+    & .workspace-title-link {
+      margin-inline-start: var(--spacing-16);
+    }
+  }
+}
+
+.worskpace-placeholder {
+  block-size: 2rem;
+  position: relative;
+}
+
+.workspace-call-action {
+  background: var(--color-white);
+  inset-block-start: 50px;
+  inset-inline-start: calc(50% - 200px);
+  margin-block: 0;
+  margin-inline: auto;
+  max-inline-size: 400px;
+  padding: var(--spacing-24);
+  position: absolute;
+  z-index: var(--first-layer);
+
+  & .workspace-call-action-title {
+    font-weight: var(--font-weight-medium);
+    margin-block-end: var(--spacing-16);
+    margin-block-start: 0;
+  }
+
+  & .workspace-call-action-text {
+    @mixin font-paragraph;
+
+    color: var(--color-gray70);
+    margin-block-end: var(--spacing-16);
+  }
+
+  & .workspace-call-action-link {
+    align-items: center;
+    display: flex;
+    margin-block-end: var(--spacing-16);
+  }
+}
+
+.workspace-item-container {
+  display: flex;
+  flex-direction: column;
+
+  &.form-error {
+    margin-block-start: 1rem;
+  }
+}
+
+.workspace-item-container-inner {
+  overflow: hidden;
+  padding-block-end: var(--spacing-24);
+}
+
+.sliding-panel {
+  background: var(--color-gray80);
+  flex: 0 0 383px;
+}

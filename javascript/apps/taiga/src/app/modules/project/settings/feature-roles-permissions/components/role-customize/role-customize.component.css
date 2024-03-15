@@ -1,0 +1,57 @@
+/*
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this
+file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+Copyright (c) 2023-present Kaleidos INC
+*/
+
+@import url("tools/typography.css");
+
+:host {
+  display: block;
+
+  & .permission-row-switch-container {
+    display: flex;
+    margin-block-end: var(--spacing-8);
+    margin-block-start: var(--spacing-4);
+  }
+
+  & .permission-row-switch-deco {
+    background: var(--color-gray30);
+    flex-basis: var(--spacing-4);
+    margin-inline-end: var(--spacing-8);
+  }
+
+  & .permision-row-switches {
+    background: var(--color-gray20);
+    inline-size: 100%;
+    padding: var(--spacing-16);
+  }
+
+  & tui-toggle {
+    min-inline-size: var(--spacing-32);
+  }
+
+  & .permmission-row-switch {
+    display: flex;
+    justify-content: space-between;
+    margin-block-end: var(--spacing-8);
+
+    &:last-child {
+      margin-block-end: 0;
+    }
+  }
+
+  & .permission-row-switch-title {
+    align-items: center;
+    display: flex;
+    overflow: hidden;
+
+    & .label-text {
+      @mixin line-clamp 1;
+
+      padding-inline-end: var(--spacing-8);
+    }
+  }
+}

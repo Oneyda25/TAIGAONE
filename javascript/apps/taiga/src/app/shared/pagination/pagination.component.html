@@ -1,0 +1,41 @@
+<!--
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this
+file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+Copyright (c) 2023-present Kaleidos INC
+-->
+
+<ng-container *transloco="let t">
+  <nav
+    role="navigation"
+    class="pagination">
+    <button
+      [attr.aria-label]="t('pagination.previous_page')"
+      [disabled]="!hasPreviousPage"
+      (click)="previous.emit()"
+      appearance="tertiary"
+      tuiIconButton
+      icon="chevron-left"
+      type="button"></button>
+
+    <div
+      class="page-info"
+      [innerHTML]="
+        t('pagination.page_info', {
+          pageStart: pageStart,
+          pageEnd: pageEnd,
+          total: total
+        })
+      "></div>
+
+    <button
+      [attr.aria-label]="t('pagination.next_page')"
+      [disabled]="!hasNextPage"
+      (click)="next.emit()"
+      appearance="tertiary"
+      tuiIconButton
+      icon="chevron-right"
+      type="button"></button>
+  </nav>
+</ng-container>

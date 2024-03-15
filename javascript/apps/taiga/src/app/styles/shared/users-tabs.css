@@ -1,0 +1,73 @@
+/*
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this
+file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+Copyright (c) 2023-present Kaleidos INC
+*/
+
+@import url("tools/typography.css");
+
+.tab-description {
+  @mixin font-paragraph;
+
+  color: var(--color-gray80);
+  margin-block-end: var(--spacing-16);
+  max-inline-size: 800px;
+}
+
+.user-column {
+  padding-inline-start: var(--spacing-4);
+}
+
+tg-ui-dtable {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+tg-ui-dtable-row {
+  --cells-layout: 1fr 1fr 140px;
+
+  overflow: hidden;
+  position: relative;
+
+  &:not(:first-child) {
+    &:hover {
+      background-color: var(--color-gray10);
+    }
+  }
+
+  &.transparent {
+    &:hover {
+      background-color: transparent;
+    }
+  }
+}
+
+tg-ui-user-skeleton {
+  --padding: var(--spacing-4);
+}
+
+.empty {
+  background-color: var(--color-gray10);
+  block-size: 100%;
+  border-radius: 4px;
+  color: var(--color-gray70);
+  display: block;
+  font-style: italic;
+  margin-block-start: var(--spacing-20);
+  padding-block: var(--spacing-16);
+  text-align: center;
+}
+
+.column-actions {
+  align-items: stretch;
+  display: flex;
+  gap: var(--spacing-24);
+
+  & > .header-row-action,
+  & > .row-action {
+    padding-block: var(--spacing-8);
+  }
+}

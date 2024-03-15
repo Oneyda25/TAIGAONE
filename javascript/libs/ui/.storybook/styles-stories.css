@@ -1,0 +1,32 @@
+/*
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this
+file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+Copyright (c) 2023-present Kaleidos INC
+*/
+
+.story-flex {
+  align-items: center;
+  display: flex;
+  justify-content: space-around;
+
+  & .story-section {
+    margin: 0 2rem;
+
+    & h1 {
+      font-size: 1.5rem;
+      margin-top: 0;
+      text-align: center;
+    }
+  }
+
+  & .story-label {
+    margin-bottom: 0;
+    margin-right: 2rem;
+  }
+}
+
+.story-small-container {
+  max-width: 200px;
+}

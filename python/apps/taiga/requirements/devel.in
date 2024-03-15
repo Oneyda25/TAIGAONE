@@ -1,0 +1,10 @@
+-r commons.in
+
+# Testing
+pytest
+pytest-cov
+pytest-django
+pytest-asyncio
+git+https://github.com/FactoryBoy/factory_boy@master#egg=factory-boy # factory-boy > 3.2.1
+validators
+pytest_httpx

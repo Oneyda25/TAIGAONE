@@ -1,0 +1,34 @@
+<!--
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this
+file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+Copyright (c) 2023-present Kaleidos INC
+-->
+
+<ng-container *transloco="let t">
+  <div [formGroup]="formGroup">
+    <div
+      class="permission-row-switch-container"
+      *ngIf="toggleCustomize">
+      <div class="permission-row-switch-deco"></div>
+      <div class="permision-row-switches">
+        <div
+          *ngFor="
+            let action of basicPermissionList | keyvalue: insertionOrder;
+            trackBy: trackByValue
+          "
+          class="permmission-row-switch">
+          <label class="permission-row-switch-title">
+            <span class="label-text">{{ t(action.value) }}</span>
+            <tui-toggle
+              [formControlName]="action.key"
+              [showIcons]="false"
+              data-test="permissions-switch">
+            </tui-toggle>
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>

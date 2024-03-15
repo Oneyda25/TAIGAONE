@@ -1,0 +1,186 @@
+<!--
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this
+file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+Copyright (c) 2023-present Kaleidos INC
+-->
+<ng-container *ngIf="model$ | async as vm">
+  <ng-container *transloco="let t">
+    <div class="workspace-item-top">
+      <tg-ui-avatar
+        class="workspace-avatar"
+        [color]="workspace.color"
+        type="dark"
+        size="m"
+        [name]="workspace.name">
+      </tg-ui-avatar>
+      <div class="workspace-item-title-wrapper">
+        <a
+          *ngIf="workspace.userRole === 'member'"
+          class="workspace-item-title-active"
+          data-test="workspace-item-title"
+          [routerLink]="[
+            '/workspace/',
+            workspace.id,
+            workspace.slug,
+            'projects'
+          ]">
+          <h2
+            class="workspace-item-title"
+            [attr.aria-label]="
+              t('workspace.a11y.workspace_title', {
+                workspace: workspace.name,
+                role: t('commons.roles.' + workspace.userRole)
+              })
+            ">
+            {{ workspace.name }}
+          </h2>
+        </a>
+        <h2
+          *ngIf="
+            workspace.userRole === 'guest' || workspace.userRole === 'none'
+          "
+          class="workspace-item-title workspace-guest"
+          [attr.aria-label]="
+            t('workspace.a11y.workspace_title', {
+              workspace: workspace.name,
+              role: t('commons.roles.' + workspace.userRole)
+            })
+          ">
+          {{ workspace.name }}
+        </h2>
+      </div>
+
+      <tg-ui-badge
+        *ngIf="workspace.userRole === 'member'"
+        [label]="t('commons.roles.' + workspace.userRole)"
+        size="s"
+        color="info">
+      </tg-ui-badge>
+
+      <div class="workspace-item-action">
+        <a
+          *ngIf="workspace.userRole === 'member'"
+          data-test="new-project-btn"
+          appearance="primary"
+          [attr.aria-label]="t('workspace.create_project')"
+          [routerLink]="['/new-project']"
+          [queryParams]="{ workspace: workspace.id }"
+          tuiButton
+          icon="plus">
+          {{ t('commons.project') }}
+        </a>
+      </div>
+    </div>
+    <div
+      *ngIf="userHasNoAccess()"
+      class="workspace-message-placeholder"
+      [innerHtml]="t('workspace.placehoder_no_access')"></div>
+
+    <!-- Case: User has no more projects -->
+    <div
+      *ngIf="userHasNoProjects()"
+      class="workspace-message-placeholder"
+      [innerHtml]="t('workspace.placehoder_no_projects')"></div>
+
+    <!-- Project list -->
+    <div
+      [@.disabled]="animationDisabled"
+      [class]="gridClass"
+      [class.show-all]="vm.showAllProjects"
+      class="workspace-item-card-grid">
+      <tg-project-card
+        *ngIf="
+          workspace.latestProjects.length === 0 &&
+          workspace.userRole === 'member' &&
+          vm.projects.length === 0
+        "
+        [workspace]="workspace"
+        [acceptedInvites]="vm.acceptedInvites"
+        variant="placeholder"
+        [firstProject]="true">
+      </tg-project-card>
+      <div
+        *ngFor="let invitation of vm.invitations; trackBy: trackByLatestProject"
+        [@cardSlideOut]
+        (@cardSlideOut.done)="slideOutAnimationDone($event)"
+        [@newProject]="
+          vm.newInvitations.includes(invitation.id) ? 'inprogress' : 'idle'
+        "
+        (@newProject.start)="newProjectAnimationStart($event, invitation)"
+        (@newProject.done)="newProjectAnimationDone($event)"
+        [@newInvitationSibling]="
+          vm.projectSiblingToAnimate.includes(invitation.id)
+            ? 'inprogress'
+            : 'idle'
+        "
+        [@reorder]="reorder[invitation.id]"
+        (@reorder.done)="reorderDone($event)">
+        <tg-project-card
+          variant="invitation"
+          data-test="project-card-invitation"
+          (rejectInvite)="rejectProjectInvite($event)"
+          (acceptInvite)="acceptProjectInvite($event.id, $event.name)"
+          [acceptedInvites]="vm.acceptedInvites"
+          [workspace]="workspace"
+          [project]="invitation">
+        </tg-project-card>
+      </div>
+      <div
+        *ngFor="let project of vm.projects; trackBy: trackByLatestProject"
+        [@newProject]="
+          newProjectsToAnimate.includes(project.id) ? 'inprogress' : 'idle'
+        "
+        (@newProject.start)="newProjectAnimationStart($event, project)"
+        (@newProject.done)="newProjectAnimationDone($event)"
+        [@newInvitationSibling]="
+          vm.projectSiblingToAnimate.includes(project.id)
+            ? 'inprogress'
+            : 'idle'
+        ">
+        <tg-project-card
+          data-test="project-card"
+          [workspace]="workspace"
+          [project]="project"
+          [acceptedInvites]="vm.acceptedInvites"
+          [@reorder]="reorder[project.id]"
+          (@reorder.done)="reorderDone($event)">
+        </tg-project-card>
+      </div>
+      <ng-container *ngIf="vm.workspacesSkeletonList.includes(workspace.id)">
+        <div
+          *ngFor="
+            let _ of [].constructor(vm.skeletonToShow);
+            trackBy: trackByIndex
+          ">
+          <tg-ui-card-skeleton></tg-ui-card-skeleton>
+        </div>
+      </ng-container>
+    </div>
+    <button
+      *ngIf="vm.showMoreProjects"
+      (click)="setShowAllProjects(true)"
+      data-test="show-more-projects"
+      tuiLink
+      appearance="tertiary"
+      class="workspace-show-all"
+      icon="chevron-down">
+      {{
+        t('workspace.more_projects', {
+          projects: vm.remainingProjects
+        })
+      }}
+    </button>
+    <button
+      *ngIf="vm.showLessProjects"
+      (click)="setShowAllProjects(false)"
+      data-test="show-less-projects"
+      tuiLink
+      appearance="tertiary"
+      class="workspace-show-all"
+      icon="chevron-up">
+      {{ t('workspace.less_projects') }}
+    </button>
+  </ng-container>
+</ng-container>

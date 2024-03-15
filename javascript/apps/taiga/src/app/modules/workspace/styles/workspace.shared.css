@@ -1,0 +1,78 @@
+/*
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this
+file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+Copyright (c) 2023-present Kaleidos INC
+*/
+
+.workspace-item-card-grid {
+  --max-width: 233px;
+
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: minmax(0, var(--max-width));
+  padding-block: 0;
+  padding-inline: var(--spacing-8);
+
+  &.show-all {
+    max-block-size: none;
+  }
+
+  &.grid-items-2 {
+    grid-template-columns: repeat(2, minmax(0, var(--max-width)));
+  }
+
+  &.grid-items-3 {
+    grid-template-columns: repeat(3, minmax(0, var(--max-width)));
+  }
+
+  &.grid-items-4 {
+    grid-template-columns: repeat(4, minmax(0, var(--max-width)));
+  }
+
+  &.grid-items-5 {
+    grid-template-columns: repeat(5, minmax(0, var(--max-width)));
+  }
+
+  &.grid-items-6 {
+    grid-template-columns: repeat(6, minmax(0, var(--max-width)));
+  }
+
+  &.grid-items-7 {
+    grid-template-columns: repeat(7, minmax(0, var(--max-width)));
+  }
+
+  &.grid-items-8 {
+    grid-template-columns: repeat(8, minmax(0, var(--max-width)));
+  }
+
+  &.grid-items-9 {
+    grid-template-columns: repeat(9, minmax(0, var(--max-width)));
+  }
+
+  &.grid-items-10 {
+    grid-template-columns: repeat(10, minmax(0, var(--max-width)));
+  }
+}
+
+.workspace-message-placeholder {
+  align-items: center;
+  background: var(--color-gray10);
+  border: solid 1px var(--color-gray20);
+  color: var(--color-gray70);
+  display: flex;
+  font-style: italic;
+  justify-content: center;
+  line-height: 1.3rem;
+  padding-block-end: var(--spacing-16);
+  padding-block-start: var(--spacing-16);
+  text-align: center;
+
+  &.detail {
+    border: 0;
+    margin-block-end: 2rem;
+    margin-block-start: -1rem;
+    padding-block-end: var(--spacing-16);
+  }
+}

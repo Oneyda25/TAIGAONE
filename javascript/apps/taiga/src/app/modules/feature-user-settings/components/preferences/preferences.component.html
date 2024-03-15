@@ -1,0 +1,74 @@
+<!--
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this
+file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+Copyright (c) 2023-present Kaleidos INC
+-->
+
+<ng-container *transloco="let t; read: 'user_settings'">
+  <ng-container *ngIf="model$ | async as vm">
+    <tg-title
+      [title]="
+        t('perefences.page_title', { username: vm.user.username })
+      "></tg-title>
+
+    <h3
+      mainFocus
+      id="main-area-title"
+      class="settings-title">
+      {{ t('sections.preferences') }}
+    </h3>
+    <section>
+      <h3
+        watchElement="language"
+        data-fragment="language"
+        class="settings-subtitle">
+        {{ t('sections.language') }}
+      </h3>
+
+      <form *ngIf="vm.currentLang">
+        <tg-ui-select
+          class="language-selector"
+          [label]="t('language.select')">
+          <tui-select
+            tuiTextfieldSize="l"
+            data-test="language-select"
+            [valueContent]="langCurrentContent"
+            [formControl]="language">
+            {{ t('language.select') }}
+            <tui-data-list *tuiDataList>
+              <tui-opt-group
+                *ngFor="let language of vm.languages; trackBy: trackByIndex">
+                <button
+                  *ngFor="let language of language; trackBy: trackByLanguage"
+                  [dir]="language.textDirection === 'rtl' ? 'rtl' : 'ltr'"
+                  tuiOption
+                  [class.active-option]="language.code === vm.currentLang.code"
+                  data-test="language-select-option"
+                  [value]="language.code">
+                  {{ language.name }}
+                  <span
+                    class="default-lang"
+                    *ngIf="language.isDefault">
+                    {{ t('language.default') }}
+                  </span>
+                </button>
+              </tui-opt-group>
+            </tui-data-list>
+          </tui-select>
+          <ng-template
+            #langCurrentContent
+            let-lang>
+            {{ vm.currentLang.name }}
+            <span
+              class="default-lang"
+              *ngIf="vm.currentLang.isDefault">
+              {{ t('language.default') }}
+            </span>
+          </ng-template>
+        </tg-ui-select>
+      </form>
+    </section>
+  </ng-container>
+</ng-container>

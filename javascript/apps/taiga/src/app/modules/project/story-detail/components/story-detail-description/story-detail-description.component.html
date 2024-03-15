@@ -1,0 +1,121 @@
+<!--
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this
+file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+Copyright (c) 2023-present Kaleidos INC
+-->
+
+<ng-container *transloco="let t">
+  <ng-container *ngIf="model$ | async as vm">
+    <ng-container *ngIf="vm.edit">
+      <div
+        #descriptionContent
+        class="description-wrapper"
+        tgRestoreFocus="edit-description">
+        <form
+          [formGroup]="descriptionForm"
+          (ngSubmit)="save()">
+          <tg-editor
+            id="edit-description"
+            [tgStoryDetailDescriptionSticky]="vm.editorReady"
+            [style.height]="vm.editorReady ? 'auto' : descriptionHeight + 'px'"
+            [field]="descriptionForm.get('description')!.value"
+            (contentChange)="onContentChange($event)"
+            (focusChange)="focusChange.emit($event)"
+            (editorReady)="onInitEditor()"></tg-editor>
+          <div
+            class="edit-field-actions"
+            *ngIf="vm.editorReady">
+            <button
+              data-test="edit-description-cancel"
+              (click)="cancelEditDescription()"
+              tuiButton
+              type="button"
+              appearance="tertiary">
+              {{ t('commons.cancel') }}
+            </button>
+            <button
+              data-test="edit-description-save"
+              tuiButton
+              type="submit"
+              appearance="primary">
+              {{ t('commons.save') }}
+            </button>
+          </div>
+        </form>
+
+        <ng-container
+          *ngIf="vm.conflict && vm.story.descriptionUpdatedBy"
+          tgRestoreFocus="edit-description">
+          <div class="conflict-wrapper">
+            <tg-field-conflict
+              *ngIf="vm.conflict"
+              format="text/html"
+              [username]="vm.story.descriptionUpdatedBy.fullName"
+              [field]="t('field_conflict.fields.description')"
+              [copyValue]="descriptionForm.get('description')!.value"
+              (cancel)="cancelConflict($event)"
+              (accept)="acceptConflict()"></tg-field-conflict>
+          </div>
+        </ng-container>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="!vm.edit">
+      <ng-container *ngIf="vm.story.description?.length; else emptyTpl">
+        <div class="description-wrapper">
+          <div class="shape-outside-text float-inline-end"></div>
+          <div
+            #descriptionContent
+            tgCodeHightlight
+            data-test="description-content"
+            (tgClickActionArea)="editDescription()"
+            class="description-content"
+            [innerHTML]="vm.story.description ?? '' | safeHtml"></div>
+          <ng-template [ngTemplateOutlet]="editDescriptionBtn"></ng-template>
+        </div>
+      </ng-container>
+
+      <ng-template #emptyTpl>
+        <div
+          #descriptionContent
+          class="description-wrapper description-empty">
+          <p
+            class="empty"
+            [ngClass]="{
+              'can-view': !vm.hasPermissionToEdit,
+            }"
+            (click)="editDescription()">
+            {{
+              vm.hasPermissionToEdit
+                ? t('story.empty_description')
+                : t('story.empty_description_view_permissions')
+            }}
+          </p>
+          <ng-template [ngTemplateOutlet]="editDescriptionBtn"></ng-template>
+        </div>
+      </ng-template>
+    </ng-container>
+
+    <ng-template #editDescriptionBtn>
+      <button
+        *ngIf="!vm.conflict && vm.hasPermissionToEdit"
+        data-test="edit-description"
+        tgRestoreFocusTarget="edit-description"
+        (click)="editDescription()"
+        class="edit-description"
+        [attr.aria-label]="t('story.edit_description')"
+        [tgUiTooltip]="t('story.edit_description')"
+        appearance="small"
+        tuiButton
+        type="button">
+        Edit
+      </button>
+    </ng-template>
+
+    <tg-discard-changes-modal
+      [open]="showConfirmEditDescriptionModal"
+      (discard)="discard()"
+      (cancel)="keepEditing()"></tg-discard-changes-modal>
+  </ng-container>
+</ng-container>

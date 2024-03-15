@@ -1,0 +1,187 @@
+<!--
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this
+file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+Copyright (c) 2023-present Kaleidos INC
+-->
+
+<ng-container *transloco="let t">
+  <ng-container *ngIf="model$ | async as vm">
+    <div
+      [@movedStatus]="
+        (statusesIds$ | async)?.includes(status.id) ? 'on' : 'off'
+      "
+      [tgUiDropZone]="status.id"
+      dropCategory="story"
+      class="wrapper"
+      root="cdk-virtual-scroll-viewport">
+      <div
+        class="header"
+        tgUiDragHandle>
+        <div
+          class="color"
+          [style.border-color]="color"></div>
+        <div
+          class="name"
+          data-test="status-name">
+          {{ status.name }}
+        </div>
+        <tui-hosted-dropdown
+          class="status-options-menu"
+          [tuiDropdownAlign]="'right'"
+          [content]="projectActionsDropdown"
+          [(open)]="projectActionsDropdownState">
+          <button
+            *ngIf="vm.project.userIsAdmin"
+            [tgRestoreFocusTarget]="'leave-status-edition-' + status?.id"
+            #statusOptions
+            [attr.aria-label]="t('kanban.status_options')"
+            role="menu"
+            aria-haspopup="true"
+            [attr.aria-expanded]="projectActionsDropdownState"
+            icon="more-vertical"
+            data-test="status-options"
+            class="status-options-menu-button"
+            appearance="action-button-2"
+            tuiIconButton
+            type="button"
+            [tgUiTooltip]="t('kanban.status_btn_tooltip')"></button>
+        </tui-hosted-dropdown>
+        <tg-edit-status
+          *ngIf="editStatusActive"
+          action="edition"
+          [status]="status"
+          (setStatus)="updateStatusName($event)"
+          (cancel)="cancelEditStatus()"
+          (leave)="leaveEditStatus($event)"></tg-edit-status>
+      </div>
+      <div
+        *ngIf="vm.stories.length"
+        tgKanbanStoryKeyboardNavigation
+        class="stories"
+        [tgScrollDynamicHeight]="vm.stories"
+        (dynamicHeightChanged)="onDynamicHeightChange()">
+        <tui-scrollbar>
+          <cdk-virtual-scroll-viewport
+            appendOnly
+            tabindex="-1"
+            tuiScrollable
+            kanbanVirtualScrollStrategy
+            [itemHeights]="vm.itemHeights"
+            class="tui-zero-scrollbar">
+            <ng-container
+              *cdkVirtualFor="
+                let story of vm.stories;
+                let i = index;
+                trackBy: trackByRef
+              ">
+              <tg-kanban-story
+                [kanbanStatus]="this"
+                [class.drag-a11y]="story.ref === vm.activeA11yDragDropStory.ref"
+                [class.small-drag-shadow]="showSmallDragShadowClass(story)"
+                [tgUiDraggable]="story.ref"
+                [dragData]="story"
+                [dragDisabled]="disableDragAndDrop(story)"
+                dropCategory="story"
+                [class.selected-story]="vm.currentStory?.ref === story.ref"
+                [@slideIn]="
+                  vm.newEventStories.includes(story.ref) ? 'on' : 'off'
+                "
+                [story]="story"
+                [index]="i"
+                [total]="vm.stories.length"
+                [attr.data-tmp-id]="story.tmpId">
+              </tg-kanban-story>
+            </ng-container>
+          </cdk-virtual-scroll-viewport>
+        </tui-scrollbar>
+      </div>
+      <ng-container *ngIf="vm.calculatedHeight || vm.empty">
+        <div
+          class="create-story"
+          #createStoryWrapper
+          *hasPermission="
+            ['create'];
+            entity: 'story';
+            else: noCreationPermissionsTpl;
+            canLosePermissions: !vm.showAddForm || vm.permissionsError
+          ">
+          <ng-container *ngIf="vm.showAddForm; else addStoryTpl">
+            <tg-create-story-inline
+              [autoFocus]="vm.formAutoFocus"
+              [status]="status"
+              [workflow]="workflow"
+              (cancel)="cancelStoryCreate()"></tg-create-story-inline>
+          </ng-container>
+          <ng-template #addStoryTpl>
+            <button
+              class="open-create-story-form"
+              data-test="open-create-story-form"
+              appearance="tertiary"
+              tuiButton
+              icon="plus"
+              type="button"
+              (click)="addStory()"
+              iconAlign="left">
+              {{ t('kanban.add_story') }}
+            </button>
+          </ng-template>
+        </div>
+
+        <ng-template #noCreationPermissionsTpl>
+          <div
+            class="empty"
+            *ngIf="vm.empty">
+            <p>{{ t('kanban.empty_status') }}</p>
+          </div>
+        </ng-template>
+      </ng-container>
+    </div>
+    <ng-template #projectActionsDropdown>
+      <tui-data-list
+        class="view-options-list"
+        *ngIf="vm.project.userIsAdmin">
+        <button
+          class="option-btn"
+          data-test="edit-status-btn"
+          tuiOption
+          type="button"
+          (click)="displayEditStatus()">
+          <div class="option-container">
+            <tui-svg
+              aria-hidden="true"
+              class="option-icon"
+              src="pen"></tui-svg>
+            <span class="option-name">{{ t('kanban.edit_status_name') }}</span>
+          </div>
+        </button>
+        <hr class="separator" />
+        <button
+          class="option-btn option-delete"
+          data-test="delete-status-btn"
+          tuiOption
+          type="button"
+          (click)="handleDeleteStatus()">
+          <div class="option-container">
+            <tui-svg
+              aria-hidden="true"
+              class="option-icon"
+              src="trash"></tui-svg>
+            <span class="option-name">{{ t('kanban.delete_status') }}</span>
+          </div>
+        </button>
+      </tui-data-list>
+    </ng-template>
+
+    <tg-delete-status
+      *ngIf="deleteStatusModal"
+      [show]="deleteStatusModal"
+      (submitDelete)="submitDeleteStatus($event)"
+      (closeModal)="deleteStatusModal = false"
+      [currentStatus]="status"
+      [statuses]="workflow.statuses"
+      [isLastStatus]="isLastStatus">
+    </tg-delete-status>
+  </ng-container>
+</ng-container>

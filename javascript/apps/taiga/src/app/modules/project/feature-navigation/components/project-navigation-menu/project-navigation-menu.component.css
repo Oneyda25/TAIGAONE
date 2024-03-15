@@ -1,0 +1,445 @@
+/*
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this
+file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+Copyright (c) 2023-present Kaleidos INC
+*/
+
+/* WORKSPACE */
+
+@import url("tools/typography.css");
+@import url("taiga-ui/mixins/wrapper.css");
+
+:host {
+  --menu-size: 200px;
+}
+
+a {
+  color: var(--color-gray40);
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+}
+
+.workspace {
+  align-items: center;
+  background: var(--color-black);
+  display: flex;
+  padding: var(--spacing-8);
+  padding-inline-start: var(--spacing-12);
+  transition: padding var(--transition);
+  transition-delay: 150ms;
+}
+
+.project-logo {
+  aspect-ratio: 1/1;
+  block-size: var(--spacing-32);
+  flex-shrink: 0;
+  inline-size: var(--spacing-32);
+  margin-inline-end: var(--spacing-12);
+
+  & .project-logo-image {
+    block-size: 100%;
+    border-radius: 2px;
+    inline-size: 100%;
+  }
+}
+
+.workspace-data-project {
+  @mixin ellipsis;
+
+  display: block;
+  margin-block-end: var(--spacing-4);
+  max-inline-size: 130px;
+
+  &:hover {
+    color: var(--color-white);
+  }
+}
+
+.workspace-data-workspace {
+  @mixin font-small;
+  @mixin ellipsis;
+
+  color: var(--color-gray50);
+  display: block;
+  max-inline-size: 130px;
+}
+
+.workspace-data-workspace-anchor {
+  text-decoration: underline;
+
+  &:hover {
+    color: var(--color-white);
+  }
+}
+
+/* MENU */
+
+.main-project-nav {
+  background: var(--color-gray100);
+  block-size: 100%;
+  color: var(--color-gray40);
+  display: block;
+  flex-shrink: 0;
+  inline-size: var(--menu-size); /* Remove when grid set */
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+
+.main-project-nav-inner {
+  block-size: 100%;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  inline-size: var(--menu-size);
+}
+
+.menu-wrapper {
+  block-size: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  padding: var(--spacing-8);
+}
+
+.menu-separator {
+  background: var(--color-gray90);
+  margin-block: var(--spacing-16);
+}
+
+.goto {
+  @mixin font-small;
+
+  color: var(--color-gray60);
+  font-weight: var(--font-weight-medium);
+  margin-block: var(--spacing-8);
+  margin-inline-start: var(--spacing-8);
+  text-transform: uppercase;
+}
+
+@define-mixin menu-option-item {
+  @mixin font-inline;
+
+  align-items: center;
+  block-size: var(--spacing-32);
+  border-radius: 3px;
+  color: var(--color-gray40);
+  display: flex;
+  font-weight: var(--font-weight-regular);
+  padding: var(--spacing-8);
+  transition: padding var(--transition);
+}
+
+@define-mixin menu-option-icon {
+  aspect-ratio: 1/1;
+  block-size: var(--spacing-24);
+  inline-size: var(--spacing-24);
+  margin-inline-end: var(--spacing-8);
+}
+
+.menu-option-icon {
+  @mixin menu-option-icon;
+}
+
+.menu-option-item {
+  @mixin menu-option-item;
+
+  &:hover,
+  &.active-section,
+  &.active-dialog {
+    background: var(--color-gray90);
+    color: var(--color-gray20);
+    font-weight: var(--font-weight-regular);
+  }
+
+  &:focus-visible {
+    outline: solid 2px var(--color-secondary50);
+  }
+}
+
+.has-add-workflow-button {
+  position: relative;
+}
+
+.menu-option {
+  &.active {
+    color: var(--color-white);
+
+    & .menu-option-item {
+      background: var(--color-secondary90);
+      color: var(--color-white);
+      font-weight: var(--font-weight-medium);
+    }
+  }
+}
+
+/* Submenu of a menu option */
+
+.submenu {
+  padding-block: var(--spacing-8);
+}
+
+.submenu-option {
+  border-inline-start: 1px solid var(--color-gray90);
+  margin-block: 0;
+  margin-inline-end: var(--spacing-8);
+  margin-inline-start: var(--spacing-16);
+  padding-inline-start: var(--spacing-8);
+}
+
+.submenu-option-item {
+  @mixin menu-option-item;
+  @mixin ellipsis;
+
+  block-size: var(--spacing-28);
+  display: flex;
+  inline-size: 100%;
+  padding-block: 0;
+
+  &:hover {
+    background: var(--color-gray90);
+    color: var(--color-gray20);
+  }
+
+  &:active,
+  &.submenu-option-item-active {
+    background: var(--color-secondary90);
+    color: var(--color-white);
+  }
+
+  &:focus-visible {
+    outline: solid 2px var(--color-secondary50);
+  }
+}
+
+/* Create workflow button */
+.create-workflow {
+  inset-block-start: var(--spacing-4);
+  inset-inline-end: var(--spacing-4);
+  position: absolute;
+}
+
+/* Bottom area */
+
+.bottom-menu {
+  & .project-settings {
+    background: transparent;
+    border: 2px solid transparent;
+    cursor: pointer;
+    inline-size: 100%;
+
+    &:focus-visible {
+      border: 2px solid var(--color-secondary80);
+    }
+  }
+
+  & .menu-option-item {
+    @mixin menu-option-item;
+
+    background: var(--color-black);
+
+    &:hover,
+    &.active-dialog {
+      background: var(--color-gray90);
+      color: var(--color-primary);
+    }
+  }
+}
+
+.button-collapse {
+  @mixin font-small;
+
+  align-items: center;
+  background: none;
+  block-size: var(--spacing-32);
+  border: 0;
+  color: var(--color-gray30);
+  cursor: pointer;
+  display: flex;
+  inline-size: 100%;
+  justify-content: flex-end;
+  margin-block-start: var(--spacing-8);
+
+  & .collapse-icon {
+    block-size: var(--spacing-32);
+    border-radius: 50%;
+    color: var(--color-primary);
+    inline-size: var(--spacing-32);
+    margin-inline-start: var(--spacing-16);
+    padding: var(--spacing-8);
+  }
+
+  &:hover {
+    & .collapse-icon {
+      background: var(--color-gray90);
+    }
+  }
+
+  &:focus-visible {
+    outline: solid 2px var(--color-secondary);
+  }
+}
+
+/* COLLAPSED MENU MODIFIERS */
+
+:host(.collapsed) {
+  --transition: 200ms;
+  --transition-delay: 150ms;
+  --inline-btn-size: 48px;
+
+  & .menu-wrapper {
+    inline-size: var(--inline-btn-size);
+  }
+
+  & .main-project-nav {
+    inline-size: var(--inline-btn-size);
+    transition: inline-size var(--transition);
+    transition-delay: 300ms;
+  }
+
+  & .workspace {
+    padding-inline-start: var(--spacing-8);
+    transition: padding var(--transition);
+    transition-delay: var(--transition-delay);
+  }
+
+  & .active {
+    & a:hover,
+    & .active-dialog {
+      background-color: var(--color-gray90);
+    }
+  }
+
+  & .menu-option-item,
+  & .bottom-menu-option-item {
+    padding-inline-start: var(--spacing-4);
+    transition: padding var(--transition);
+    transition-delay: var(--transition-delay);
+
+    &:hover,
+    &.active-dialog {
+      color: var(--color-white);
+      inline-size: var(--inline-btn-size);
+    }
+
+    &.collapsed-kanban-button {
+      appearance: none;
+      background: none;
+      border: 0;
+      padding-inline: var(--spacing-4);
+
+      &:hover {
+        cursor: pointer;
+        inline-size: auto;
+      }
+    }
+  }
+
+  & .menu-option-icon {
+    margin-inline-end: 0;
+    transition: margin var(--transition);
+    transition-delay: var(--transition-delay);
+  }
+
+  & .button-collapse {
+    justify-content: start;
+    padding: 0;
+
+    & .button-collapse-text {
+      display: none;
+    }
+
+    & .collapse-icon {
+      margin-inline-start: 0;
+    }
+  }
+}
+
+/* FLOATING DIALOG */
+
+.dialog-kanban {
+  background: var(--color-gray100);
+  color: var(--color-white);
+  inline-size: 170px;
+
+  & .dialog-kanban-title {
+    align-items: center;
+    block-size: var(--spacing-32);
+    color: var(--color-white);
+    display: flex;
+    padding-block: 0;
+    padding-inline: var(--spacing-12) var(--spacing-2);
+
+    & .dialog-kanban-text {
+      @mixin ellipsis;
+
+      font-size: var(--font-size-medium);
+      font-weight: var(--font-weight-regular);
+      text-decoration: none;
+    }
+  }
+}
+
+.project-menu-dialog {
+  background-color: var(--color-gray90);
+  display: none;
+  inline-size: 170px;
+  position: absolute;
+
+  &.open {
+    display: block;
+  }
+
+  & .popover-open-settings-action {
+    align-items: center;
+    background-color: var(--color-gray90);
+    border: 0;
+    color: var(--color-white);
+    cursor: pointer;
+    display: flex;
+    padding-block: 0;
+    padding-inline: var(--spacing-12) var(--spacing-2);
+  }
+
+  & .main-link {
+    align-items: center;
+    color: var(--color-white);
+    display: flex;
+    padding-block: 0;
+    padding-inline: var(--spacing-12) var(--spacing-2);
+
+    & .dialog-text {
+      @mixin ellipsis;
+
+      font-size: var(--font-size-medium);
+      font-weight: var(--font-weight-regular);
+      text-decoration: none;
+    }
+  }
+
+  & .dialog-project {
+    background: var(--color-black);
+    color: var(--color-gray-40);
+    padding: var(--spacing-8);
+    padding-inline-start: var(--spacing-24);
+  }
+
+  & .dialog-kanban {
+    & .submenu {
+      background: var(--color-gray100);
+      margin: 0;
+    }
+
+    & .submenu-option {
+      margin-inline-start: var(--spacing-4);
+    }
+  }
+}

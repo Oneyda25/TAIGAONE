@@ -1,0 +1,21 @@
+/*
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this
+file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+Copyright (c) 2023-present Kaleidos INC
+*/
+
+.app-content {
+  display: grid;
+  grid-template-rows: min-content 1fr;
+  min-block-size: calc(100vh - var(--banner-height));
+}
+
+.no-header .app-content {
+  grid-template-rows: 1fr;
+}
+
+router-outlet {
+  display: contents;
+}

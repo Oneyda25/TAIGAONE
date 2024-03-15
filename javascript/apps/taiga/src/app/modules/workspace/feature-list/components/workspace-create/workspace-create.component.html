@@ -1,0 +1,61 @@
+<!--
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this
+file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+Copyright (c) 2023-present Kaleidos INC
+-->
+
+<ng-container *transloco="let t">
+  <form
+    [formGroup]="createProjectForm"
+    (keydown.esc)="close()"
+    (ngSubmit)="onSubmit()"
+    [attr.aria-invalid]="createProjectForm.invalid"
+    [showFormErrors]="submitted"
+    class="workspace-create-padding">
+    <tg-ui-avatar
+      class="workspace-image"
+      type="dark"
+      [color]="color"
+      [name]="name">
+    </tg-ui-avatar>
+    <p>{{ createProjectForm.value.projectName }}</p>
+    <tg-ui-input
+      class="workspace-input-project-name"
+      [label]="t('workspace.workspace_name')">
+      <input
+        inputRef
+        class="input-project"
+        (keyup)="setName($event)"
+        data-test="workspace-name-input"
+        formControlName="workspaceName"
+        #firstInput
+        tuiAutoFocus
+        [maxlength]="maxLength"
+        [placeholder]="t('workspace.workspace_name')" />
+      <tg-ui-error
+        inputError
+        error="required">
+        {{ t('workspace.error_name_empty') }}
+      </tg-ui-error>
+      <tg-ui-error error="pattern">{{
+        t('workspace.error_name_empty')
+      }}</tg-ui-error>
+    </tg-ui-input>
+    <button
+      data-test="workspace-project-form-submit"
+      appearance="primary"
+      tuiButton
+      type="submit">
+      {{ t('workspace.create_workspace') }}
+    </button>
+    <button
+      (click)="close()"
+      appearance="secondary"
+      tuiButton
+      type="button">
+      {{ 'commons.cancel' | transloco }}
+    </button>
+  </form>
+</ng-container>

@@ -1,0 +1,93 @@
+<!--
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this
+file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+Copyright (c) 2023-present Kaleidos INC
+-->
+
+<ng-container *transloco="let t">
+  <ng-container *ngIf="model$ | async as vm">
+    <h2 class="title">
+      <tui-svg src="members"></tui-svg>
+      <span class="title-inner">{{ t('project_overview.members.title') }}</span>
+      <ng-container *ngIf="!vm.loading">
+        <span class="count">({{ vm.totalMemberships }})</span>
+        <span
+          class="pending"
+          *ngIf="vm.project.userIsAdmin && vm.totalInvitations"
+          >-
+          {{
+            t('project_overview.members.count_pending', {
+              number: vm.totalInvitations
+            })
+          }}</span
+        >
+
+        <button
+          *ngIf="vm.currentMember && vm.currentMember.role?.isAdmin"
+          class="invite-button"
+          appearance="tertiary"
+          tuiButton
+          icon="plus"
+          type="button"
+          (click)="invitePeopleModal()"
+          data-test="open-invite-modal">
+          {{ t('project_overview.members.invite') }}
+        </button>
+      </ng-container>
+    </h2>
+    <tg-project-members-list
+      *ngIf="vm.members.length"
+      [user]="vm.user"
+      [showAcceptInvitationButton]="vm.notificationClosed"
+      [members]="vm.members"
+      [invitationsToAnimate]="vm.invitationsToAnimate"
+      [membersToAnimate]="vm.membersToAnimate"
+      (hasAcceptedInvitation)="acceptInvitationId()"></tg-project-members-list>
+
+    <div *ngIf="vm.loading">
+      <tg-ui-user-skeleton></tg-ui-user-skeleton>
+      <tg-ui-user-skeleton></tg-ui-user-skeleton>
+      <tg-ui-user-skeleton></tg-ui-user-skeleton>
+    </div>
+
+    <button
+      *ngIf="vm.viewAllMembers"
+      (click)="setShowAllMembers(true)"
+      class="view-all-button"
+      appearance="tertiary"
+      tuiButton
+      type="button">
+      {{ t('project_overview.members.view_all') }}
+    </button>
+
+    <tg-ui-modal
+      [open]="vm.showAllMembers"
+      [heightAuto]="true"
+      (requestClose)="setShowAllMembers(false)">
+      <tg-project-members-modal
+        *ngIf="vm.members && vm.showAllMembers"
+        [user]="vm.user"
+        [members]="vm.members"
+        [pending]="vm.pending"
+        [totalMembers]="vm.totalMemberships"
+        [totalPending]="vm.totalInvitations"
+        (closeModal)="setShowAllMembers(false)"></tg-project-members-modal>
+    </tg-ui-modal>
+
+    <ng-container *ngIf="vm.currentMember && vm.currentMember.role?.isAdmin">
+      <tg-ui-modal
+        *ngIf="vm.project"
+        [open]="invitePeople"
+        (requestClose)="invitePeopleModal()">
+        <tg-invite-user-modal
+          *ngIf="invitePeople"
+          (closeModal)="invitePeopleModal()"
+          [reset]="resetForm"
+          [fromOverview]="true"
+          [isProjectInvitation]="true"></tg-invite-user-modal>
+      </tg-ui-modal>
+    </ng-container>
+  </ng-container>
+</ng-container>

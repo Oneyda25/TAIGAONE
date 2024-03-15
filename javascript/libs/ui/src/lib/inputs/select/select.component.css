@@ -1,0 +1,143 @@
+/*
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this
+file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+Copyright (c) 2023-present Kaleidos INC
+*/
+
+/* stylelint-disable declaration-no-important */
+
+@import url("tools/typography.css");
+
+/* select type: avatar | text */
+.avatar {
+  & ::ng-deep {
+    & .t-input_template {
+      padding-inline-start: var(--spacing-4) !important;
+    }
+  }
+}
+
+:host([labelVisuallyHidden]) {
+  & .input-label {
+    block-size: 1px;
+    border: 0;
+    clip: rect(1px, 1px, 1px, 1px);
+    clip-path: inset(50%);
+    inline-size: 1px;
+    margin: 0;
+    overflow: hidden;
+    padding: 0;
+    position: absolute !important;
+    white-space: nowrap;
+  }
+}
+
+:host {
+  --hover-bg-color: var(--color-gray10);
+  --focused-bg-color: var(--color-white);
+
+  display: block;
+
+  & .input-label {
+    color: var(--color-gray80);
+    font-weight: var(--font-weight-medium);
+  }
+
+  &.readonly ::ng-deep {
+    & tui-arrow {
+      visibility: hidden;
+    }
+
+    & .t-input_template {
+      border: 0;
+      inline-size: 100% !important;
+      max-inline-size: 100% !important;
+    }
+  }
+
+  &.invalid.show-errors {
+    &.update-on-submit.submitted::ng-deep,
+    &.update-on-blur.dirty::ng-deep,
+    &.update-on-change.dirty::ng-deep,
+    &.update-on-blur.touched::ng-deep,
+    &.update-on-change.touched::ng-deep {
+      & tui-wrapper {
+        --tui-base-03: var(--color-red);
+      }
+
+      & .placeholder {
+        margin-block-end: var(--spacing-2);
+      }
+    }
+  }
+}
+
+:host::ng-deep {
+  --tui-duration: 0;
+  --tui-text-03: var(--color-gray70);
+
+  & tui-svg {
+    block-size: 1rem;
+    inline-size: 1rem;
+  }
+
+  & .t-icon {
+    align-items: center;
+    color: var(--color-secondary) !important;
+    display: flex;
+    justify-content: center;
+    opacity: 1 !important;
+  }
+
+  & .icon_rotated {
+    margin-block-start: -3px;
+  }
+
+  & .tui-autofill[data-appearance="textfield"] {
+    @mixin font-inline;
+
+    background: var(--color-gray10);
+
+    &[data-state="readonly"] {
+      &::after {
+        color: var(--color-gray10);
+      }
+
+      & .icon {
+        display: none;
+      }
+    }
+
+    & .content {
+      padding-inline-end: var(--spacing-4);
+    }
+
+    &:not([data-state="readonly"]) {
+      &:hover {
+        background: var(--hover-bg-color);
+      }
+    }
+
+    &._focused {
+      background: var(--focused-bg-color);
+
+      &[data-state="readonly"] {
+        background: var(--color-gray10);
+      }
+    }
+
+    & .input.input_template {
+      padding-inline-start: var(--spacing-12);
+    }
+  }
+
+  & .t-placeholder {
+    margin-block-end: 0;
+  }
+
+  & ._with-dropdown:focus {
+    outline: solid 1px var(--color-secondary80);
+  }
+}

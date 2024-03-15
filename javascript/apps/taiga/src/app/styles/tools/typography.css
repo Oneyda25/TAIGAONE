@@ -1,0 +1,82 @@
+/*
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this
+file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+Copyright (c) 2023-present Kaleidos INC
+*/
+
+@define-mixin font-small {
+  font-family: "Ubuntu", sans-serif;
+  font-size: var(--font-size-small);
+  font-weight: var(--font-weight-regular);
+  letter-spacing: normal;
+  line-height: 1.5;
+}
+
+@define-mixin font-inline {
+  font-family: "Ubuntu", sans-serif;
+  font-size: var(--font-size-medium);
+  font-weight: var(--font-weight-regular);
+  letter-spacing: normal;
+  line-height: 1.15;
+}
+
+@define-mixin font-paragraph {
+  font-family: "Ubuntu", sans-serif;
+  font-size: var(--font-size-medium);
+  font-weight: var(--font-weight-regular);
+  letter-spacing: normal;
+  line-height: 1.5;
+}
+
+@define-mixin font-heading-4 {
+  font-family: "Ubuntu", sans-serif;
+  font-size: var(--font-size-heading-4);
+  font-weight: var(--font-weight-medium);
+  letter-spacing: normal;
+  line-height: 1.25;
+}
+
+@define-mixin font-heading-3 {
+  font-family: "Ubuntu", sans-serif;
+  font-size: var(--font-size-heading-3);
+  font-weight: var(--font-weight-medium);
+  letter-spacing: normal;
+}
+
+@define-mixin font-heading-2 {
+  font-family: "Ubuntu", sans-serif;
+  font-size: var(--font-size-heading-2);
+  font-weight: var(--font-weight-medium);
+  letter-spacing: normal;
+}
+
+@define-mixin font-heading-1 {
+  font-family: "Ubuntu", sans-serif;
+  font-size: var(--font-size-heading-1);
+  font-weight: var(--font-weight-medium);
+  letter-spacing: normal;
+}
+
+@define-mixin ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@define-mixin line-clamp $lines: 1 {
+  /* stylelint-disable */
+  -webkit-line-clamp: $lines;
+  -webkit-box-orient: vertical;
+  display: -webkit-box;
+  /* stylelint-enable */
+}
+
+@define-mixin table-head {
+  color: var(--color-secondary80);
+  font-family: "Ubuntu", sans-serif;
+  font-size: var(--font-size-small);
+  font-weight: var(--font-weight-medium);
+  text-transform: uppercase;
+}

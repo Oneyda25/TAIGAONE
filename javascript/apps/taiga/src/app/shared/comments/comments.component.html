@@ -1,0 +1,93 @@
+<!--
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this
+file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+Copyright (c) 2023-present Kaleidos INC
+-->
+
+<ng-container *transloco="let t">
+  <div class="header">
+    <h2 class="title">
+      {{ t('comments.title') }}
+      <span
+        *ngIf="activeComments"
+        data-test="comments-total"
+        class="total-comments"
+        >({{ activeComments }})</span
+      >
+    </h2>
+
+    <div
+      class="sort"
+      *ngIf="total && total > 1">
+      <p
+        *ngIf="order === '-createdAt'"
+        aria-hidden="true">
+        {{ t('comments.order.new') }}
+      </p>
+
+      <p
+        *ngIf="order === 'createdAt'"
+        aria-hidden="true">
+        {{ t('comments.order.old') }}
+      </p>
+
+      <button
+        (click)="toggleOrder()"
+        type="button"
+        class="sort"
+        appearance="sort"
+        data-test="sort-comments"
+        [attr.aria-label]="
+          order === '-createdAt'
+            ? t('comments.order.new')
+            : t('comments.order.old')
+        "
+        [tgUiTooltip]="t('comments.order.reverse')"
+        tuiIconButton
+        [icon]="order === 'createdAt' ? 'sort' : 'sort-reverse'"></button>
+    </div>
+  </div>
+
+  <ng-container *ngIf="loading && !comments?.length">
+    <tg-comment-skeleton></tg-comment-skeleton>
+    <tg-comment-skeleton></tg-comment-skeleton>
+    <tg-comment-skeleton></tg-comment-skeleton>
+  </ng-container>
+
+  <tg-comment-user-input
+    *ngIf="canComment && (order === '-createdAt' || !total)"
+    [order]="order"
+    (saved)="comment.next($event)"></tg-comment-user-input>
+
+  <ng-container *ngIf="!!comments?.length">
+    <div
+      class="comment-list"
+      data-test="comment-list">
+      <ng-container *ngFor="let comment of comments; trackBy: trackById">
+        <tg-comment
+          [attr.id]="comment.id"
+          [comment]="comment"
+          [canComment]="canComment"
+          (selectComment)="selectComment($event)">
+        </tg-comment>
+      </ng-container>
+    </div>
+
+    <ng-container *ngIf="loading && comments?.length">
+      <tg-comment-skeleton></tg-comment-skeleton>
+    </ng-container>
+
+    <tg-comment-user-input
+      [order]="order"
+      (saved)="comment.next($event)"
+      class="bottom"
+      *ngIf="canComment && order === 'createdAt'"></tg-comment-user-input>
+  </ng-container>
+  <div
+    *ngIf="!total && !loading && !canComment"
+    class="no-comments">
+    {{ t('comments.no_comments') }}
+  </div>
+</ng-container>

@@ -1,0 +1,233 @@
+/*
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this
+file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+Copyright (c) 2023-present Kaleidos INC
+*/
+@import url("tools/typography.css");
+
+:root {
+  --header-height: 48px;
+  --story-header-height: 48px;
+  --modal-block-margin: 112px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+::selection {
+  background-color: var(--color-gray80);
+  color: var(--color-white);
+}
+
+*:focus-visible {
+  outline: solid 2px var(--color-secondary);
+}
+
+*:focus:not(:focus-visible) {
+  outline: none;
+}
+
+body {
+  @mixin font-inline;
+}
+
+html,
+body {
+  background-color: var(--color-white);
+  color: var(--color-black);
+  margin: 0;
+  padding: 0;
+}
+
+/* TEXT */
+
+a {
+  color: var(--color-secondary);
+  hyphens: none;
+  text-decoration: none;
+
+  &[href] {
+    /* color: var(--accent); */
+    &:visited {
+      /* color: var(--accent); */
+    }
+  }
+
+  &:hover {
+    color: var(--color-secondary90);
+  }
+
+  &:visited {
+    /* color: #144f5a; */
+  }
+}
+
+p,
+li,
+h1,
+h2,
+h3,
+h4 {
+  hyphens: auto;
+  word-break: break-word;
+}
+
+p {
+  margin-block: 2.5rem;
+  margin-block-start: 0;
+
+  &:last-child {
+    margin-block-end: 0;
+  }
+}
+
+blockquote {
+  border-inline-start: 5px solid;
+  margin-block-end: 2.5rem;
+  margin-inline: 0;
+  padding: 1rem;
+}
+
+/* HEADINGS */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  @mixin font-inline;
+
+  line-height: 1.1;
+}
+
+h1 {
+  @mixin font-heading-1;
+}
+
+h2 {
+  @mixin font-heading-2;
+}
+
+h3 {
+  @mixin font-heading-3;
+}
+
+h4 {
+  @mixin font-heading-4;
+}
+
+/* MEDIA */
+
+img {
+  max-inline-size: 37.5rem; /* 600px /16 */
+}
+
+img,
+video {
+  block-size: auto;
+  margin-block: 0;
+  max-inline-size: 100%;
+}
+
+/* LISTS */
+
+ul {
+  list-style: none;
+  margin-block: 0 2.5rem;
+  padding-inline-start: 1.4rem;
+}
+
+li {
+  margin-block-end: 0.4rem;
+}
+
+/* CODE */
+
+pre,
+code {
+  font-family: "Consolas", "Courier", monospace;
+  line-height: 1.5;
+}
+
+code {
+  word-break: break-all;
+}
+
+/* TABLES */
+
+table {
+  border-collapse: collapse;
+  inline-size: 100%;
+  text-align: justify;
+}
+
+/* FORMS */
+
+label,
+legend,
+fieldset {
+  display: block;
+  margin-block-end: var(--spacing-4);
+}
+
+input,
+textarea {
+  @mixin font-inline;
+}
+
+textarea {
+  inline-size: 100%;
+}
+
+/* MODAL */
+
+.modal {
+  align-items: center;
+  block-size: 100%;
+  display: flex;
+  flex-direction: column;
+  inline-size: 100%;
+  justify-content: center;
+}
+
+.modal-bg {
+  background-color: rgba(122, 137, 167, 0.5);
+}
+
+/* D&D */
+.drop-in-progress {
+  & * {
+    /* stylelint-disable-next-line declaration-no-important */
+    cursor: grab !important;
+  }
+}
+
+/* float: inline-(start|end) polyfill */
+
+/* stylelint-disable liberty/use-logical-spec */
+body[dir="ltr"] {
+  & .float-inline-start {
+    float: left;
+  }
+
+  & .float-inline-end {
+    float: right;
+  }
+}
+
+body[dir="rtl"] {
+  & .float-inline-start {
+    float: right;
+  }
+
+  & .float-inline-end {
+    float: left;
+  }
+}
+/* stylelint-enable liberty/use-logical-spec */

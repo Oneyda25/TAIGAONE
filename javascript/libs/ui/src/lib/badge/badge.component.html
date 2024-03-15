@@ -1,0 +1,20 @@
+<!--
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this
+file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+Copyright (c) 2023-present Kaleidos INC
+-->
+
+<div
+  class="badge"
+  [attr.data-size]="size">
+  <tui-svg
+    class="badge-icon"
+    *ngIf="icon"
+    aria-hidden="true"
+    [src]="icon"></tui-svg>
+  <span class="badge-label">
+    {{ label }}
+  </span>
+</div>

@@ -1,0 +1,40 @@
+<!--
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this
+file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+Copyright (c) 2023-present Kaleidos INC
+-->
+<ng-container *transloco="let t; read: 'auth'">
+  <div
+    class="verify-container"
+    data-test="verify-email-page">
+    <img
+      class="owl"
+      ngSrc="/assets/images/signup/verify-email-owl.svg"
+      width="182"
+      height="148"
+      alt="" />
+    <h1 class="verify-title">{{ t('verify.title') }}</h1>
+    <p class="verify-text">{{ t('verify.verification_link_sent') }}</p>
+    <p class="verify-text email">{{ emailAddress }}</p>
+    <p class="verify-text">
+      <span>{{ t('verify.mail_not_received') }}</span>
+      <button
+        tuiLink
+        (click)="resendEmail()">
+        {{ t('verify.resend_button') }}
+      </button>
+    </p>
+    <p class="verify-footer">
+      <span>{{ t('verify.footer_text') }}</span>
+      <button
+        tuiLink
+        class="verify-footer-sign-up"
+        (click)="handleSignUpView()"
+        data-test="sign-up">
+        {{ t('verify.footer_button') }}
+      </button>
+    </p>
+  </div>
+</ng-container>

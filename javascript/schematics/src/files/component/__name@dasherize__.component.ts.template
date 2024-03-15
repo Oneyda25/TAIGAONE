@@ -1,0 +1,43 @@
+/**
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ *
+ * Copyright (c) 2023-present Kaleidos INC
+ */
+
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+<% if (globalState) { %>import { Store } from '@ngrx/store';<% } %>
+<% if (localState) { %>import { RxState } from '@rx-angular/state';
+
+interface ComponentViewModel {
+  todo: string;
+}<% } %>
+
+@Component({
+  selector: 'tg-<%= dasherize(name) %>',
+  templateUrl: './<%= dasherize(name) %>.component.html',
+  styleUrls: ['./<%= dasherize(name) %>.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  <% if (localState) { %>providers: [RxState]<% } %>
+})
+export class <%= classify(name) %>Component implements OnInit {
+  <% if (localState) { %>
+  public readonly todo$ = this.state.select('todo');
+  public readonly model$ = this.state.select();
+  <% } %>
+  constructor(<% if (globalState) { %>
+    private store: Store,<% } %>
+    <% if (localState) { %>private state: RxState<ComponentViewModel>,<% } %>
+  ) {
+    <% if (localState) { %>// initial state
+    this.state.set({});
+
+    // connect the ngrx state with the local state
+    this.state.connect('todo', this.store.select(selectTodo));<% } %>
+  }
+
+  public ngOnInit(): void {
+
+  }
+}

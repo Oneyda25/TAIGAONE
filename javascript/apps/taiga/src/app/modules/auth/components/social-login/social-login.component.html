@@ -1,0 +1,44 @@
+<!--
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this
+file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+Copyright (c) 2023-present Kaleidos INC
+-->
+<ng-container *transloco="let t; read: 'auth'">
+  <div class="social-login">
+    <tg-social-login-button
+      *ngIf="isGithubActive"
+      social="github"></tg-social-login-button>
+    <tg-social-login-button
+      *ngIf="isGitlabActive"
+      social="gitlab"></tg-social-login-button>
+    <tg-social-login-button
+      *ngIf="isGoogleActive"
+      social="google"></tg-social-login-button>
+  </div>
+  <tg-ui-context-notification
+    class="social-error"
+    alertLevel="polite"
+    *ngIf="socialError"
+    status="error">
+    <span
+      *ngIf="socialError === 'config'"
+      [innerHTML]="
+        t('social.errors.config', {
+          email: supportEmail
+        })
+      ">
+    </span>
+    <ng-container *ngIf="socialError === 'server'">
+      {{ t('social.errors.server', {
+      social
+      }) }}
+    </ng-container>
+  </tg-ui-context-notification>
+  <div
+    class="login-separator"
+    *ngIf="availableLogins.includes('password')">
+    <span class="login-separator-text">{{ t('social.separator') }}</span>
+  </div>
+</ng-container>

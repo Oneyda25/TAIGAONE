@@ -1,0 +1,65 @@
+<!--
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this
+file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+Copyright (c) 2023-present Kaleidos INC
+-->
+
+<ng-container *transloco="let t">
+  <tui-data-list
+    tgAutoFocus
+    id="profile-options-list"
+    tabindex="-1"
+    class="profile-options-list"
+    [attr.aria-label]="
+      t('navigation_user.a11y.user_menu_down_navigate', {
+        userName: user.fullName
+      })
+    "
+    role="menu">
+    <a
+      tuiOption
+      role="menuitem"
+      href="#"
+      class="user">
+      <tg-user-avatar
+        aria-hidden="true"
+        size="xl"
+        [color]="user.color"
+        [rounded]="true"></tg-user-avatar>
+      <div class="user-info">
+        <span class="user-name">{{ user.fullName }}</span>
+        <span class="user-mail">{{ user.email }}</span>
+      </div>
+    </a>
+    <hr class="separator" />
+    <a
+      tuiOption
+      role="menuitem"
+      [routerLink]="['user-settings', 'account']"
+      (click)="requestClose.emit()"
+      class="user-link">
+      {{ t('navigation_user.account') }}
+    </a>
+    <a
+      tuiOption
+      role="menuitem"
+      [routerLink]="['user-settings', 'preferences']"
+      (click)="requestClose.emit()"
+      class="user-link">
+      {{ t('navigation_user.preferences') }}
+    </a>
+    <hr class="separator" />
+    <button
+      tuiOption
+      role="menuitem"
+      type="button"
+      [routerLink]="['/logout']"
+      (click)="requestClose.emit()"
+      data-test="log-out"
+      class="user-link log-out">
+      {{ t('navigation_user.log_out') }}
+    </button>
+  </tui-data-list>
+</ng-container>

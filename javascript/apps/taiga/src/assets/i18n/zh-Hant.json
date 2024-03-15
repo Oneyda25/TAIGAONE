@@ -1,0 +1,184 @@
+{
+  "commons": {
+    "organizations": "Organizations",
+    "project": "Project",
+    "projects": "Projects",
+    "overview": "Overview",
+    "kanban": "Kanban",
+    "meetup": "Meetup",
+    "team": "Team",
+    "cancel": "Cancel",
+    "members": "Members",
+    "upgrade": "Upgrade",
+    "owner": "Owner",
+    "workspace": "Workspace",
+    "back": "Back",
+    "optional": "Optional",
+    "close": "Close",
+    "close_modal": "Close modal",
+    "pending": "Pending",
+    "confirmation_modal": {
+      "yes": "Yes, quit",
+      "no": "No, keep editing"
+    },
+    "roles": {
+      "admin": "Admin",
+      "member": "Member",
+      "guest": "Guest"
+    },
+    "stories": "Stories",
+    "your_user": "{{ name }} <strong class='is-self'>(You)</strong>",
+    "save_changes": "Save changes",
+    "modify": "modify",
+    "delete": "delete",
+    "save": "Save",
+    "next_page": "Next page"
+  },
+  "navigation": {
+    "go_home": "Go to home",
+    "search": "Search",
+    "discover": "Discover",
+    "help": "Help",
+    "notification": "Notification",
+    "notification_desc": "{notifications, plural, =0 {no notifications} one {1 notification} other {# notifications}}",
+    "create_account": "Create account",
+    "log_in": "Log in",
+    "new_tab": "Opens in a new tab",
+    "skip_to_content": "Skip to content",
+    "a11y": {
+      "projects_navigate": "Projects. Press down to navigate",
+      "user_menu_navigate": "User: {{ userName }}. Press down to navigate"
+    }
+  },
+  "navigation_projects": {
+    "pinned": "Pinned projects",
+    "recent_projects": "Recent projects",
+    "empty_recent_projects": "You don't have any projects yet",
+    "view_projects": "View your projects",
+    "new_project": "New project",
+    "a11y": {
+      "recent_projects": "Recent projects. Press down to navigate.",
+      "recent_projects_empty": "Recent projects. You don't have any projects yet.",
+      "recent_projects_empty_navigate": "Recent projects. You don't have any projects yet. Press down to navigate."
+    }
+  },
+  "navigation_user": {
+    "user_menu": "User menu",
+    "user_profile": "See Profile",
+    "edit_profile": "Edit profile",
+    "preferences": "Preferences",
+    "account_settings": "Account",
+    "accessibility_settings": "Accesibility",
+    "log_out": "Log out",
+    "a11y": {
+      "user_menu_down_navigate": "{{ userName }}. User menu. Press down to navigate"
+    }
+  },
+  "main_project_navigation": {
+    "goto": "Go to",
+    "project_settings": "Project settings",
+    "collapse_menu": "Collapse menu",
+    "expand_menu": "Expand menu"
+  },
+  "common_project": {
+    "create_first_project": "Create your first project",
+    "create_new_project": "Add a project",
+    "project_actions": "Project actions",
+    "card": {
+      "accept_invite": "Accept invitation",
+      "pending_invitation": "Pending invitation",
+      "close_card": "Close card",
+      "a11y": {
+        "project_name": "{{ name }}. Project"
+      }
+    },
+    "forms": {
+      "project_details": "Project details",
+      "project_name": "Project name",
+      "project_name_error": "Project name can’t be empty",
+      "project_description": "Project description",
+      "project_description_placeholder": "Add a short description to help others better understand your project.",
+      "project_icon": "Project icon",
+      "max_length_error": "Project description must be 200 characters or fewer",
+      "choose_image_tip": "Allowed formats: gif, png, jpg, svg and webp",
+      "format_error": "The file format is not allowed. Allowed formats: gif, png, jpg, svg or webp"
+    },
+    "delete_modal_title": "Delete {{projectTitle}}?",
+    "delete_modal_warning": "<strong class='bold'>Warning;</strong> This action cannot be undone.",
+    "delete_modal_text": "This action will delete the project, along with all the stories and attachments in it.",
+    "delete_modal_delete": "Yes, delete project",
+    "delete_modal_refuse": "No, keep project",
+    "edit_project": "Edit project",
+    "delete_project": "Delete project",
+    "duplicate": "Duplicate",
+    "share": "Share",
+    "save_template": "Save as a template",
+    "open_edit_menu": "Open edit menu"
+  },
+  "errors": {
+    "please_refresh": "Please refresh the page or try again in a few minutes",
+    "login": "There was a problem login your account",
+    "create_project": "There was a problem creating your project",
+    "create_workspace": "There was a problem creating your workspace",
+    "member_roles": "There was a problem loading member roles",
+    "public_permissions": "There was a problem loading public permissions",
+    "workspace_permissions": "There was a problem loading workspace  permissions",
+    "resend_email": "There was a problem reseind your email",
+    "save_changes": "An error occurred while saving your changes",
+    "generic_toast_label": "Something went wrong!",
+    "generic_toast_message": "Try again in a few minutes.",
+    "invalid_token_toast_message": "Invalid token.",
+    "invitation_no_longer_valid": "The invitation is no longer valid.",
+    "project_invitation_no_longer_valid": "The invitation to {{ name }} is no longer valid.",
+    "lose_story_permissions": "You no longer have permissions to {{permission}} stories",
+    "you_dont_have_permission_to_see": "You don't have permission to see the project.",
+    "admin_permission": "You  are no longer admin on this project",
+    "entity_no_longer_exists": "This {{entity}} no longer exists.",
+    "user_deleted_entity": "{{user}} has deleted it, so you cannot edit it anymore.",
+    "deleted_project": "Project {{name}} has been deleted.",
+    "generic_deleted_project": "This project has been deleted.",
+    "deleted_workspace": "The workspace {{name}} has been deleted."
+  },
+  "discard_changes": {
+    "title": "Discard changes?",
+    "description": "You will lose the changes you have made.",
+    "confirm": "Yes, discard",
+    "cancel": "No, keep editing"
+  },
+  "common_story": {
+    "assign": "Assign",
+    "unassigned": "Not assigned",
+    "story_not_assigned": "Story not assigned to anyone.",
+    "assign_key": "Press enter to add or remove assignees.",
+    "unassigned_action": "{{common_story.story_not_assigned}}. {{common_story.assign_key}}",
+    "assigned_list": "Assigned users: {{users}}",
+    "assigned_list_perm": "{{common_story.assigned_list}}. {{common_story.assign_key}}",
+    "more_assigned": "{{assigneesNum}} assignees more",
+    "assigned_to": "Assigned to",
+    "not_assigned": "Not assigned",
+    "add_assignee": "Add assignee",
+    "story_not_assigned_enter": "{{common_story.story_not_assigned}} Press enter to assign",
+    "assigned_members": "Assigned members",
+    "unassigned-aria": "{{ name }} unassigned.",
+    "create_story_form": {
+      "story_title_label": "Story title",
+      "title_story_required": "Story title can’t be empty.",
+      "create_story_button": "Create Story",
+      "max_length": "Character limit has been reached.",
+      "story_title_placeholder": "Start writing a Story title..."
+    }
+  },
+  "field_conflict": {
+    "title": "Watch out! There is a new version of the title.",
+    "description": "While you were editing the {{fieldName}}, <strong>{{user}}</strong> saved a new version. Check it out and then you can edit it if you want.",
+    "copy": "Copy to clipboard",
+    "copied": "Copied to clipboard!",
+    "see_new_version": "See new version",
+    "dismiss": "Dismiss",
+    "copy_title": "Do you want to copy your changes?",
+    "copy_descripcion": "So you can use them later.",
+    "fields": {
+      "title": "title"
+    }
+  }
+}

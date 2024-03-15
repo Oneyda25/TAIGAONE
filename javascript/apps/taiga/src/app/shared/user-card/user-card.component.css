@@ -1,0 +1,161 @@
+/*
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this
+file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+Copyright (c) 2023-present Kaleidos INC
+*/
+
+@import url("tools/typography.css");
+
+:host {
+  --color-user-name: var(--color-gray80);
+  --color-user-name-is-self: var(--color-black);
+}
+
+.user-identifier {
+  align-items: flex-start;
+  block-size: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  justify-self: stretch;
+
+  & .username-link {
+    display: flex;
+    max-inline-size: 100%;
+  }
+
+  & .user-name {
+    @mixin font-inline;
+
+    color: var(--color-user-name);
+
+    &.active {
+      color: var(--color-gray90);
+    }
+  }
+
+  & ::ng-deep .is-self {
+    color: var(--color-user-name-is-self);
+    font-weight: var(--font-weight-regular);
+  }
+
+  & .user-alias {
+    @mixin font-small;
+
+    color: var(--color-gray70);
+
+    &.active {
+      color: var(--color-gray80);
+    }
+  }
+
+  & .user-email {
+    @mixin font-inline;
+
+    color: var(--color-gray70);
+  }
+
+  &.highlight {
+    & .user-name {
+      &::ng-deep {
+        /* stylelint-disable-next-line max-nesting-depth */
+        & .strong {
+          color: var(--color-gray100);
+        }
+      }
+
+      &.active {
+        /* stylelint-disable-next-line max-nesting-depth */
+        &::ng-deep {
+          /* stylelint-disable-next-line max-nesting-depth */
+          & .strong {
+            color: var(--color-black);
+          }
+        }
+      }
+    }
+
+    & .user-alias {
+      &::ng-deep {
+        /* stylelint-disable-next-line max-nesting-depth */
+        & .strong {
+          color: var(--color-gray90);
+        }
+      }
+
+      &.active {
+        /* stylelint-disable-next-line max-nesting-depth */
+        &::ng-deep {
+          /* stylelint-disable-next-line max-nesting-depth */
+          & .strong {
+            color: var(--color-gray100);
+          }
+        }
+      }
+    }
+
+    &.disabled {
+      & .user-name {
+        /* stylelint-disable-next-line max-nesting-depth */
+        &::ng-deep {
+          color: var(--color-gray70);
+
+          /* stylelint-disable-next-line max-nesting-depth */
+          & .strong {
+            color: var(--color-gray80);
+          }
+        }
+      }
+
+      & .user-alias {
+        /* stylelint-disable-next-line max-nesting-depth */
+        &::ng-deep {
+          color: var(--color-gray70);
+
+          /* stylelint-disable-next-line max-nesting-depth */
+          & .strong {
+            color: var(--color-gray80);
+          }
+        }
+      }
+    }
+  }
+
+  &::ng-deep {
+    & .strong {
+      font-weight: var(--font-weight-medium);
+    }
+  }
+}
+
+.user-card {
+  align-items: center;
+  display: grid;
+  gap: var(--spacing-12);
+  grid-auto-flow: column;
+  grid-auto-rows: auto;
+  grid-template-columns: 32px minmax(0, auto) 1fr;
+  justify-items: start;
+  padding: var(--spacing-4);
+}
+
+.overflow {
+  @mixin ellipsis;
+
+  display: inline;
+  inline-size: auto;
+  max-inline-size: 100%;
+}
+
+.user-avatar {
+  align-self: start;
+
+  &.disabled {
+    &::ng-deep img,
+    &::ng-deep tui-avatar {
+      opacity: 0.5;
+    }
+  }
+}

@@ -1,0 +1,30 @@
+/*
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this
+file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+Copyright (c) 2023-present Kaleidos INC
+*/
+
+@import url("tools/typography.css");
+@import url("tools/responsive.css");
+@import url("../styles/auth.styles.css");
+
+.signup {
+  align-items: center;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.notification {
+  inline-size: 100%;
+  margin-block-end: var(--spacing-24);
+  max-inline-size: 440px;
+  text-align: center;
+}
+
+.display-signup-button {
+  inline-size: 100%;
+}

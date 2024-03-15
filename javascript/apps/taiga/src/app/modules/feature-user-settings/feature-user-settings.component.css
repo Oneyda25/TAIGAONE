@@ -1,0 +1,32 @@
+/*
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this
+file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+Copyright (c) 2023-present Kaleidos INC
+*/
+
+@import url("shared/vertical-menu.css");
+
+@mixin vertical-menu user-settings;
+
+:host {
+  display: flex;
+  min-block-size: 100%;
+}
+
+.menu-wrapper {
+  background: var(--color-gray10);
+  min-inline-size: 200px;
+}
+
+.menu {
+  background: var(--color-gray10);
+  inset-block-start: 0;
+  position: sticky;
+}
+
+.user-settings-container {
+  inline-size: 100%;
+  padding: var(--spacing-32);
+}

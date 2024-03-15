@@ -1,0 +1,40 @@
+{
+  "placeholder_title": "You are not member of any Workspace yet",
+  "placeholder_text": "Group your projects into workspaces. You decide if they match something as big as an organization or as personal as your pet projects.",
+  "placeholder_link": "Learn More",
+  "placeholder_button": "Create workspace",
+  "add_workspace": "Add workspace",
+  "show_activity": "Show activity",
+  "project": "Project",
+  "create_workspace": "Create workspace",
+  "back_to_projects": "Back to projects",
+  "workspace_name": "Workspace Name",
+  "tooltip_add_workspace": "Group your projects into workspaces. You decide if they match something as big as an organization or as personal as your pet projects.",
+  "error_name_empty": "Workspace name can’t be empty",
+  "error_characters": "Workspace name can’t contain any of this characters: | ! ? * / .",
+  "less_projects": "Less projects",
+  "more_projects": "{{ projects }} more projects",
+  "placehoder_no_access": "You don't have access to any projects in this workspace yet. <br /> Check with your workspace admin.",
+  "placehoder_no_projects": "There are no projects in the workspace.",
+  "workspace_options": "Workspace options",
+  "edit_workspace_name": "Edit workspace name",
+  "workspace_actions": "Workspace actions",
+  "edit": {
+    "title": "Workspace details",
+    "name": "Workspace name",
+    "name_required": "Workspace name can’t be empty",
+    "name_placeholder": "Add workspace name",
+    "changes_saved": "Changes saved",
+    "changes_canceled": "Changes canceled"
+  },
+  "delete": {
+    "delete_workspace": "Delete workspace",
+    "deleted_worspace": "The workspace {{ name }} has been deleted",
+    "modal_title": "You cannot delete a workspace that has projects in it",
+    "modal_warning": "This workspace has { totalProjects, plural, one {<strong class='number-projects'>#</strong> project} other {<strong class='number-projects'>#</strong> projects} }. <br /> Delete the { totalProjects, plural, one {project} other {projects} } first and try again.",
+    "modal_understood": "Ok, understood"
+  },
+  "a11y": {
+    "workspace_title": "{{ workspace }}. Workspace. Role: {{ role }}"
+  }
+}

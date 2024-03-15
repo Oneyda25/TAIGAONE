@@ -1,0 +1,124 @@
+<!--
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this
+file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+Copyright (c) 2023-present Kaleidos INC
+-->
+
+<ng-container *transloco="let t">
+  <tui-scrollbar *ngIf="paginate && members.length">
+    <cdk-virtual-scroll-viewport
+      itemSize="49"
+      tuiScrollable
+      class="tui-zero-scrollbar">
+      <ul class="member-list">
+        <li
+          class="member-item"
+          *cdkVirtualFor="
+            let member of members;
+            trackBy: trackById.bind(this);
+            let i = index
+          ">
+          <ng-template
+            *ngTemplateOutlet="
+              memberTpl;
+              context: { member: this.member, index: i }
+            "></ng-template>
+        </li>
+      </ul>
+    </cdk-virtual-scroll-viewport>
+  </tui-scrollbar>
+  <ul
+    class="member-list"
+    *ngIf="members.length && !paginate"
+    [attr.aria-label]="t('project_overview.members.title')">
+    <li
+      *ngFor="let member of previewMembers; trackBy: trackById.bind(this)"
+      class="member-item"
+      data-test="member-item"
+      [class.pending-state]="animationPendingState && checkAnimation(member)"
+      [class.animation-first-state]="
+        animationFirstState && checkAnimation(member)
+      "
+      [class.animation-two-state]="
+        animationSecondState && checkAnimation(member)
+      ">
+      <ng-template
+        *ngTemplateOutlet="
+          memberTpl;
+          context: { member: this.member }
+        "></ng-template>
+    </li>
+  </ul>
+
+  <ng-template
+    #memberTpl
+    let-member="member">
+    <div
+      (click)="$event.preventDefault()"
+      class="member-link"
+      [class.pending-member]="isPending(member)"
+      [class.leave-project-open]="
+        leaveProjectDropdown && getUser(member).username === user?.username
+      ">
+      <tg-user-card
+        [user]="getUser(member)"
+        [isSelf]="getUser(member).username === user?.username"
+        [navigateToUser]="true">
+        <div
+          member
+          class="member-info">
+          <tg-ui-badge
+            *ngIf="member.role?.isAdmin && !isPending(member)"
+            [label]="t('commons.roles.admin') | capitalize"
+            size="s"
+            color="primary"></tg-ui-badge>
+          <div class="block-end">
+            <ng-container *ngIf="project$ | async as project">
+              <tg-leave-project-dropdown
+                *ngIf="
+                  member?.user?.username === user?.username &&
+                  leaveProject &&
+                  !isPending(member)
+                "
+                [singleMember]="member.role?.isAdmin && totalAdmins === 1"
+                [project]="project"
+                (openDialog)="leaveProjectDropdown = $event"
+                (leaveProject)="
+                  confirmLeaveProject()
+                "></tg-leave-project-dropdown>
+            </ng-container>
+
+            <tg-ui-badge
+              *ngIf="isPending(member)"
+              [label]="t('project_overview.members.pending') | capitalize"
+              class="pending-badge"
+              size="l"
+              icon="clock"
+              color="gray"></tg-ui-badge>
+
+            <div
+              @fadeInRight
+              *ngIf="
+                showAcceptInvitationButton &&
+                getUser(member).username === user?.username
+              ">
+              <button
+                (click)="acceptInvitationId()"
+                class="create-account"
+                data-test="invitation-accept"
+                appearance="secondary"
+                tuiButton
+                [attr.aria-label]="
+                  t('project_overview.members.accept_invitation')
+                ">
+                {{ t('project_overview.members.accept') }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </tg-user-card>
+    </div>
+  </ng-template>
+</ng-container>

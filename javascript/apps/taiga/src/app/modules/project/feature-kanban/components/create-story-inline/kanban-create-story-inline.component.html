@@ -1,0 +1,61 @@
+<!--
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this
+file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+Copyright (c) 2023-present Kaleidos INC
+-->
+
+<ng-container *transloco="let t">
+  <form
+    (tuiActiveZoneChange)="leaveForm($event)"
+    [showFormErrors]="submitted"
+    [formGroup]="form"
+    (submit)="submit()"
+    #createstoryForm="ngForm">
+    <tg-ui-input
+      [accessibleLabel]="t('common_story.create_story_form.story_title_label')">
+      <input
+        formControlName="title"
+        data-test="create-story-title"
+        #title
+        inputRef
+        [maxlength]="maxLength"
+        [placeholder]="
+          t('common_story.create_story_form.story_title_placeholder')
+        " />
+      <ng-container inputError>
+        <tg-ui-error error="required">{{
+          t('common_story.create_story_form.title_story_required')
+        }}</tg-ui-error>
+        <tg-ui-error error="pattern">{{
+          t('common_story.create_story_form.title_story_required')
+        }}</tg-ui-error>
+      </ng-container>
+    </tg-ui-input>
+    <div
+      *ngIf="form.get('title')!.value?.length === maxLength"
+      aria-live="assertive"
+      class="max-length">
+      {{ t('form_errors.max_length') }}
+    </div>
+    <div class="actions">
+      <button
+        tuiButton
+        data-test="story-create"
+        appearance="primary"
+        type="submit">
+        {{ t('common_story.create_story_form.create_story_button') }}
+      </button>
+
+      <button
+        appearance="tertiary"
+        class="cancel"
+        data-test="story-cancel"
+        tuiButton
+        (click)="cancelSubmit()">
+        {{ t('commons.cancel') }}
+      </button>
+    </div>
+  </form>
+</ng-container>

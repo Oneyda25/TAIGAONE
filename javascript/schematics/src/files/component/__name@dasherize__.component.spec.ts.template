@@ -1,0 +1,68 @@
+/**
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ *
+ * Copyright (c) 2023-present Kaleidos INC
+ */
+
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { Spectator, createComponentFactory } from '@ngneat/spectator/jest';
+import { getTranslocoModule } from '~/app/transloco/transloco-testing.module';
+<% if (globalState) { %>import { provideMockStore, MockStore } from '@ngrx/store/testing';<% } %>
+import { <%= classify(name) %>Component } from './<%= dasherize(name) %>.component';
+
+<% if (globalState) { %>
+import { selectorExample } from './+state/selectors/<%= dasherize(stateFilesName) %>.selectors';<% } %>
+
+describe('<%= classify(name) %>Component', () => {
+  let spectator: Spectator<<%= classify(name) %>Component>;
+  <% if (globalState) { %>let store: MockStore;<% } %>
+
+  const createComponent = createComponentFactory({
+    component: <%= classify(name) %>Component,
+    imports: [
+      getTranslocoModule(),
+    ],
+    schemas: [NO_ERRORS_SCHEMA],
+    mocks: [],
+  });
+  <% if (globalState) { %>
+  const initialState = { loggedIn: false };
+  <% } %>
+  beforeEach(() => {
+    spectator = createComponent({
+      // The component inputs
+      props: {
+        name: 'example'
+      },
+      // Override the component's providers
+      providers: [
+        <% if (globalState) { %>provideMockStore({ initialState }),<% } %>
+      ],
+      // Whether to run change detection (defaults to true)
+      detectChanges: false
+    });
+    <% if (globalState) { %>
+    store = spectator.inject(MockStore);<% } %>
+  });
+
+  it('example', () => {
+    <% if (globalState) { %>// change ngrx state
+    store.setState({ loggedIn: true });
+
+    // mock selector
+    store.overrideSelector(selectorExample, {
+      id: 1,
+      name: 'test',
+    });
+
+    // trigger emission from all selectors
+    store.refreshState();
+    <% } %>
+    spectator.detectChanges();
+
+    // This test checks that the input attribute name becomes a class in the component structure
+    expect(spectator.query('div')).toHaveClass('example');
+  });
+});

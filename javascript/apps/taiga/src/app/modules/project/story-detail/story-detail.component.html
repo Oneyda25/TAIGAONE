@@ -1,0 +1,213 @@
+<!--
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this
+file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+Copyright (c) 2023-present Kaleidos INC
+-->
+
+<ng-container *transloco="let t">
+  <ng-container *ngIf="model$ | async as vm">
+    <form
+      *ngIf="form"
+      [formGroup]="form">
+      <div
+        class="story"
+        *ngIf="vm.story">
+        <tg-story-detail-header
+          (closeStory)="closeStory()"
+          (showDeleteStoryConfirm)="
+            showDeleteConfirm()
+          "></tg-story-detail-header>
+        <div
+          class="scrollbar-content"
+          [style.height.px]="columnHeight"
+          [class.field-focus]="vm.fieldFocus"
+          [class.field-edit]="vm.fieldEdit">
+          <div
+            data-js="story-content"
+            class="story-content"
+            [class.close]="
+              !sidebarOpen && vm.selectedStoryView === 'side-view'
+            ">
+            <div class="main-content-wrapper">
+              <tui-scrollbar
+                tgCommentsAutoScroll
+                tgStoryCommentsPagination
+                [style.height.px]="columnHeight"
+                data-js="story-detail-scroll">
+                <div class="main-content">
+                  <tg-story-detail-title
+                    [form]="form"
+                    [story]="vm.story"
+                    (focusChange)="fieldFocus($event)"
+                    (editChange)="fieldEdit($event)"></tg-story-detail-title>
+                  <div
+                    class="creation-info"
+                    [class.no-user]="!vm.story.createdBy">
+                    <div
+                      class="creation-info-tooltip-wrapper"
+                      [tgUiTooltip]="'@' + vm.story.createdBy?.username"
+                      [tgUiTooltipDisabled]="!vm.story.createdBy"
+                      tgUiTooltipPosition="bottom">
+                      <ng-container *ngIf="vm.story.createdBy">
+                        <tg-user-avatar
+                          size="m"
+                          class="no-border"
+                          [user]="vm.story.createdBy"
+                          [color]="vm.story.createdBy.color"
+                          type="light"
+                          [rounded]="true"
+                          aria-hidden="true"></tg-user-avatar>
+                      </ng-container>
+                      <tg-nouser-avatar
+                        *ngIf="!vm.story.createdBy"
+                        class="former-user-avatar"></tg-nouser-avatar>
+                      <span
+                        *ngIf="vm.story.createdBy"
+                        class="creation-info-fullname">
+                        {{ vm.story.createdBy.fullName }}
+                      </span>
+                    </div>
+                    <span
+                      *ngIf="!vm.story.createdBy"
+                      class="former-user-text">
+                      {{ t('commons.former_user') }}
+                    </span>
+                    <span>∙</span>
+                    <span
+                      *ngIf="vm.story.createdAt"
+                      [title]="vm.story.createdAt | date: 'medium'"
+                      class="creation-info-date">
+                      {{ vm.story.createdAt | dateDistance }}
+                    </span>
+                  </div>
+                  <tg-story-detail-description
+                    [form]="form"
+                    [story]="vm.story"
+                    (focusChange)="fieldFocus($event)"
+                    (editChange)="
+                      fieldEdit($event)
+                    "></tg-story-detail-description>
+
+                  <tg-attachments
+                    [class.attachments-side-view]="
+                      vm.selectedStoryView === 'side-view'
+                    "
+                    [attachments]="vm.attachments"
+                    [loadingAttachments]="vm.loadingAttachments"
+                    [paginationItems]="
+                      vm.selectedStoryView === 'side-view' ? 5 : 9
+                    "
+                    [canEdit]="vm.canEdit"
+                    (uploadFiles)="onUploadFiles($event)"
+                    (deleteAttachment)="
+                      onDeleteAttachment($event)
+                    "></tg-attachments>
+
+                  <tg-comments
+                    [comments]="vm.comments"
+                    [total]="vm.totalComments"
+                    [activeComments]="vm.activeComments"
+                    [canComment]="vm.canComment"
+                    [order]="vm.commentsOrder"
+                    [loading]="vm.commentsLoading"
+                    [user]="vm.user"
+                    (changeOrder)="changeCommentsOrder($event)"
+                    (comment)="onComment($event)"
+                    (deleteComment)="deleteComment($event)"
+                    (editComment)="editComment($event)"></tg-comments>
+                </div>
+              </tui-scrollbar>
+            </div>
+            <div class="sidebar-wrapper">
+              <tui-scrollbar [style.height.px]="columnHeight">
+                <aside
+                  class="sidebar"
+                  [style.min-height.px]="columnHeight">
+                  <ng-container *ngIf="sidebarOpen">
+                    <ng-container *ngIf="vm.project.workflows.length > 1">
+                      <tg-story-detail-workflow
+                        *ngIf="vm.story"
+                        [story]="vm.story"
+                        [project]="vm.project"
+                        [canEdit]="vm.canEdit"
+                        (toWorkflow)="moveStoryToWorkflow($event)">
+                      </tg-story-detail-workflow>
+                    </ng-container>
+
+                    <tg-story-detail-status
+                      [form]="form"></tg-story-detail-status>
+                    <tg-story-detail-assign
+                      *ngIf="vm.story"
+                      [story]="vm.story"></tg-story-detail-assign>
+                  </ng-container>
+
+                  <button
+                    *ngIf="vm.selectedStoryView === 'side-view'"
+                    [attr.aria-label]="
+                      sidebarOpen
+                        ? t('story.collapse_sidebar')
+                        : t('story.expand_sidebar')
+                    "
+                    [icon]="sidebarOpen ? 'chevrons-right' : 'chevrons-left'"
+                    appearance="tertiary"
+                    class="sidepanel-icon"
+                    tuiIconButton
+                    (click)="toggleSidebar.next()"
+                    type="button"></button>
+                </aside>
+              </tui-scrollbar>
+            </div>
+          </div>
+        </div>
+        <tg-ui-modal
+          [width]="500"
+          [open]="showDeleteStoryConfirm"
+          (requestClose)="closeDeleteStoryConfirmModal()">
+          <ng-container>
+            <div
+              role="dialog"
+              aria-labelledby="delete-story-confirm"
+              aria-describedby="delete-story-description"
+              aria-modal="true">
+              <h3
+                id="delete-story-confirm"
+                class="delete-story-confirm-title"
+                data-test="delete-story-confirm-title">
+                {{ t('story.delete.confirm') }}
+              </h3>
+              <p
+                id="delete-story-description"
+                class="delete-story-confirm-question">
+                {{ t('story.delete.confirm_info') }}
+              </p>
+              <div class="delete-story-confirm-actions-area">
+                <button
+                  appearance="button-form"
+                  tuiButton
+                  (click)="closeDeleteStoryConfirmModal()"
+                  type="button">
+                  {{ t('story.delete.cancel') }}
+                </button>
+                <button
+                  data-test="delete-story-confirm-button"
+                  appearance="destructive"
+                  tuiButton
+                  icon="trash"
+                  (click)="deleteStory()"
+                  type="button">
+                  {{ t('story.delete.confirm_action') }}
+                </button>
+              </div>
+            </div>
+          </ng-container>
+        </tg-ui-modal>
+      </div>
+      <tg-discard-changes-modal
+        [open]="vm.showDiscardChangesModal"
+        (discard)="discard()"
+        (cancel)="keepEditing()"></tg-discard-changes-modal>
+    </form>
+  </ng-container>
+</ng-container>

@@ -1,0 +1,60 @@
+/*
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this
+file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+Copyright (c) 2023-present Kaleidos INC
+*/
+
+:host {
+  block-size: 100%;
+  display: block;
+  inline-size: 100%;
+}
+
+tg-kanban-status,
+.placeholder-status {
+  inline-size: var(--column-width);
+  margin-inline-end: var(--spacing-8);
+}
+
+.placeholder-status {
+  background-color: var(--color-primary20);
+  block-size: var(--drag-status-height);
+}
+
+cdk-virtual-scroll-viewport {
+  block-size: 100%;
+
+  &::ng-deep > .cdk-virtual-scroll-content-wrapper {
+    align-items: flex-start;
+    display: flex;
+    max-block-size: 100%;
+  }
+}
+
+tui-scrollbar {
+  block-size: 100%;
+  user-select: none;
+
+  &::ng-deep .t-content {
+    block-size: 100%;
+  }
+}
+
+tg-kanban-story {
+  margin: 0;
+}
+
+tg-ui-drag-in-progress tg-kanban-status {
+  block-size: var(--drag-status-height);
+  border: 1px solid var(--color-secondary);
+  border-radius: 4px;
+  box-shadow: 3px 4px 14px 0 rgba(0, 138, 168, 0.15);
+  display: block;
+  overflow: hidden; /* Prevent flickering when height is not calculated yet */
+
+  &::ng-deep .header {
+    cursor: grabbing;
+  }
+}

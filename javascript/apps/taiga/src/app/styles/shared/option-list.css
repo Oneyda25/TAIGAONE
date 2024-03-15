@@ -1,0 +1,93 @@
+/*
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this
+file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+Copyright (c) 2021-present Kaleidos Ventures SL
+*/
+
+@define-mixin option-list $size: 238px {
+  border: 0;
+  inline-size: $size;
+  /* stylelint-disable-next-line declaration-no-important */
+  padding: var(--spacing-8) !important;
+
+  & .option-container {
+    align-items: center;
+    display: flex;
+  }
+
+  & .option-name {
+    @mixin option-name;
+  }
+
+  & .option-icon {
+    @mixin option-icon;
+  }
+
+  & .shortcut {
+    @mixin font-small;
+
+    color: var(--color-gray80);
+  }
+
+  & .option-btn:hover,
+  & .option-btn.selected {
+    & .option-name {
+      color: var(--color-secondary80);
+    }
+
+    & .option-icon {
+      color: var(--color-secondary80);
+    }
+
+    & .shortcut {
+      color: var(--color-gray100);
+    }
+  }
+
+  & .option-delete {
+    & .option-name {
+      color: var(--color-red);
+    }
+
+    & .option-icon {
+      color: var(--color-red);
+    }
+  }
+
+  & .option-delete:hover {
+    & .option-name {
+      color: var(--color-red80);
+    }
+
+    & .option-icon {
+      color: var(--color-red80);
+    }
+  }
+
+  & .separator {
+    background: var(--color-gray30);
+    margin-block: var(--spacing-8);
+    margin-inline: var(--spacing-8);
+  }
+}
+
+@define-mixin option-icon {
+  block-size: var(--spacing-16);
+  color: var(--color-secondary);
+  inline-size: var(--spacing-16);
+  margin-inline-end: var(--spacing-8);
+}
+
+@define-mixin option-name {
+  @mixin font-inline;
+
+  color: var(--color-gray100);
+}
+
+@define-mixin separator {
+  background: var(--color-gray30);
+  margin-block: var(--spacing-8);
+  margin-inline: var(--spacing-8);
+}

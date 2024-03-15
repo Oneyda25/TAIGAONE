@@ -1,0 +1,54 @@
+<!--
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this
+file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+Copyright (c) 2023-present Kaleidos INC
+-->
+<ng-container *transloco="let t">
+  <ng-container *ngIf="model$ | async as vm">
+    <tg-project-navigation [project]="vm.project"></tg-project-navigation>
+    <main
+      id="main-area-focus"
+      aria-labelledby="main-area-title"
+      class="project-main">
+      <tg-ui-context-notification
+        [@slideInOut]
+        [@.disabled]="animationDisabled"
+        *ngIf="
+          (vm.project.userHasPendingInvitation &&
+            showPendingInvitationNotification) ||
+          vm.showBannerOnRevoke
+        "
+        class="invitation-notification"
+        (closed)="onNotificationClosed()"
+        [hasClose]="true"
+        alertLevel="polite"
+        status="info"
+        data-test="logged-user-invitation">
+        <div class="project-invitation-wrapper">
+          <div class="project-invitation-content">
+            <h1 class="project-invitation-title">
+              {{ t('project.invitations.pending_invitation') }}
+            </h1>
+            <span class="project-invitation-text">
+              {{ t('project.invitations.accept_member') }}
+            </span>
+          </div>
+          <div class="project-invitation-action">
+            <button
+              (click)="acceptInvitationId()"
+              class="create-account"
+              data-test="accept-invitation-id"
+              appearance="primary"
+              tuiButton
+              type="submit">
+              {{ t('project.invitations.accept_invitation') }}
+            </button>
+          </div>
+        </div>
+      </tg-ui-context-notification>
+      <router-outlet></router-outlet>
+    </main>
+  </ng-container>
+</ng-container>

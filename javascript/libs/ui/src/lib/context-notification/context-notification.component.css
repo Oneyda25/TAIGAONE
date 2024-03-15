@@ -1,0 +1,254 @@
+/* stylelint-disable declaration-no-important */
+/* stylelint-disable selector-max-compound-selectors */
+
+/*
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this
+file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+Copyright (c) 2023-present Kaleidos INC
+*/
+@import url("tools/typography.css");
+@import url("taiga-ui/mixins/wrapper.css");
+
+:host {
+  display: inline-block;
+}
+
+.wrapper {
+  border-radius: 4px;
+  box-shadow: inset 0 0 0 1px var(--color-gray20);
+  display: inline-block;
+  inline-size: 100%;
+  line-height: 1.5;
+  padding-block: var(--spacing-8);
+  padding-inline: var(--spacing-16);
+
+  & .content {
+    @mixin font-paragraph;
+
+    align-items: flex-start;
+    display: flex;
+  }
+
+  &::ng-deep {
+    & .link {
+      & .t-content {
+        @mixin font-paragraph;
+
+        font-weight: var(--font-weight-medium);
+      }
+
+      & .t-content:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  & .close-button {
+    align-self: start;
+    block-size: var(--spacing-16);
+    color: var(--color-info90);
+    inline-size: var(--spacing-16);
+    margin-block-start: 2px;
+  }
+
+  & .icon-wrapper {
+    margin-inline-end: var(--spacing-8);
+
+    & tui-svg {
+      block-size: var(--spacing-16);
+      inline-size: var(--spacing-16);
+    }
+  }
+}
+
+:host([size="s"]) .wrapper {
+  padding-block: var(--spacing-4);
+  padding-inline: var(--spacing-8);
+}
+
+:host([size="l"]) .wrapper {
+  padding: var(--spacing-16);
+}
+
+:host([status="info"]) .wrapper {
+  background: var(--color-info20);
+  border-color: var(--color-info30);
+  color: var(--color-info90);
+
+  &::after {
+    background: none;
+  }
+
+  &::ng-deep {
+    & .link {
+      font-weight: var(--font-weight-medium);
+      text-decoration: underline;
+
+      @mixin wrapper-content {
+        color: var(--color-info90) !important;
+      }
+    }
+
+    & .close-button [tuiWrapper] {
+      color: var(--color-info90) !important;
+
+      @mixin wrapper-hover {
+        background: var(--color-info30);
+      }
+    }
+  }
+
+  & tui-svg {
+    color: var(--color-info50);
+  }
+}
+
+:host([status="success"]) .wrapper {
+  background: var(--color-ok20);
+  border-color: var(--color-ok30);
+  color: var(--color-ok80);
+
+  &::after {
+    background: none;
+  }
+
+  & .content {
+    color: var(--color-ok80);
+  }
+
+  &::ng-deep {
+    & .link .t-content {
+      color: var(--color-ok80) !important;
+    }
+
+    & .link {
+      font-weight: var(--font-weight-medium);
+      text-decoration: underline;
+    }
+
+    & .close-button [tuiWrapper] {
+      color: var(--color-ok80) !important;
+
+      @mixin wrapper-hover {
+        background: var(--color-ok30);
+      }
+    }
+  }
+
+  & tui-svg {
+    color: var(--color-ok50);
+  }
+}
+
+:host([status="error"]) .wrapper {
+  background: var(--color-red20);
+  border-color: var(--color-red30);
+  color: var(--color-red90);
+
+  &::after {
+    background: none;
+  }
+
+  & .content {
+    color: var(--color-red80);
+  }
+
+  &::ng-deep {
+    & .link .t-content {
+      color: var(--color-red80) !important;
+    }
+
+    & .link {
+      font-weight: var(--font-weight-medium);
+      text-decoration: underline;
+    }
+
+    & .close-button [tuiWrapper] {
+      color: var(--color-red80) !important;
+
+      @mixin wrapper-hover {
+        background: var(--color-red30);
+      }
+    }
+  }
+
+  & tui-svg {
+    color: var(--color-red50);
+  }
+}
+
+:host([status="warning"]) .wrapper {
+  background: var(--color-warning20);
+  border-color: var(--color-warning30);
+  color: var(--color-warning80);
+
+  &::after {
+    background: none;
+  }
+
+  & .content {
+    color: var(--color-warning80);
+  }
+
+  &::ng-deep {
+    & .link .t-content {
+      color: var(--color-warning80) !important;
+    }
+
+    & .link {
+      font-weight: var(--font-weight-medium);
+      text-decoration: underline;
+    }
+
+    & .close-button [tuiWrapper] {
+      color: var(--color-warning80) !important;
+
+      @mixin wrapper-hover {
+        background: var(--color-warning30);
+      }
+    }
+  }
+
+  & tui-svg {
+    color: var(--color-warning50);
+  }
+}
+
+:host([status="notice"]) .wrapper {
+  background: var(--color-notice20);
+  border-color: var(--color-notice30);
+  color: var(--color-notice80);
+
+  &::after {
+    background: none;
+  }
+
+  & .content {
+    color: var(--color-notice80);
+  }
+
+  &::ng-deep {
+    & .link .t-content {
+      color: var(--color-notice80) !important;
+    }
+
+    & .link {
+      font-weight: var(--font-weight-medium);
+      text-decoration: underline;
+    }
+
+    & .close-button [tuiWrapper] {
+      color: var(--color-notice80) !important;
+
+      @mixin wrapper-hover {
+        background: var(--color-notice30);
+      }
+    }
+  }
+
+  & tui-svg {
+    color: var(--color-notice50);
+  }
+}

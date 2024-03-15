@@ -1,0 +1,9 @@
+{
+  "name": "email-server",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/email-server",
+  "projectType": "application",
+  "targets": {},
+  "tags": ["scope:taiga"],
+  "implicitDependencies": ["taiga"]
+}

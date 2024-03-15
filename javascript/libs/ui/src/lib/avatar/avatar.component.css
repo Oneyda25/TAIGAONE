@@ -1,0 +1,172 @@
+/*
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this
+file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+Copyright (c) 2023-present Kaleidos INC
+*/
+
+@import url("tools/typography.css");
+
+:host {
+  display: flex;
+}
+
+tui-avatar {
+  --tui-radius-s: 3px;
+  --tui-radius-m: 3px;
+  --tui-radius-l: 3px;
+  --tui-radius-xl: 3px;
+  --tui-radius-xxl: 2px;
+
+  &.no-border {
+    --tui-avatar-border: transparent;
+    --tui-avatar-color: transparent;
+  }
+
+  &.color-0 {
+    --tui-avatar-border: var(--color-gray50);
+    --tui-avatar-color: var(--color-gray50);
+    --tui-avatar-background: var(--color-gray30);
+  }
+
+  &[data-type="light"] {
+    &.color-1 {
+      --tui-avatar-border: var(--color-warning30);
+      --tui-avatar-color: var(--color-warning80);
+      --tui-avatar-background: var(--color-warning30);
+    }
+
+    &.color-2 {
+      --tui-avatar-border: var(--color-red30);
+      --tui-avatar-color: var(--color-red80);
+      --tui-avatar-background: var(--color-red30);
+    }
+
+    &.color-3 {
+      --tui-avatar-border: var(--color-notice30);
+      --tui-avatar-color: var(--color-notice80);
+      --tui-avatar-background: var(--color-notice30);
+    }
+
+    &.color-4 {
+      --tui-avatar-border: var(--color-ok30);
+      --tui-avatar-color: var(--color-ok80);
+      --tui-avatar-background: var(--color-ok30);
+    }
+
+    &.color-5 {
+      --tui-avatar-border: var(--color-secondary30);
+      --tui-avatar-color: var(--color-secondary80);
+      --tui-avatar-background: var(--color-secondary30);
+    }
+
+    &.color-6 {
+      --tui-avatar-border: var(--color-info30);
+      --tui-avatar-color: var(--color-info80);
+      --tui-avatar-background: var(--color-info30);
+    }
+
+    &.color-7 {
+      --tui-avatar-border: var(--color-green30);
+      --tui-avatar-color: var(--color-green80);
+      --tui-avatar-background: var(--color-green30);
+    }
+
+    &.color-8 {
+      --tui-avatar-border: var(--color-yellow30);
+      --tui-avatar-color: var(--color-yellow80);
+      --tui-avatar-background: var(--color-yellow30);
+    }
+  }
+
+  &[data-type="dark"] {
+    &.color-1 {
+      --tui-avatar-border: var(--color-red50);
+      --tui-avatar-color: var(--color-red100);
+      --tui-avatar-background: var(--color-red50);
+    }
+
+    &.color-2 {
+      --tui-avatar-border: var(--color-info50);
+      --tui-avatar-color: var(--color-info100);
+      --tui-avatar-background: var(--color-info50);
+    }
+
+    &.color-3 {
+      --tui-avatar-border: var(--color-green50);
+      --tui-avatar-color: var(--color-green100);
+      --tui-avatar-background: var(--color-green50);
+    }
+
+    &.color-4 {
+      --tui-avatar-border: var(--color-ok50);
+      --tui-avatar-color: var(--color-ok100);
+      --tui-avatar-background: var(--color-ok50);
+    }
+
+    &.color-5 {
+      --tui-avatar-border: var(--color-yellow50);
+      --tui-avatar-color: var(--color-yellow100);
+      --tui-avatar-background: var(--color-yellow50);
+    }
+
+    &.color-6 {
+      --tui-avatar-border: var(--color-warning50);
+      --tui-avatar-color: var(--color-warning100);
+      --tui-avatar-background: var(--color-warning50);
+    }
+
+    &.color-7 {
+      --tui-avatar-border: var(--color-notice50);
+      --tui-avatar-color: var(--color-notice100);
+      --tui-avatar-background: var(--color-notice50);
+    }
+
+    &.color-8 {
+      --tui-avatar-border: var(--color-secondary50);
+      --tui-avatar-color: var(--color-secondary100);
+      --tui-avatar-background: var(--color-secondary50);
+    }
+  }
+
+  &[data-size="s"] {
+    @mixin font-small;
+
+    block-size: var(--spacing-24);
+    font-weight: var(--font-weight-regular);
+    inline-size: var(--spacing-24);
+  }
+
+  &[data-size="m"] {
+    @mixin font-small;
+
+    block-size: var(--spacing-24);
+    font-weight: var(--font-weight-regular);
+    inline-size: var(--spacing-24);
+  }
+
+  &[data-size="l"] {
+    @mixin font-inline;
+
+    block-size: var(--spacing-32);
+    font-weight: var(--font-weight-regular);
+    inline-size: var(--spacing-32);
+  }
+
+  &[data-size="xl"] {
+    @mixin font-heading-4;
+
+    block-size: var(--spacing-48);
+    font-weight: var(--font-weight-regular);
+    inline-size: var(--spacing-48);
+  }
+
+  &[data-size="xxl"] {
+    @mixin font-heading-4;
+
+    block-size: var(--spacing-64);
+    font-weight: var(--font-weight-regular);
+    inline-size: var(--spacing-64);
+  }
+}

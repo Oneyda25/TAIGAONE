@@ -1,0 +1,146 @@
+<!--
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this
+file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+Copyright (c) 2023-present Kaleidos INC
+-->
+<ng-container *ngIf="model$ | async as vm">
+  <ng-container *transloco="let t">
+    <ng-container *ngIf="vm.workspace">
+      <p class="tab-description">
+        {{ t('workspace.people.members_description') }}
+      </p>
+      <tg-ui-dtable>
+        <tg-ui-dtable-row>
+          <tg-ui-dtable-header>{{
+            t('common_members_tabs.column_user')
+          }}</tg-ui-dtable-header>
+          <tg-ui-dtable-header>{{ t('commons.projects') }}</tg-ui-dtable-header>
+          <tg-ui-dtable-header class="column-actions">
+            <span class="header-row-action">
+              {{ t('common_members_tabs.column_actions') }}
+            </span>
+          </tg-ui-dtable-header>
+        </tg-ui-dtable-row>
+        <ng-container *ngIf="!vm.loading">
+          <ng-container
+            *ngFor="let member of vm.members; trackBy: trackByUsername">
+            <tg-ui-dtable-row
+              [class.leave-highlighted]="
+                vm.leaveHighlightedRow?.user?.username === member.user.username
+              "
+              [class.highlighted]="
+                vm.highlightedRow?.user?.username === member.user.username
+              "
+              [@conSlideInOut]="animationStatus">
+              <tg-ui-dtable-cell
+                class="user"
+                [@removeCell]="member.cancelled">
+                <tg-user-card
+                  [isSelf]="vm.currentUser.username === member.user.username"
+                  [user]="member.user"
+                  [navigateToUser]="true"></tg-user-card>
+              </tg-ui-dtable-cell>
+              <tg-ui-dtable-cell [@removeCell]="member.cancelled">
+                <tg-projects-dropdown
+                  [projects]="member.projects"></tg-projects-dropdown>
+              </tg-ui-dtable-cell>
+              <tg-ui-dtable-cell
+                class="action-column"
+                [@removeCell]="member.cancelled">
+                <tg-workspace-detail-people-members-remove
+                  [class.highlighted]="vm.highlightedRow === member"
+                  *ngIf="vm.currentUser.username !== member.user.username"
+                  [member]="member"
+                  (highlightRemoveMemberRow)="highlightRemoveMemberRow($event)"
+                  (removeMember)="initRemoveMember($event)">
+                </tg-workspace-detail-people-members-remove>
+
+                <tg-leave-workspace-dropdown
+                  *ngIf="vm.currentUser.username === member.user.username"
+                  [workspace]="vm.workspace"
+                  [singleMember]="vm.members.length === 1"
+                  (openDialog)="toggleLeaveWorkspace($event, member)"
+                  (leaveWorkspace)="
+                    confirmLeaveWorkspace()
+                  "></tg-leave-workspace-dropdown>
+              </tg-ui-dtable-cell>
+              <div
+                *ngIf="member.cancelled === 'active'"
+                class="remove-countdown"
+                [@showUndo]
+                (@showUndo.done)="animationUndoValidateRemoved(member)">
+                <tg-ui-context-notification
+                  alertLevel="none"
+                  status="info">
+                  <div
+                    class="remove-countdown-wrapper"
+                    data-test="remove-ws-member-countdown">
+                    <span>
+                      {{
+                        t('workspace.people.remove.removed_member', {
+                          fullName: member.user.fullName
+                        })
+                      }}
+                    </span>
+                    <button
+                      class="undo-remove-member"
+                      data-test="undo-remove-member"
+                      tuiLink
+                      type="button"
+                      (click)="cancelRemove(member)"
+                      appearance="tertiary">
+                      {{ t('workspace.people.remove.undo') }}
+                    </button>
+                  </div>
+                </tg-ui-context-notification>
+              </div>
+              <div
+                *ngIf="member.undo"
+                [@undoDone]
+                (@undoDone.done)="clearUndo(member)"
+                class="remove-action-undo-done">
+                <tg-ui-context-notification
+                  alertLevel="none"
+                  status="info">
+                  <div
+                    class="remove-countdown-wrapper"
+                    data-test="remove-ws-member-undone">
+                    <span>
+                      {{ t('workspace.people.remove.action_undone') }}
+                    </span>
+                  </div>
+                </tg-ui-context-notification>
+              </div>
+            </tg-ui-dtable-row>
+          </ng-container>
+        </ng-container>
+        <ng-container *ngIf="vm.loading">
+          <tg-ui-dtable-row
+            *ngFor="
+              let i of [].constructor(MEMBERS_PAGE_SIZE);
+              trackBy: trackByIndex
+            ">
+            <tg-ui-dtable-cell>
+              <tg-ui-user-skeleton></tg-ui-user-skeleton>
+            </tg-ui-dtable-cell>
+            <tg-ui-dtable-cell></tg-ui-dtable-cell>
+            <tg-ui-dtable-cell></tg-ui-dtable-cell>
+          </tg-ui-dtable-row>
+        </ng-container>
+      </tg-ui-dtable>
+
+      <tg-members-pagination
+        *ngIf="vm.total"
+        [total]="vm.total"
+        [pageStart]="vm.pageStart"
+        [pageEnd]="vm.pageEnd"
+        [hasPreviousPage]="vm.hasPreviousPage"
+        [hasNextPage]="vm.hasNextPage"
+        (next)="next()"
+        (previous)="prev()">
+      </tg-members-pagination>
+    </ng-container>
+  </ng-container>
+</ng-container>

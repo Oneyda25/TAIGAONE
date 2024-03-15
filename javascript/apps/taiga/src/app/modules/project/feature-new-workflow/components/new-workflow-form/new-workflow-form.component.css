@@ -1,0 +1,31 @@
+/*
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this
+file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+Copyright (c) 2023-present Kaleidos INC
+*/
+
+:host {
+  background: var(--color-white);
+  border: 1px solid var(--color-gray30);
+  border-radius: 3px;
+  box-shadow: 3px 4px 14px 0 rgba(0, 138, 168, 0.15);
+  display: block;
+  inline-size: 100%;
+  max-inline-size: 586px;
+  padding: var(--spacing-16);
+}
+
+.new-workflow-form-card {
+  display: flex;
+  gap: var(--spacing-8);
+}
+
+.input-wrapper {
+  flex: 1;
+}
+
+.max-length {
+  font-size: var(--font-size-small);
+}

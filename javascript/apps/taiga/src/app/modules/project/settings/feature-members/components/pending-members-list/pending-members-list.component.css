@@ -1,0 +1,33 @@
+/*
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this
+file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+Copyright (c) 2023-present Kaleidos INC
+*/
+/* stylelint-disable selector-max-compound-selectors */
+
+@import url("shared/users-tabs.css");
+@import url("tools/typography.css");
+@import url("../feature.members.common.css");
+
+.revoke-invitation-btn {
+  block-size: 100%;
+}
+
+.revoke-countdown-cell {
+  display: flex;
+  inline-size: 100%;
+  justify-content: flex-end;
+}
+
+:host::ng-deep .no-padding[tuiIconButton] {
+  block-size: var(--spacing-16);
+  inline-size: var(--spacing-16);
+
+  & [tuiWrapper] {
+    color: var(--color-info80);
+    /* stylelint-disable-next-line declaration-no-important */
+    padding: 0 !important;
+  }
+}

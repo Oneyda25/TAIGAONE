@@ -1,0 +1,75 @@
+<!--
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this
+file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+Copyright (c) 2023-present Kaleidos INC
+-->
+
+<ng-container
+  *transloco="let t; read: 'story'"
+  [formGroup]="form">
+  <ng-container *ngIf="model$ | async as vm">
+    <tg-ui-select
+      *ngIf="vm.canEdit"
+      data-test="story-status"
+      class="status-field"
+      [class.loading]="vm.loadingStatuses"
+      [label]="t('status')"
+      type="text">
+      <div
+        *ngIf="vm.loadingStatuses"
+        class="loading-status">
+        <div class="loading-status-content"></div>
+      </div>
+      <tui-select
+        class="status-tui"
+        tuiTextfieldSize="l"
+        formControlName="status"
+        [valueContent]="statusValue"
+        [readOnly]="!vm.canEdit">
+        <tui-data-list *tuiDataList>
+          <button
+            type="button"
+            *ngFor="let status of vm.statuses; trackBy: trackByStatus"
+            tuiOption
+            size="s"
+            [attr.aria-label]="status.name"
+            [class.active-option]="status.id === form.value.status"
+            [value]="status.id">
+            <div class="status-option">
+              <div
+                class="status-color"
+                [style.border-color]="status.color | statusColor"></div>
+              <div class="status-name">{{ status.name }}</div>
+            </div>
+          </button>
+        </tui-data-list>
+      </tui-select>
+    </tg-ui-select>
+    <ng-template
+      #statusValue
+      let-status>
+      <div
+        class="status-option status-option-value"
+        [style.background-color]="vm.story.status.color | statusColor: 30">
+        <div
+          class="status-color"
+          [style.border-color]="vm.story.status.color | statusColor"></div>
+        <div class="status-name">{{ vm.story.status.name }}</div>
+      </div>
+    </ng-template>
+    <div
+      class="field"
+      *ngIf="!vm.canEdit">
+      <span
+        class="field-label"
+        [class.readonly]="!vm.canEdit"
+        >{{ t('status') }}</span
+      >
+      <div class="field-container">
+        <ng-container [ngTemplateOutlet]="statusValue"></ng-container>
+      </div>
+    </div>
+  </ng-container>
+</ng-container>

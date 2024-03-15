@@ -1,0 +1,119 @@
+/*
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this
+file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+Copyright (c) 2023-present Kaleidos INC
+*/
+
+@import url("tools/typography.css");
+@import url("shared/option-list.css");
+@import url("shared/vertical-menu.css");
+
+@mixin vertical-menu wks-detail;
+
+:host {
+  --menu-size: 200px;
+
+  block-size: 100%;
+  display: flex;
+  flex-direction: column;
+  inline-size: 100%;
+  padding: var(--spacing-16);
+}
+
+.workspace-detail-wrapper {
+  inline-size: 100%;
+  margin-block: 0;
+  margin-inline: auto;
+  max-inline-size: 1440px;
+  min-block-size: 100%;
+}
+
+.workspace-detail-top {
+  align-items: center;
+  display: flex;
+  flex: 0 1 auto;
+  margin-block-end: var(--spacing-40);
+}
+
+.workspace-avatar {
+  margin-inline-end: var(--spacing-16);
+}
+
+.workspace-detail-name-wrapper {
+  display: flex;
+  flex: 1 0 auto;
+  flex-direction: column;
+  justify-content: center;
+
+  & .workspace-detail-name-route {
+    margin: 0;
+  }
+
+  & .workspace-detail-name {
+    margin: 0;
+  }
+}
+
+.workspace-detail-name-container {
+  align-items: center;
+  display: flex;
+  gap: var(--spacing-16);
+}
+
+.workspace-detail-name {
+  @mixin ellipsis;
+}
+
+.workspace-detail-name-route {
+  @mixin ellipsis;
+  @mixin font-small;
+
+  color: var(--color-gray70);
+  line-height: 150%;
+  margin-block-end: var(--spacing-8);
+  text-transform: uppercase;
+}
+
+tg-project-card {
+  z-index: 2;
+}
+
+.display-workspace-options {
+  &::ng-deep [tuiWrapper] {
+    background: none;
+  }
+}
+
+.workspace-options-list {
+  @mixin option-list;
+}
+
+.separator {
+  background: var(--color-gray30);
+  margin-block: var(--spacing-8);
+}
+
+.workspace-detail {
+  display: flex;
+  gap: var(--spacing-16);
+  min-block-size: calc(100% - 79px);
+}
+
+.wks-detail-nav {
+  background-color: var(--color-gray10);
+  max-inline-size: var(--menu-size);
+  min-block-size: 100%;
+  min-inline-size: var(--menu-size);
+}
+
+.wks-detail-main {
+  display: flex;
+  flex-direction: column;
+  inline-size: 100%;
+
+  &:focus-visible {
+    outline: none;
+  }
+}

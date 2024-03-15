@@ -1,0 +1,54 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.4.0
+    hooks:
+      - id: trailing-whitespace
+        files: 'python/apps/taiga/'
+      - id: end-of-file-fixer
+        files: 'python/apps/taiga/'
+      - id: check-docstring-first
+        files: 'python/apps/taiga/'
+      - id: debug-statements
+        files: 'python/apps/taiga/'
+      - id: check-yaml
+        files: 'python/'
+
+  - repo: https://github.com/PyCQA/flake8
+    rev: 6.1.0
+    hooks:
+      - id: flake8
+        additional_dependencies: [flake8-typing-imports==1.12.0]
+        files: 'python/apps/taiga/'
+        args: [--config=python/.flake8]
+
+  - repo: https://github.com/psf/black
+    rev: 23.7.0
+    hooks:
+      - id: black
+        files: 'python/apps/taiga/'
+        args: [--config=python/.black]
+
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.4.1
+    hooks:
+      - id: mypy
+        language: system
+        files: 'python/apps/taiga/'
+        exclude: '/tests/|/migrations/'
+        args: [--config-file=python/.mypy.ini]
+
+  - repo: https://github.com/PyCQA/isort
+    rev: 5.12.0
+    hooks:
+      - id: isort
+        files: 'python/apps/taiga/'
+        args: [--settings-path=python/.isort.cfg]
+
+  - repo: https://github.com/Lucas-C/pre-commit-hooks
+    rev: v1.5.1
+    hooks:
+      - id: insert-license
+        files: '(python/apps/taiga/).*\.py$'
+        args:
+          - --license-filepath
+          - python/.license_header_template_python.txt          # defaults to: LICENSE.txt

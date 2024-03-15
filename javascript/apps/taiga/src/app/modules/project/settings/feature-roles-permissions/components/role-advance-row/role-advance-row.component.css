@@ -1,0 +1,131 @@
+/*
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this
+file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+Copyright (c) 2023-present Kaleidos INC
+*/
+
+@import url("tools/typography.css");
+
+:host {
+  --row-height: var(--spacing-44);
+
+  max-inline-size: var(--setting-size);
+}
+
+.restricted {
+  color: var(--color-gray80);
+  margin-inline-start: var(--spacing-4);
+}
+
+.permission-row-sub {
+  align-items: flex-start;
+  display: flex;
+  min-block-size: var(--row-height);
+  padding-inline: var(--spacing-16);
+
+  & tui-svg {
+    block-size: var(--spacing-16);
+    color: var(--color-gray50);
+    inline-size: var(--spacing-16);
+    margin-inline-end: var(--spacing-8);
+  }
+
+  & .permission-row-title {
+    align-items: center;
+    flex-basis: calc(25% + var(--spacing-16));
+    flex-shrink: 0;
+    padding-inline-start: var(--spacing-16);
+  }
+}
+
+.permission-row-customization {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  max-inline-size: calc(17rem + var(--spacing-40));
+  min-inline-size: calc(14rem + var(--spacing-24));
+
+  & .show-customization-disabled {
+    visibility: hidden;
+  }
+}
+
+.permission-row-select {
+  align-items: center;
+  display: flex;
+  flex-grow: 1;
+  min-block-size: var(--row-height);
+
+  & .permission-row-button {
+    margin-inline-start: var(--spacing-8);
+  }
+
+  & .customizing::ng-deep [tuiWrapper] {
+    background: var(--color-gray30);
+    color: var(--color-secondary);
+  }
+
+  & tg-ui-select {
+    inline-size: 100%;
+    max-inline-size: 17rem;
+    min-inline-size: 14rem;
+  }
+}
+
+.permision-row-comment {
+  align-items: center;
+  block-size: var(--row-height);
+  display: flex;
+  inline-size: 100%;
+  justify-content: flex-end;
+  max-inline-size: 32%;
+  padding-inline: var(--spacing-16);
+
+  &.permision-row-comment-disabled {
+    visibility: hidden;
+  }
+
+  & .permission-row-title {
+    padding-inline-end: var(--spacing-16);
+  }
+}
+
+.permission-row-title {
+  block-size: var(--row-height);
+  display: flex;
+  flex-basis: 32%;
+  margin-inline-end: var(--spacing-16);
+}
+
+.permission-row-switch-title {
+  align-items: center;
+  display: flex;
+  overflow: hidden;
+
+  & .label-text {
+    @mixin line-clamp 1;
+
+    padding-inline-end: var(--spacing-8);
+  }
+}
+
+.permission-can-comment-switch {
+  flex-shrink: 0;
+}
+
+.permission-row-name {
+  @mixin line-clamp 2;
+
+  color: var(--color-gray90);
+  font-weight: var(--font-weight-regular);
+  margin-inline-end: var(--spacing-8);
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  &.customizing {
+    color: var(--color-secondary);
+    font-weight: var(--font-weight-medium);
+  }
+}

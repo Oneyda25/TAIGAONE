@@ -1,0 +1,168 @@
+/*
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this
+file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+Copyright (c) 2023-present Kaleidos INC
+*/
+
+@import url("tools/typography.css");
+@import url("shared/option-list.css");
+
+:host {
+  block-size: 100%;
+  display: flex;
+  flex-direction: column;
+  inline-size: 100%;
+}
+
+.story {
+  block-size: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.scrollbar-content {
+  display: flex;
+}
+
+.story-content {
+  display: grid;
+  flex-grow: 1;
+  grid-template-columns: 61.4% 38.6%;
+
+  &.close {
+    grid-template-columns: calc(100% - 33px) 33px;
+
+    & .sidebar {
+      padding: 0;
+    }
+  }
+}
+
+.sidebar-wrapper {
+  border-inline-start: solid 1px var(--color-gray30);
+  position: relative;
+
+  & .sidebar {
+    block-size: 100%;
+    padding: var(--spacing-24);
+    padding-block-end: 0;
+    padding-block-start: var(--spacing-16);
+  }
+
+  & .sidepanel-icon {
+    inset-block-end: 0;
+    inset-inline-end: 0;
+    position: absolute;
+  }
+}
+
+.main-content-wrapper {
+  & .main-content {
+    margin-block: var(--spacing-8) var(--spacing-16);
+    margin-inline: var(--spacing-16);
+  }
+
+  & tg-story-detail-status,
+  & tg-story-detail-assign {
+    padding-inline-start: var(--spacing-16);
+  }
+}
+
+.creation-info,
+.creation-info-tooltip-wrapper {
+  align-items: baseline;
+  display: flex;
+  gap: var(--spacing-4);
+  margin-block-end: var(--spacing-12);
+  padding-inline-start: var(--spacing-8);
+
+  &.no-user {
+    align-items: center;
+  }
+}
+
+.creation-info-fullname {
+  color: var(--color-secondary);
+}
+
+.creation-info-date {
+  color: var(--color-gray80);
+  font-style: italic;
+}
+
+.copy-link:not(:hover) {
+  &::ng-deep [tuiWrapper] {
+    background-color: transparent;
+  }
+
+  & tui-svg {
+    color: var(--color-gray70);
+  }
+}
+
+.delete-story-confirm-title {
+  @mixin font-heading-3;
+
+  color: var(--color-gray100);
+  margin: 0;
+  margin-block-end: var(--spacing-24);
+}
+
+.delete-story-confirm-question {
+  @mixin font-paragraph;
+
+  color: var(--color-gray80);
+  margin: 0;
+  margin-block-end: var(--spacing-24);
+}
+
+.delete-story-confirm-actions-area {
+  display: flex;
+  gap: var(--spacing-16);
+  justify-content: flex-end;
+}
+
+.field-focus {
+  background-color: var(--color-gray20);
+}
+
+.former-user-text {
+  color: var(--color-gray70);
+  font-style: italic;
+}
+
+.former-user-avatar {
+  --no-user-avatar-size: 24px;
+}
+
+tg-story-detail-workflow,
+tg-story-detail-status,
+tg-story-detail-assign,
+tg-attachments,
+tg-story-detail-description {
+  margin-block-end: var(--spacing-16);
+}
+
+/* stylelint-disable selector-max-compound-selectors, selector-max-type */
+.field-edit {
+  & tg-story-detail-status,
+  & tg-story-detail-assign {
+    &::ng-deep {
+      & tui-select .tui-autofill {
+        background: var(--color-gray20);
+      }
+
+      & button [tuiWrapper] {
+        background: var(--color-gray20);
+        transition: none;
+      }
+    }
+  }
+}
+/* stylelint-enable selector-max-compound-selectors, selector-max-type */
+
+.attachments-side-view {
+  --undo-inline-size: 100%;
+}

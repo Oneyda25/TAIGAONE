@@ -1,0 +1,126 @@
+<!--
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this
+file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+Copyright (c) 2023-present Kaleidos INC
+-->
+
+<ng-container *transloco="let t">
+  <ng-container *ngIf="model$ | async as vm">
+    <ng-container
+      *ngIf="vm.hasPermissionToEdit; else titleWithouPermissionsToEdit">
+      <div
+        *ngIf="!vm.conflict && !vm.edit"
+        class="title-wrapper"
+        (click)="editTitle()">
+        <div class="shape-outside-text float-inline-end"></div>
+        <h1
+          data-test="story-detail-title"
+          class="title">
+          {{ vm.story.title }}
+        </h1>
+        <button
+          *ngIf="!vm.conflict"
+          data-test="edit-title"
+          tgRestoreFocusTarget="edit-title"
+          (click)="editTitle()"
+          class="edit-title"
+          [attr.aria-label]="t('story.edit_title')"
+          [tgUiTooltip]="t('story.edit_title')"
+          appearance="small"
+          tuiButton
+          type="button">
+          Edit
+        </button>
+      </div>
+    </ng-container>
+
+    <ng-template #titleWithouPermissionsToEdit>
+      <h1
+        data-test="story-detail-title"
+        class="title">
+        {{ vm.story.title }}
+      </h1>
+    </ng-template>
+
+    <div
+      *ngIf="vm.conflict && vm.story.titleUpdatedBy"
+      tgRestoreFocus="edit-title"
+      class="title-wrapper">
+      <div class="shape-outside-text float-inline-end"></div>
+      <h1 class="title">{{ titleForm.get('title')!.value }}</h1>
+      <tg-field-conflict
+        *ngIf="vm.conflict"
+        [username]="vm.story.titleUpdatedBy.fullName"
+        [field]="t('field_conflict.fields.title')"
+        [copyValue]="titleForm.get('title')!.value"
+        (cancel)="cancelConflict($event)"
+        (accept)="acceptConflict()"></tg-field-conflict>
+    </div>
+    <div
+      *ngIf="vm.edit && !vm.conflict"
+      class="edit-title-field"
+      tgRestoreFocus="edit-title"
+      [tgRestoreFocusActive]="!vm.conflict">
+      <form
+        #formTpl="ngForm"
+        [formGroup]="titleForm"
+        [showFormErrors]="formTpl.submitted"
+        (ngSubmit)="save()">
+        <tg-ui-textarea>
+          <tui-text-area
+            data-test="edit-title-textarea"
+            class="general-textarea"
+            (keydown.code.enter)="onEnter($event)"
+            (keydown.code.shift.enter)="onEnter($event)"
+            tgAutoFocus
+            formControlName="title"
+            [maxLength]="maxLength"
+            [expandable]="true"
+            [tuiTextfieldLabelOutside]="true"
+            (focusedChange)="focusChange.next($event)">
+          </tui-text-area>
+
+          <div class="edit-field-actions">
+            <button
+              data-test="edit-title-cancel"
+              (click)="cancelEditTitle()"
+              tuiButton
+              type="button"
+              appearance="tertiary">
+              {{ t('commons.cancel') }}
+            </button>
+            <button
+              data-test="edit-title-save"
+              tuiButton
+              type="submit"
+              appearance="primary">
+              {{ t('commons.save') }}
+            </button>
+          </div>
+
+          <ng-container inputError>
+            <tg-ui-error error="required">{{
+              t('common_story.create_story_form.title_story_required')
+            }}</tg-ui-error>
+            <tg-ui-error error="pattern">{{
+              t('common_story.create_story_form.title_story_required')
+            }}</tg-ui-error>
+
+            <div
+              *ngIf="(titleForm.get('title')!.value?.length ?? 0) >= maxLength"
+              aria-live="assertive"
+              class="max-length">
+              {{ t('form_errors.max_length') }}
+            </div>
+          </ng-container>
+        </tg-ui-textarea>
+      </form>
+      <tg-discard-changes-modal
+        [open]="showConfirmEditTitleModal"
+        (discard)="discard()"
+        (cancel)="keepEditing()"></tg-discard-changes-modal>
+    </div>
+  </ng-container>
+</ng-container>

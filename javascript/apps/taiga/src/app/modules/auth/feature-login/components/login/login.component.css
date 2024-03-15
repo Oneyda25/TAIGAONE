@@ -1,0 +1,43 @@
+/*
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this
+file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+Copyright (c) 2023-present Kaleidos INC
+*/
+
+:host {
+  inline-size: 100%;
+}
+
+.input-password {
+  position: relative;
+}
+
+.forgot-password {
+  inset-block-end: calc(100% + 0.4rem);
+  padding-inline-end: var(--spacing-8);
+  white-space: nowrap;
+
+  &::ng-deep .t-content {
+    color: var(--color-secondary80);
+    font-size: 0.68rem;
+    font-weight: 400;
+    margin-block-end: var(--spacing-4);
+    text-decoration: underline;
+  }
+}
+
+.error-submitted {
+  inline-size: 100%;
+  margin-block-start: var(--spacing-12);
+}
+
+.input-username {
+  margin-block-end: var(--spacing-12);
+}
+
+.button-login {
+  inline-size: 100%;
+  margin-block-start: var(--spacing-20);
+}

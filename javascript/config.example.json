@@ -1,0 +1,21 @@
+{
+  "api": "http://127.0.0.1:8000/api/v2",
+  "ws": "ws://127.0.0.1:8000/events/",
+  "supportEmail": "support@taiga.io",
+  "emailWs": "ws://127.0.0.1:8090",
+  "social": {
+    "github": {
+      "clientId": ""
+    },
+    "gitlab": {
+      "serverUrl": "https://gitlab.com",
+      "clientId": ""
+    },
+    "google": {
+      "clientId": ""
+    }
+  },
+  "accessTokenLifetime": 180,
+  "globalBanner": false,
+  "maxUploadFileSize": 104857600
+}

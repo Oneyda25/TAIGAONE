@@ -1,0 +1,40 @@
+/*
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this
+file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+Copyright (c) 2023-present Kaleidos INC
+*/
+
+@import url("tools/typography.css");
+
+.new-step-top-actions {
+  padding: var(--spacing-16);
+}
+
+.new-step-wrapper {
+  inline-size: 480px;
+  margin-block: 0;
+  margin-inline: auto;
+}
+
+.new-step-title {
+  @mixin font-heading-3;
+
+  margin-block: 0 var(--spacing-32);
+}
+
+.new-step-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+}
+
+.wip-step {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  inline-size: 480px;
+  margin-block: 25%;
+  margin-inline: auto;
+}

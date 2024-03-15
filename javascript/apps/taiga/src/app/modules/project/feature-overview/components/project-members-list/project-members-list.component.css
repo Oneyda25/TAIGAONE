@@ -1,0 +1,171 @@
+/*
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this
+file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+Copyright (c) 2023-present Kaleidos INC
+*/
+/* stylelint-disable selector-max-compound-selectors */
+
+@import url("tools/typography.css");
+
+@keyframes fade-in-down {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+:host::ng-deep {
+  &.pending-state {
+    background-color: var(--color-gray10);
+    pointer-events: none;
+
+    & tg-user-card {
+      --color-user-name: var(--color-gray70);
+    }
+
+    &::ng-deep img,
+    &::ng-deep tui-avatar {
+      opacity: 0.5;
+    }
+
+    & .pending-msg {
+      opacity: 0;
+    }
+
+    & tg-leave-project-dropdown {
+      opacity: 0;
+    }
+  }
+
+  & .animation-first-state {
+    & .member-link {
+      background: var(--color-white);
+
+      &::before {
+        opacity: 1;
+      }
+    }
+
+    & .user-identifier {
+      & .user-name,
+      & .user-alias {
+        color: var(--color-secondary80);
+      }
+    }
+  }
+
+  & .animation-two-state {
+    & .member-link {
+      background: var(--color-gray10);
+    }
+
+    & tg-leave-project-dropdown {
+      opacity: 1;
+    }
+
+    & .member-info {
+      opacity: 1;
+    }
+  }
+}
+
+.member-list {
+  margin-block-end: var(--spacing-8);
+  padding: 0;
+
+  & li {
+    margin-block-end: var(--spacing-8);
+  }
+}
+
+.member-link {
+  background: var(--color-white);
+  border: 0;
+  display: block;
+  inline-size: 100%;
+  position: relative;
+  transition: all 0.3s ease-in-out;
+
+  &::before {
+    block-size: 100%;
+    border: solid 2px var(--color-secondary);
+    content: "";
+    inline-size: 100%;
+    inset-block-start: 0;
+    inset-inline-start: 0;
+    opacity: 0;
+    pointer-events: none;
+    position: absolute;
+    transition: all 0.3s ease-in-out;
+    z-index: var(--first-layer);
+  }
+
+  &:not(.pending-member):hover,
+  &.leave-project-open {
+    background-color: var(--color-gray10);
+
+    & tg-user-card {
+      --color-user-name: var(--color-secondary80);
+    }
+  }
+}
+
+.pending-member {
+  background-color: var(--color-gray10);
+  pointer-events: none;
+
+  & tg-user-card {
+    --color-user-name: var(--color-gray70);
+    --color-user-name-is-self: var(--color-gray70);
+  }
+
+  &::ng-deep img,
+  &::ng-deep tui-avatar {
+    opacity: 0.5;
+  }
+}
+
+.create-account {
+  overflow: hidden;
+  pointer-events: auto;
+  white-space: nowrap;
+}
+
+.member-info {
+  align-items: center;
+  block-size: 100%;
+  display: flex;
+  justify-self: stretch;
+
+  & .block-end {
+    align-items: center;
+    display: flex;
+    margin-inline-start: auto;
+    padding-inline-start: var(--spacing-16);
+  }
+
+  & .pending-badge {
+    margin-inline-end: var(--spacing-8);
+
+    &:last-child {
+      margin-inline-end: 0;
+    }
+  }
+}
+
+cdk-virtual-scroll-viewport {
+  block-size: 500px;
+
+  & .member-item {
+    padding-inline: var(--spacing-4) var(--spacing-12);
+
+    &:first-child {
+      padding-block-start: var(--spacing-4);
+    }
+  }
+}

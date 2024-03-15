@@ -1,0 +1,65 @@
+<!--
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this
+file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+Copyright (c) 2023-present Kaleidos INC
+-->
+<ng-container
+  *transloco="let t"
+  [formGroup]="user">
+  <div
+    class="user content"
+    [class.has-role]="user.get('roles')">
+    <tg-user-card [user]="userObj">
+      <div
+        invitation
+        class="invitation"
+        data-test="pending-tag"
+        [tgUiTooltip]="tooltip"
+        tgUiTooltipPosition="bottom-right"
+        *ngIf="user.value.userHasPendingInvitation">
+        <tg-ui-badge
+          [label]="t('invitation_modal.pending') | capitalize"
+          icon="clock"
+          color="yellow"></tg-ui-badge>
+      </div>
+      <ng-template #tooltip>
+        <p>{{ t('invitation_modal.pending_tooltip') }}</p>
+      </ng-template>
+    </tg-user-card>
+    <tg-ui-select
+      *ngIf="user.get('roles')"
+      [label]="t('invitation_modal.role')"
+      labelVisuallyHidden>
+      <tui-select
+        class="select-rol"
+        tuiTextfieldSize="l"
+        [valueContent]="user.get('roles')?.value"
+        formControlName="roles"
+        (keydown.enter)="$event.preventDefault()"
+        data-test="select-value">
+        <tui-data-list *tuiDataList>
+          <button
+            *ngFor="let role of roles; trackBy: trackByIndex"
+            tuiOption
+            [attr.data-test]="role.name.toLowerCase()"
+            size="s"
+            [class.selected]="role.name === user.get('roles')?.value"
+            [value]="role.name">
+            {{ role.name }}
+          </button>
+        </tui-data-list>
+      </tui-select>
+    </tg-ui-select>
+    <button
+      class="delete-btn"
+      data-test="delete-user"
+      [attr.aria-label]="t('invitation_modal.remove')"
+      tuiIconButton
+      icon="close"
+      (click)="deleteUser()"
+      [tgUiTooltip]="t('invitation_modal.remove')"
+      appearance="tertiary"></button>
+  </div>
+</ng-container>

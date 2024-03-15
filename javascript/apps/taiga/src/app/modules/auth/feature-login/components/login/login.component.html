@@ -1,0 +1,80 @@
+<!--
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this
+file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+Copyright (c) 2023-present Kaleidos INC
+-->
+
+<ng-container *transloco="let t; read: 'auth'">
+  <ng-container *ngIf="model$ | async as vm">
+    <form
+      #form="ngForm"
+      [formGroup]="loginForm"
+      (ngSubmit)="onSubmit()">
+      <tg-ui-input
+        class="input-username"
+        [label]="t('login.username')">
+        <input
+          formControlName="username"
+          data-test="login-username"
+          inputRef />
+        <ng-container inputError>
+          <tg-ui-error
+            [enabled]="form.submitted"
+            data-test="signup-required-email"
+            error="required">
+            {{ t('login.errors.username_required') }}
+          </tg-ui-error>
+        </ng-container>
+      </tg-ui-input>
+      <tg-ui-input
+        class="input-password"
+        [label]="t('login.password')">
+        <ng-container adjacentLabelContent>
+          <a
+            [routerLink]="'/reset-password'"
+            [state]="{ usernameInput: loginForm.get('username')?.value }"
+            class="forgot-password"
+            appearance="primary"
+            tuiLink>
+            {{ t('login.forgot_password') }}
+          </a>
+        </ng-container>
+        <input
+          formControlName="password"
+          data-test="login-password"
+          type="password"
+          inputRef />
+        <ng-container inputError>
+          <tg-ui-error
+            [enabled]="form.submitted"
+            data-test="signup-required-email"
+            error="required">
+            {{ t('login.errors.password_required') }}
+          </tg-ui-error>
+        </ng-container>
+      </tg-ui-input>
+      <tg-ui-context-notification
+        @fadeInOut
+        alertLevel="polite"
+        *ngIf="vm.loginError"
+        class="error-submitted"
+        status="error"
+        data-test="submitted-error">
+        <span>{{ t('login.errors.submited_error') }}</span>
+      </tg-ui-context-notification>
+      <button
+        loading
+        [loadingMsg]="t('login.in_progress')"
+        [loadingSuccess]="t('login.success')"
+        class="button-login"
+        tuiButton
+        appearance="primary"
+        data-test="login-submit"
+        type="submit">
+        {{ t('login.login') }}
+      </button>
+    </form>
+  </ng-container>
+</ng-container>

@@ -1,0 +1,128 @@
+/*
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this
+file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+Copyright (c) 2023-present Kaleidos INC
+*/
+
+@import url("tools/typography.css");
+
+:host[has-members="false"] {
+  & .permission-row {
+    border-block-end: 0;
+  }
+}
+
+:host {
+  --max-inline-size: 17rem;
+  --min-inline-size: 14rem;
+
+  &.hidden-row-name .permission-row .permission-row-name {
+    display: none;
+  }
+}
+
+.permission-row {
+  border-block-end: solid 1px var(--color-gray20);
+  max-inline-size: var(--setting-size);
+  padding-block: var(--spacing-12);
+  padding-inline: 0;
+
+  & .restricted {
+    color: var(--color-gray80);
+    margin-inline-start: var(--spacing-4);
+  }
+
+  & .main {
+    align-items: center;
+    display: flex;
+    inline-size: 100%;
+  }
+
+  & .sub {
+    background: var(--color-gray10);
+    margin-block-start: var(--spacing-8);
+    padding-block: var(--spacing-8);
+    padding-inline: var(--spacing-16);
+  }
+
+  & tg-role-advance-row {
+    border-block-end: solid 2px var(--color-gray20);
+    display: block;
+
+    &:last-child {
+      border-block-end: 0;
+    }
+  }
+
+  & .permission-row-select {
+    display: flex;
+    flex-grow: 1;
+    min-inline-size: var(--spacing-56);
+
+    &.hide-members {
+      flex-grow: 1;
+      max-inline-size: var(--max-inline-size);
+      min-inline-size: var(--min-inline-size);
+    }
+
+    & .permission-row-button {
+      margin-inline-start: var(--spacing-8);
+    }
+
+    & tg-ui-select {
+      inline-size: 100%;
+      max-inline-size: var(--max-inline-size);
+      min-inline-size: var(--min-inline-size);
+    }
+  }
+
+  & .permission-row-title {
+    block-size: var(--spacing-16);
+    display: flex;
+    flex-basis: 25%;
+    margin-inline-end: var(--spacing-16);
+
+    & .permission-row-member {
+      display: inline-block;
+      flex-shrink: 0;
+    }
+  }
+
+  & .permission-row-name {
+    @mixin line-clamp 2;
+    /* stylelint-disable */
+    color: var(--color-gray90);
+    /* stylelint-enable */
+    font-weight: var(--font-weight-medium);
+    margin-inline-end: var(--spacing-8);
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  & .permission-row-action {
+    display: flex;
+    justify-content: flex-end;
+    margin-inline-start: var(--spacing-16);
+    max-inline-size: 32%;
+    min-inline-size: var(--min-inline-size);
+
+    &.hide-members {
+      justify-content: flex-start;
+      margin-inline-start: var(--spacing-16);
+    }
+
+    & .permission-row-button {
+      margin-inline-end: var(--spacing-8);
+
+      &:last-child {
+        margin-inline-end: 0;
+      }
+    }
+  }
+}
+
+.advanced-settings {
+  border-block-end: 0;
+}

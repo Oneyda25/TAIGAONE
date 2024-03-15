@@ -1,0 +1,65 @@
+/*
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this
+file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+Copyright (c) 2023-present Kaleidos INC
+*/
+
+@import url("tools/typography.css");
+
+/* stylelint-disable selector-max-type */
+/* stylelint-disable declaration-no-important */
+
+tui-data-list {
+  --tui-data-list-padding: var(--spacing-4);
+
+  border-radius: 3px;
+
+  &:focus {
+    outline: none;
+  }
+
+  & a[tuiOption],
+  & button[tuiOption] {
+    @mixin font-paragraph;
+
+    --tui-data-list-margin: 0;
+    --tui-text-01: var(--color-gray90);
+
+    border: solid 1px var(--color-white) !important;
+    inline-size: 100%;
+    margin: 0 !important;
+    min-block-size: var(--spacing-24) !important;
+    padding: var(--spacing-8) !important;
+    transition: none !important;
+
+    &:hover,
+    &.active-option,
+    &.selected {
+      --tui-text-01: var(--color-secondary80);
+
+      background: var(--color-gray20) !important;
+    }
+
+    &.active-option {
+      & tui-svg {
+        display: none;
+      }
+    }
+
+    &:focus {
+      --tui-clear: none;
+    }
+
+    &:focus-visible {
+      --tui-text-01: var(--color-secondary80);
+
+      border-color: var(--color-secondary) !important;
+    }
+  }
+
+  & [data-size="s"] {
+    block-size: var(--spacing-32);
+  }
+}

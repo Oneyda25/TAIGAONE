@@ -1,0 +1,72 @@
+/*
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this
+file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+Copyright (c) 2023-present Kaleidos INC
+*/
+/* stylelint-disable selector-max-compound-selectors */
+
+@import url("tools/typography.css");
+@import url("taiga-ui/mixins/wrapper.css");
+
+.select-container {
+  max-inline-size: 209px;
+}
+
+.admin-dialog {
+  @mixin font-paragraph;
+
+  max-inline-size: 209px;
+  padding-block: var(--spacing-8);
+  padding-inline: var(--spacing-8);
+
+  & .admin-dialog-title {
+    color: var(--color-gray100);
+    font-weight: var(--font-weight-medium);
+    margin-block: 0 var(--spacing-8);
+  }
+
+  & .admin-dialog-description {
+    color: var(--color-gray90);
+  }
+}
+
+.disabled-select[data-appearance="primary"] {
+  min-inline-size: 209px;
+  opacity: 1;
+
+  &::ng-deep [tuiWrapper] {
+    @mixin font-inline;
+
+    /* stylelint-disable declaration-no-important */
+    background-color: var(--color-gray10) !important;
+    color: var(--color-gray100) !important;
+    padding-block: 0 !important;
+
+    /* stylelint-disable-enable declaration-no-important */
+    padding-inline: var(--spacing-16) !important;
+
+    @mixin wrapper-content {
+      justify-content: space-between;
+    }
+
+    /* stylelint-disable-next-line selector-max-type */
+    & .t-right tui-svg {
+      color: var(--color-gray50);
+    }
+  }
+}
+
+.permissions-warning {
+  padding-block: var(--spacing-8);
+  padding-inline: var(--spacing-4);
+
+  &::ng-deep .wrapper {
+    padding-inline: var(--spacing-8);
+
+    & .content {
+      @mixin font-small;
+    }
+  }
+}

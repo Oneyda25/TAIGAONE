@@ -1,0 +1,55 @@
+/*
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this
+file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+Copyright (c) 2023-present Kaleidos INC
+*/
+
+@import url("tools/typography.css");
+@import url("shared/option-list.css");
+
+:host {
+  display: flex;
+  gap: var(--spacing-4);
+}
+
+.kanban-title {
+  @mixin font-inline;
+
+  color: var(--color-gray100);
+  font-weight: 500;
+  margin: 0;
+  padding-inline-start: var(--spacing-16);
+}
+
+.view-options-list {
+  @mixin option-list;
+}
+
+.separator {
+  @mixin separator;
+}
+
+.kanban-header-breadcrumbs {
+  margin-block-start: calc(var(--spacing-4) * -1);
+  margin-inline-start: calc(var(--spacing-4) * -1);
+  padding-inline-start: var(--spacing-16);
+}
+
+.status-options-menu {
+  margin-block-start: calc(var(--spacing-8) * -1);
+}
+
+.workflow-form {
+  &::ng-deep {
+    background: transparent;
+    border-color: transparent;
+    box-shadow: none;
+    padding: 0;
+
+    &.input-wrapper {
+      max-inline-size: 210px;
+    }
+  }
+}

@@ -1,0 +1,38 @@
+<!--
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this
+file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+Copyright (c) 2023-present Kaleidos INC
+-->
+
+<ng-template #domPortalContent>
+  <ng-container *transloco="let t">
+    <div
+      class="modal-inner-wrapper"
+      data-ref="modal-inner">
+      <div class="modal-content-wrapper">
+        <div
+          class="modal-content"
+          [attr.id]="id"
+          [style.--modal-width]="width + 'px'"
+          [class.no-padding]="noPadding"
+          [class.big]="big"
+          [class.height-auto]="heightAuto">
+          <ng-content></ng-content>
+        </div>
+        <button
+          *ngIf="closeButton"
+          class="close"
+          tuiIconButton
+          data-test="close-modal"
+          [attr.aria-label]="t('commons.close_modal')"
+          [tgUiTooltip]="t('commons.close_modal')"
+          appearance="action-button"
+          icon="close"
+          type="button"
+          (click)="close()"></button>
+      </div>
+    </div>
+  </ng-container>
+</ng-template>

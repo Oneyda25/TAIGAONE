@@ -1,0 +1,74 @@
+<!--
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this
+file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+Copyright (c) 2023-present Kaleidos INC
+-->
+<ng-container
+  *ngIf="
+    workflow.statuses.length || openCreateStatusForm || statusIsBeingCreated()
+  ">
+  <tui-scrollbar
+    [tgUiDropZone]="workflow.slug"
+    dropCategory="status"
+    overlapStrategy="horizontal">
+    <cdk-virtual-scroll-viewport
+      appendOnly
+      [maxBufferPx]="300"
+      orientation="horizontal"
+      [itemSize]="statusColumnSize"
+      tuiScrollable
+      class="tui-zero-scrollbar"
+      role="row">
+      <ng-container *cdkVirtualFor="let column of columns; trackBy: trackById">
+        <div
+          *ngIf="column.isPlaceholder"
+          class="placeholder-status drop-target"></div>
+        <tg-kanban-status
+          *ngIf="!column.isPlaceholder"
+          [tgUiDraggable]="column.status.id"
+          [dragData]="column.status"
+          [dragDisabled]="columns.length === 1 || !userIsAdmin"
+          dropCategory="status"
+          role="gridcell"
+          tgKanbanStatusKeyboardNavigation
+          [attr.data-test]="column.status.name"
+          [status]="column.status"
+          [workflow]="workflow"></tg-kanban-status>
+      </ng-container>
+      <tg-kanban-create-status
+        *ngIf="userIsAdmin"
+        role="gridcell"
+        [openCreateStatusForm]="openCreateStatusForm"
+        (navigateLeft)="navigateLeft()"
+        (closeForm)="openCreateStatusForm = false"></tg-kanban-create-status>
+    </cdk-virtual-scroll-viewport>
+  </tui-scrollbar>
+</ng-container>
+
+<tg-ui-drag-in-progress *ngIf="movingStories().length">
+  <div *ngFor="let story of movingStories(); trackBy: trackByStorySlug">
+    <tg-kanban-story
+      class="dragging"
+      [story]="story"></tg-kanban-story>
+  </div>
+</tg-ui-drag-in-progress>
+
+<ng-container *ngIf="movingStatus() as status">
+  <tg-ui-drag-in-progress [@dropStatusTransition]>
+    <tg-kanban-status
+      role="gridcell"
+      [status]="status"
+      [workflow]="workflow"></tg-kanban-status>
+  </tg-ui-drag-in-progress>
+</ng-container>
+
+<ng-container
+  *ngIf="
+    workflow.statuses && !workflow.statuses.length && !openCreateStatusForm
+  ">
+  <tg-kanban-empty
+    [userIsAdmin]="userIsAdmin"
+    (addStatus)="openCreateStatusForm = true"></tg-kanban-empty>
+</ng-container>

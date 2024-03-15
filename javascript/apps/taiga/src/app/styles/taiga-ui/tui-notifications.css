@@ -1,0 +1,202 @@
+/*
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this
+file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+Copyright (c) 2023-present Kaleidos INC
+*/
+/* stylelint-disable declaration-no-important */
+
+tui-alert-host {
+  --tui-height-xs: var(--spacing-16);
+  --tui-radius-m: 8px;
+  --tui-width-xs: var(--tui-height-xs);
+
+  & .alert {
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.1) !important;
+
+    &:not(:first-child) {
+      margin-block-start: var(--spacing-16) !important;
+    }
+  }
+
+  /* stylelint-disable-next-line selector-max-type */
+  & .t-wrapper tui-alert {
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);
+    inline-size: 410px;
+    margin-block-start: var(--spacing-64);
+    margin-inline-end: var(--spacing-16);
+  }
+
+  &.no-menu {
+    /* stylelint-disable-next-line selector-max-type */
+    & .t-wrapper tui-alert {
+      margin-block-start: var(--spacing-16);
+    }
+  }
+}
+
+tui-notification {
+  padding-block-end: var(--spacing-16) !important;
+  padding-block-start: var(--spacing-16) !important;
+
+  &._has-icon {
+    padding-inline-start: var(--spacing-40) !important;
+  }
+
+  &._has-close-button {
+    padding-inline-end: var(--spacing-40) !important;
+  }
+
+  & .t-close {
+    inset-block-start: var(--spacing-16) !important;
+    inset-inline-end: var(--spacing-16) !important;
+
+    & .t-icon {
+      margin-block-start: 0;
+    }
+  }
+
+  &::after {
+    background: none !important;
+  }
+
+  & .t-icon {
+    block-size: var(--spacing-16) !important;
+    inline-size: var(--spacing-16) !important;
+    margin-block-start: var(--spacing-16);
+  }
+
+  & .t-content {
+    font-size: var(--font-size-medium);
+    font-weight: var(--font-weight-medium);
+
+    & .t-heading {
+      font-weight: var(--font-weight-medium);
+      margin-block-end: var(--spacing-8);
+
+      /* stylelint-disable-next-line selector-max-compound-selectors */
+      & + .t-content {
+        font-size: var(--font-size-small);
+        font-weight: var(--font-weight-regular);
+        line-height: 1rem;
+        margin-block-end: 0;
+      }
+    }
+  }
+
+  &[data-status="info"] {
+    --tui-text-01: var(--color-info80);
+    --tui-base-06: var(--tui-text-01);
+    --tui-focus: var(--color-secondary);
+
+    background: var(--color-info20) !important;
+    color: var(--color-info80) !important;
+
+    & .t-close {
+      --tui-radius-m: 0;
+
+      &:hover {
+        background-color: var(--color-info30);
+        color: var(--color-info90);
+      }
+    }
+
+    & .t-icon {
+      color: var(--color-info50);
+
+      .t-close & {
+        color: var(--color-info80);
+      }
+    }
+  }
+
+  &[data-status="error"] {
+    --tui-text-01: var(--color-red80);
+    --tui-base-06: var(--tui-text-01);
+    --tui-focus: var(--color-secondary);
+
+    background: var(--color-red20) !important;
+    color: var(--color-red80) !important;
+
+    & .t-close {
+      --tui-radius-m: 0;
+
+      &:hover {
+        background-color: var(--color-red30);
+        color: var(--color-red90);
+      }
+    }
+
+    & .t-icon {
+      color: var(--color-red50);
+
+      .t-close & {
+        color: var(--color-red80);
+      }
+    }
+  }
+
+  &[data-status="success"] {
+    --tui-text-01: var(--color-ok80);
+    --tui-base-06: var(--tui-text-01);
+    --tui-focus: var(--color-secondary);
+
+    background: var(--color-ok10) !important;
+    color: var(--color-ok80) !important;
+
+    & .t-close {
+      --tui-radius-m: 0;
+
+      &:hover {
+        background-color: var(--color-ok30);
+        color: var(--color-ok90);
+      }
+    }
+
+    & .t-icon {
+      color: var(--color-ok50);
+
+      .t-close & {
+        color: var(--color-ok80);
+      }
+    }
+  }
+
+  &[data-status="warning"] {
+    --tui-text-01: var(--color-warning80);
+    --tui-base-06: var(--tui-text-01);
+    --tui-focus: var(--color-secondary);
+
+    background: var(--color-warning20) !important;
+    color: var(--color-warning80) !important;
+
+    & .t-close {
+      --tui-radius-m: 0;
+
+      &:hover {
+        background-color: var(--color-warning30);
+        color: var(--color-warning90);
+      }
+    }
+
+    & .t-icon {
+      color: var(--color-warning50);
+
+      .t-close & {
+        color: var(--color-warning80);
+      }
+    }
+  }
+}
+
+.no-header {
+  & tui-notifications-host [tuiWrapper] {
+    padding-block-start: var(--spacing-16) !important;
+  }
+
+  /* stylelint-disable-next-line selector-max-type */
+  & tui-notifications-host tui-wrapper.t-wrapper {
+    padding-block-start: 0 !important;
+  }
+}

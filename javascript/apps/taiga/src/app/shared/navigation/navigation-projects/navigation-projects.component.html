@@ -1,0 +1,76 @@
+<!--
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this
+file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+Copyright (c) 2023-present Kaleidos INC
+-->
+
+<ng-container *transloco="let t">
+  <ng-container *ngIf="latestProjects$ | async as latestProjects">
+    <tui-data-list
+      id="navigation-projects"
+      tabindex="-1"
+      class="pinned-projects"
+      [attr.aria-label]="
+        latestProjects.length
+          ? t('navigation_projects.a11y.recent_projects')
+          : t('navigation_projects.a11y.recent_projects_empty_navigate')
+      "
+      role="menu">
+      <span
+        [attr.aria-label]="
+          latestProjects.length
+            ? t('navigation_projects.recent_projects')
+            : t('navigation_projects.a11y.recent_projects_empty')
+        "
+        class="menu-title"
+        >{{ t('navigation_projects.recent_projects') }}</span
+      >
+      <a
+        *ngFor="
+          let project of latestProjects;
+          trackBy: trackByProject;
+          let i = index
+        "
+        tuiOption
+        [routerLink]="['/project', project.id, project.slug, 'overview']"
+        role="menuitem"
+        href="#"
+        class="project">
+        <div class="project-image">
+          <tg-ui-avatar
+            type="light"
+            [color]="project.color"
+            [avatarUrl]="project.logoSmall"
+            [name]="project.name">
+          </tg-ui-avatar>
+        </div>
+        <div class="project-data">
+          <span class="project-name">{{ project.name }} </span>
+          <span class="project-workspace">{{ project.workspace.name }}</span>
+          <span class="visually-hidden">{{ t('commons.project') }}</span>
+        </div>
+      </a>
+      <ng-container *ngIf="!latestProjects.length">
+        <p class="empty-recent">
+          {{ t('navigation_projects.empty_recent_projects') }}
+        </p>
+      </ng-container>
+      <a
+        class="view-projects"
+        href="">
+        {{ t('navigation_projects.view_projects') }}
+      </a>
+      <a
+        class="project-action"
+        appearance="primary"
+        tuiButton
+        type="button"
+        icon="plus"
+        [routerLink]="['/new-project']">
+        {{ t('navigation_projects.new_project') }}
+      </a>
+    </tui-data-list>
+  </ng-container>
+</ng-container>

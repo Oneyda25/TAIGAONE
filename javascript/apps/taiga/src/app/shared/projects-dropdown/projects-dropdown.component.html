@@ -1,0 +1,85 @@
+<!--
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this
+file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+Copyright (c) 2023-present Kaleidos INC
+-->
+
+<ng-container *transloco="let t">
+  <span
+    class="display-project-list"
+    *ngIf="!projects.length">
+    {{
+      t('projects_dropdown.projects_number', {
+        projectsNum: projects.length
+      })
+    }}
+  </span>
+  <tui-hosted-dropdown
+    [content]="projectListDropdown"
+    [(open)]="displayProjectList"
+    [tuiDropdownMaxHeight]="800">
+    <button
+      *ngIf="projects.length"
+      class="display-project-list"
+      (click)="displayProjectsList()"
+      aria-haspopup="true"
+      aria-controls="project-list"
+      aria-expanded="displayProjectList ? null">
+      {{
+        t('projects_dropdown.projects_number', {
+          projectsNum: projects.length
+        })
+      }}
+    </button>
+  </tui-hosted-dropdown>
+
+  <ng-template #projectListDropdown>
+    <div class="project-list-dropdown-wrapper">
+      <tui-data-list
+        role="menu"
+        class="project-list"
+        id="project-list"
+        aria-labelledby="project-list-dropdown-title"
+        cdkTrapFocus>
+        <div
+          class="title-area"
+          id="project-list-dropdown-title">
+          {{ t('projects_dropdown.projects_list_title') }}
+        </div>
+        <tui-scrollbar>
+          <ul class="project-list-listmenu">
+            <li
+              class="project-list-listmenu-item"
+              *ngFor="let project of projects; trackBy: trackByProject">
+              <a
+                tuiOption
+                class="project-data"
+                role="menuitem"
+                routerLinkActive
+                [routerLink]="[
+                  '/project',
+                  project.id,
+                  project.slug,
+                  'overview'
+                ]">
+                <tg-ui-avatar
+                  class="project-data-image"
+                  type="light"
+                  [color]="project.color"
+                  aria-hidden="true"
+                  [avatarUrl]="project.logoSmall"
+                  [name]="project.name">
+                </tg-ui-avatar>
+                <span class="project-data-name">
+                  {{ project.name }}
+                </span>
+              </a>
+            </li>
+          </ul>
+        </tui-scrollbar>
+      </tui-data-list>
+    </div>
+  </ng-template>
+</ng-container>

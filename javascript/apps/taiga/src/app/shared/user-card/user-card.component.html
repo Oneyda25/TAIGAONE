@@ -1,0 +1,64 @@
+<!--
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this
+file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+Copyright (c) 2023-present Kaleidos INC
+-->
+<div
+  class="user-card"
+  [class.disabled]="disabled">
+  <tg-user-avatar
+    class="user-avatar"
+    *ngIf="fullName"
+    [color]="setColor(user.color)"
+    [class.disabled]="disabled"
+    [rounded]="true"
+    type="light"
+    [user]="user"></tg-user-avatar>
+
+  <tg-nouser-avatar
+    *ngIf="!fullName"
+    class="user-avatar"></tg-nouser-avatar>
+  <div
+    class="user-identifier"
+    [class.highlight]="textToHighlight"
+    [class.disabled]="disabled">
+    <ng-container *ngIf="fullName">
+      <ng-container *ngIf="navigateToUser">
+        <a
+          class="username-link"
+          href=""
+          [attr.aria-label]="user.fullName && user.fullName + user.username">
+          <span
+            class="user-name overflow"
+            [class.active]="active"
+            data-test="user-fullname"
+            [innerHtml]="fullNameHighlight || fullName"></span>
+        </a>
+      </ng-container>
+      <ng-container *ngIf="!navigateToUser">
+        <span
+          class="user-name overflow"
+          [class.active]="active"
+          data-test="user-fullname"
+          [attr.aria-label]="fullName"
+          [innerHtml]="fullNameHighlight || fullName"></span>
+      </ng-container>
+      <span
+        class="user-alias overflow"
+        [class.active]="active"
+        [attr.aria-label]="user.username"
+        [innerHtml]="'@' + (usernameHighlight || user.username)"></span>
+    </ng-container>
+    <ng-container *ngIf="!fullName">
+      <span
+        class="user-email overflow"
+        data-test="user-email"
+        >{{ user.email }}</span
+      >
+    </ng-container>
+    <ng-content select="[invitation]"></ng-content>
+  </div>
+  <ng-content select="[member]"></ng-content>
+</div>

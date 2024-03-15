@@ -1,0 +1,94 @@
+<!--
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this
+file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+Copyright (c) 2023-present Kaleidos INC
+-->
+<ng-container *transloco="let t; read: 'auth'">
+  <tg-title [title]="t('signup.create_account')"></tg-title>
+  <ng-container *ngIf="!displayVerifyEmail">
+    <main
+      class="signup"
+      data-test="sign-up-page">
+      <tg-ui-context-notification
+        *ngIf="params.project"
+        class="notification"
+        status="info"
+        size="l"
+        [hasIcon]="false">
+        <span
+          [innerHtml]="t('signup.join', { project: params.project })"></span>
+      </tg-ui-context-notification>
+      <div class="auth-wrapper">
+        <tg-ui-inline-notification
+          status="success"
+          *ngIf="deletedAccount">
+          <p>
+            {{ t('signup.delete_account_success_title') }}
+          </p>
+          <p subtitle>
+            {{ t('signup.delete_account_success_subtitle') }}
+          </p>
+        </tg-ui-inline-notification>
+
+        <img
+          class="taiga-logo"
+          role="presentation"
+          width="56"
+          height="56"
+          ngSrc="/assets/images/LogoTaiga.svg"
+          alt="" />
+        <h1 class="auth-title">{{ t('signup.title') }}</h1>
+        <p class="auth-subtitle">{{ t('signup.subtitle') }}</p>
+        <tg-social-login *ngIf="displaySocialNetworks && !displayForm">
+        </tg-social-login>
+        <ng-container *ngIf="!displayForm">
+          <button
+            (click)="displaySignUpForm(true)"
+            appearance="tertiary"
+            data-test="display-signup-button"
+            class="display-signup-button"
+            tuiButton
+            icon="mail"
+            type="button">
+            {{ t('signup.create_account_email') }}
+          </button>
+          <p
+            class="terms-and-privacy"
+            data-test="terms-and-privacy"
+            withExternalLink
+            [innerHtml]="
+              t('signup.terms_and_privacy', {
+                termsOfService: 'terms-of-service' | getUrl,
+                privacyPolicy: 'privacy-policy' | getUrl
+              })
+            "></p>
+        </ng-container>
+        <ng-container *ngIf="displayForm">
+          <tg-signup
+            (displayLoginOptions)="keepFormData($event)"
+            (signUpSuccess)="signUpSucess($event)"
+            [isEmailReadonly]="readOnlyEmail"
+            [invitation]="params"
+            [data]="signUpFormData"></tg-signup>
+        </ng-container>
+      </div>
+    </main>
+    <footer class="auth-footer">
+      <p
+        class="login-link"
+        withInternalLink
+        [innerHtml]="
+          t('signup.already_account', {
+            login: 'login' | getUrl
+          })
+        "></p>
+    </footer>
+  </ng-container>
+  <ng-container *ngIf="displayVerifyEmail && signUpFormData">
+    <tg-verify-email
+      [formData]="signUpFormData"
+      (showSignUp)="showSignUp()"></tg-verify-email>
+  </ng-container>
+</ng-container>

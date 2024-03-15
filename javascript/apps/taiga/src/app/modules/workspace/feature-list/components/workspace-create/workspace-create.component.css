@@ -1,0 +1,50 @@
+/*
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this
+file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+Copyright (c) 2023-present Kaleidos INC
+*/
+
+:host {
+  background: var(--color-white);
+  border: solid 1px var(--color-gray30);
+  border-radius: 3px;
+  box-shadow: 3px 4px 14px rgba(0, 138, 168, 0.15);
+  display: flex;
+  margin-block-end: var(--spacing-32);
+  overflow: hidden;
+
+  & .workspace-create-padding {
+    display: flex;
+    padding: var(--spacing-16);
+  }
+
+  & .workspace-image {
+    margin-block-start: var(--spacing-24);
+    margin-inline-end: var(--spacing-16);
+  }
+
+  & button {
+    margin-block-start: var(--spacing-24);
+    margin-inline-start: var(--spacing-8);
+  }
+
+  & tg-ui-input {
+    margin-inline-end: var(--spacing-8);
+  }
+
+  & .input-project {
+    margin-block-start: -1px;
+  }
+
+  & .workspace-input-project-name {
+    inline-size: 278px;
+  }
+
+  &::ng-deep {
+    & .input-container {
+      flex-direction: column;
+    }
+  }
+}
